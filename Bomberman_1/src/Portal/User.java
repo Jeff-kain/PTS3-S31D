@@ -3,22 +3,18 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Game;
+package Portal;
 
 /**
  *
  * @author jeffrey
  */
-public class Game {
+public class User {
+    private String username;
+
+    public String getUsername() {
+        return username;
+    }
     
-    private String naam;
-    private String Beschrijving;
-
-    public String getNaam() {
-        return naam;
-    }
-
-    public String getBeschrijving() {
-        return Beschrijving;
-    }
+    
 }

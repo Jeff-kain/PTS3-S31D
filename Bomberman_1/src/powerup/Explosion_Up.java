@@ -9,6 +9,6 @@ package powerup;
  *
  * @author jeffrey
  */
-public class Explosion_Up {
+public class Explosion_Up extends PowerUp {
     
 }

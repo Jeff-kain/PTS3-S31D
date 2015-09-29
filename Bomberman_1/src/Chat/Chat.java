@@ -3,22 +3,16 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Game;
+package Chat;
 
 /**
  *
  * @author jeffrey
  */
-public class Game {
+public class Chat {
     
-    private String naam;
-    private String Beschrijving;
-
-    public String getNaam() {
-        return naam;
-    }
-
-    public String getBeschrijving() {
-        return Beschrijving;
+    public void addMessage(String username, String Message)
+    {
+        // TODO
     }
 }
