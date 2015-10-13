@@ -11,12 +11,12 @@ package powerup;
  */
 public class Bomb_Up extends PowerUp{
     
-    public int x;
-    public int y;
+    public float x;
+    public float y;
     public Boolean visible;
     public String name = "Bomb_Up";
     
-    public Bomb_Up(String name, int x, int y, Boolean visible)
+    public Bomb_Up(String name, float x, float y, Boolean visible)
     {
         super(name);
         this.x = x;
@@ -30,17 +30,17 @@ public class Bomb_Up extends PowerUp{
         return this.name;
     }
     
-    public int getX()
+    public float getX()
     {
         return this.x;
     }
     
-    public int getY()
+    public float getY()
     {
         return this.y;
     }
     
-    public void setPosition(int x, int y)
+    public void setPosition(float x, float y)
     {
         this.x = x;
         this.y = y;

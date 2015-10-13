@@ -4,20 +4,16 @@
  * and open the template in the editor.
  */
 package Game;
-<<<<<<< HEAD
 
 import org.newdawn.slick.Image;
 import org.newdawn.slick.SpriteSheet;
+import powerup.Bomb_Up;
 
-=======
-import powerup.*;
->>>>>>> origin/master
 /**
  *
  * @author jeffrey
  */
 public class Player {
-<<<<<<< HEAD
     private Image sprite;
     private String name;
     private float speed;
@@ -26,12 +22,16 @@ public class Player {
     private SpriteSheet sprites;
     private Float x;
     private Float y;
+    private Boolean visible;
+    
+    private Bomb_Up bomb_Up;
     
         public Player(SpriteSheet sprites, Float x, Float y) {
         this.sprites = sprites;
         this.x = x;
         this.y = y;
         this.speed = 48f;
+        bomb_Up= new Bomb_Up(name, x, y, visible);
         this.sprite = this.sprites.getSubImage(2, 16);
     }
     
@@ -46,19 +46,6 @@ public class Player {
     public Float getY() {
         return y;
     }
-=======
-
-    private String name;
-    private int Speed;
-    private Boolean kick;
-    private int Bomb_Count;
-    private int x;
-    private int y;
-    private Boolean visible;
-    
-    private Bomb_Up bomb_Up = new Bomb_Up(name, x, y, visible);
->>>>>>> origin/master
-    
 
     public String getName() {
         return name;
@@ -94,7 +81,6 @@ public class Player {
         
     }
     
-<<<<<<< HEAD
     // Movements for player
     public void moveLeft() {
         this.x -=speed;
@@ -113,8 +99,6 @@ public class Player {
     {
         this.y -=speed;
     }
-=======
->>>>>>> origin/master
     
     
     
