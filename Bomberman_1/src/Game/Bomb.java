@@ -12,7 +12,7 @@ import org.newdawn.slick.SpriteSheet;
  *
  * @author tverv
  */
-public class Bomb {
+public class Bomb implements IGameObject{
     private Image sprite;
     private SpriteSheet sprites;
     private Float x;

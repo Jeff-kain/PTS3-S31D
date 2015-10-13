@@ -6,6 +6,7 @@
 package bomberman;
 
 import Game.Bomb;
+import Game.Box;
 import Game.Playground;
 import Game.Team;
 import java.awt.Rectangle;
@@ -40,6 +41,7 @@ public class Bomberman extends BasicGame{
         private Team team2;
         private Circle mouseBall;
         private ArrayList<Bomb> bombs;
+        private ArrayList<Box> boxes;
         private TiledMap map;
         private int x;
         private int y;
@@ -62,9 +64,13 @@ public class Bomberman extends BasicGame{
             y = 1;
             mouseBall = new Circle(72,72,20);
             bombs = new ArrayList<>();
+            boxes = new ArrayList<>();
             map = playground.getMap();
             sprites = new SpriteSheet("res" + File.separator + "sprites3xt.png", 48, 48);
             character = sprites.getSprite(2, 16);
+            
+            Box b = new Box(sprites, 500f,200f);
+            boxes.add(b);
         }
 
 	@Override
@@ -150,6 +156,10 @@ public class Bomberman extends BasicGame{
             for(Bomb bomb:bombs){
                 g.drawImage(bomb.getSprite(), bomb.getX(), bomb.getY());
         }
+            for(Box box: boxes)
+            {
+                g.drawImage(box.getSprite(), box.getX(), box.getY());
+            }
             //g.drawString("Howdy!", 100, 100);
     //        g.setColor(Color.green);
     //        g.fillRect(20.0f, 10.0f, 300.0f, 20.0f);
@@ -157,6 +167,8 @@ public class Bomberman extends BasicGame{
     //        g.setColor(Color.blue);
     //        g.fillRect(20.0f, 10.0f, team1.maxHealth() / team1.currentHealth() * 300.0f, 20.0f);
 	}
+        
+            
 
 	public static void main(String[] args)
 	{
