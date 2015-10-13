@@ -11,4 +11,10 @@ package powerup;
  */
 public class PowerUp {
     
+    private final String powerUp;
+    
+    public PowerUp(String powerup)
+    {
+        this.powerUp = powerup;
+    }
 }
