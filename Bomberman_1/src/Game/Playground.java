@@ -15,7 +15,7 @@ import org.newdawn.slick.tiled.TiledMap;
  */
 public class Playground {
     private TiledMap map;
-    private final String path = "res" + File.separator + "map.tmx";
+    private final String path = "res" + File.separator + "map3x.tmx";
 
     public Playground() throws SlickException {
        map = new TiledMap(path);

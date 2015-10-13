@@ -54,7 +54,7 @@ public class Bomberman extends BasicGame{
             playground = new Playground();
             x = 1;
             y = 1;
-            mouseBall = new Circle(24,24,6);
+            mouseBall = new Circle(72,72,20);
             bombs = new ArrayList<>();
             map = playground.getMap();
         }
@@ -62,50 +62,50 @@ public class Bomberman extends BasicGame{
 	@Override
 	public void update(GameContainer gc, int i) throws SlickException {
            //team1.damage();
-            int objectLayer = map.getLayerIndex("objects");
+            int objectLayer = map.getLayerIndex("indestructable");
             int posX;
             int posY;
 
             float sensitivity = 1f;
 
             if(gc.getInput().isKeyPressed(Input.KEY_LEFT)){
-                posX = Math.round(mouseBall.getX()) / 16;
-                posY = Math.round(mouseBall.getY()) / 16;
+                posX = Math.round(mouseBall.getX()) / 48;
+                posY = Math.round(mouseBall.getY()) / 48;
                 System.out.println("x: " + posX + " y: " + posY);
 
                 if(map.getTileId(posX - 1, posY, objectLayer)==0){
-                    mouseBall.setCenterX(mouseBall.getCenterX() - sensitivity * 16);
+                    mouseBall.setCenterX(mouseBall.getCenterX() - sensitivity * 48);
                 }
             }
 
             if(gc.getInput().isKeyPressed(Input.KEY_RIGHT)){
-                posX = Math.round(mouseBall.getX()) / 16;
-                posY = Math.round(mouseBall.getY()) / 16;
+                posX = Math.round(mouseBall.getX()) / 48;
+                posY = Math.round(mouseBall.getY()) / 48;
                 System.out.println("x: " + posX + " y: " + posY);
 
                 if(map.getTileId(posX + 1, posY, objectLayer)==0){
-                    mouseBall.setCenterX(mouseBall.getCenterX() + sensitivity * 16);
+                    mouseBall.setCenterX(mouseBall.getCenterX() + sensitivity * 48);
                     Timer t = new Timer();
                 }
             }
 
             if(gc.getInput().isKeyPressed(Input.KEY_UP)){
-                posX = Math.round(mouseBall.getX()) / 16;
-                posY = Math.round(mouseBall.getY()) / 16;
+                posX = Math.round(mouseBall.getX()) / 48;
+                posY = Math.round(mouseBall.getY()) / 48;
                 System.out.println("x: " + posX + " y: " + posY);
 
                 if(map.getTileId(posX, posY - 1, objectLayer)==0){
-                    mouseBall.setCenterY(mouseBall.getCenterY() - sensitivity * 16);
+                    mouseBall.setCenterY(mouseBall.getCenterY() - sensitivity * 48);
                 }
             }
 
             if(gc.getInput().isKeyPressed(Input.KEY_DOWN)){
-                posX = Math.round(mouseBall.getX()) / 16;
-                posY = Math.round(mouseBall.getY()) / 16;
+                posX = Math.round(mouseBall.getX()) / 48;
+                posY = Math.round(mouseBall.getY()) / 48;
                 System.out.println("x: " + posX + " y: " + posY);   
 
                 if(map.getTileId(posX, posY + 1, objectLayer)==0){
-                    mouseBall.setCenterY(mouseBall.getCenterY() + sensitivity * 16);
+                    mouseBall.setCenterY(mouseBall.getCenterY() + sensitivity * 48);
                 }
             }
 
@@ -118,7 +118,6 @@ public class Bomberman extends BasicGame{
 	@Override
 	public void render(GameContainer gc, Graphics g) throws SlickException
 	{
-            g.scale(3, 3);
             map.render(0, 0);
             
             float healthScale = team1.currentHealth() / team1.maxHealth();
