@@ -16,12 +16,30 @@ import java.util.ArrayList;
  */
 public class Team {
     private Color color;
-    
+    private float maxHealth =100f;
+    private float currentHealth = 80f;
     private ArrayList<Player> players;
 
     public Color getColor() {
         return color;
     }
     
+    public float maxHealth()
+    {
+        return maxHealth;
+    }
+   
+    public float currentHealth()
+    {
+        return currentHealth;
+    }
+    
+    public void damage()
+    {
+        if(currentHealth()>0)
+        {
+        currentHealth = currentHealth -0.01f;
+        }
+    }
     
 }
