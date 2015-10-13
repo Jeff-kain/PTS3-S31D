@@ -32,6 +32,7 @@ public class SlickTest extends BasicGame{
     private TiledMap map;
     private int x;
     private int y;
+    private final String path = "res" + File.separator + "map.tmx";
     
     public SlickTest(String gameName) {
         super(gameName);
@@ -62,7 +63,7 @@ public class SlickTest extends BasicGame{
         y = 1;
         mouseBall = new Circle(24,24,6);
         bombs = new ArrayList<>();
-        map = new TiledMap("res" + File.separator + "map.tmx");
+        map = new TiledMap(path);
     }
 
     @Override
