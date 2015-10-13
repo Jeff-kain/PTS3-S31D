@@ -5,9 +5,11 @@
  */
 package bomberman;
 
+import Game.Bomb;
 import Game.Playground;
 import Game.Team;
 import java.awt.Rectangle;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Timer;
 import java.util.logging.Level;
@@ -17,8 +19,10 @@ import org.newdawn.slick.BasicGame;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
+import org.newdawn.slick.Image;
 import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
+import org.newdawn.slick.SpriteSheet;
 import org.newdawn.slick.fills.GradientFill;
 import org.newdawn.slick.geom.Circle;
 import org.newdawn.slick.tiled.TiledMap;
@@ -35,11 +39,13 @@ public class Bomberman extends BasicGame{
         private Team team1;
         private Team team2;
         private Circle mouseBall;
-        private ArrayList<Circle> bombs;
+        private ArrayList<Bomb> bombs;
         private TiledMap map;
         private int x;
         private int y;
         private Playground playground;
+        private SpriteSheet sprites;
+        private Image character;
          
         // TODO code application logic here
         public Bomberman(String gamename)
@@ -57,6 +63,8 @@ public class Bomberman extends BasicGame{
             mouseBall = new Circle(72,72,20);
             bombs = new ArrayList<>();
             map = playground.getMap();
+            sprites = new SpriteSheet("res" + File.separator + "sprites3xt.png", 48, 48);
+            character = sprites.getSprite(2, 16);
         }
 
 	@Override
@@ -110,8 +118,8 @@ public class Bomberman extends BasicGame{
             }
 
             if(gc.getInput().isKeyPressed(Input.KEY_SPACE)){
-                Circle bomb = new Circle(mouseBall.getCenterX(), mouseBall.getCenterY(), 5);
-                bombs.add(bomb);
+                Bomb b = new Bomb(sprites, mouseBall.getX(), mouseBall.getY());
+                bombs.add(b);
             }
         }
 
@@ -136,10 +144,11 @@ public class Bomberman extends BasicGame{
 
             g.setColor(Color.blue);
             g.fill(mouseBall);    
+            
+            g.drawImage(character, 48, 48);
         
-            for(Circle bomb:bombs){
-                g.setColor(Color.red);
-                g.fill(bomb);
+            for(Bomb bomb:bombs){
+                g.drawImage(bomb.getSprite(), bomb.getX(), bomb.getY());
         }
             //g.drawString("Howdy!", 100, 100);
     //        g.setColor(Color.green);
