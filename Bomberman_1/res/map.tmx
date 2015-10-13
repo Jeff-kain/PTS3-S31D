@@ -3,7 +3,7 @@
  <tileset firstgid="1" name="sprites" tilewidth="16" tileheight="16" tilecount="285">
   <image source="sprites.png" width="240" height="304"/>
  </tileset>
- <layer name="background" width="15" height="15" visible="0">
+ <layer name="background" width="15" height="15">
   <data encoding="base64" compression="gzip">
    H4sIAAAAAAAACzvGwMBwbBSP4lE8YBgAA30H8IQDAAA=
   </data>
