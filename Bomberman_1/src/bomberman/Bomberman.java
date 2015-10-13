@@ -48,6 +48,7 @@ public class Bomberman extends BasicGame{
         private Playground playground;
         private SpriteSheet sprites;
         private Image character;
+        private float tile;
          
         // TODO code application logic here
         public Bomberman(String gamename)
@@ -62,16 +63,17 @@ public class Bomberman extends BasicGame{
             playground = new Playground();
             x = 1;
             y = 1;
+            tile = 48f;
             mouseBall = new Circle(72,72,20);
             bombs = new ArrayList<>();
             boxes = new ArrayList<>();
             map = playground.getMap();
             sprites = new SpriteSheet("res" + File.separator + "sprites3xt.png", 48, 48);
             character = sprites.getSprite(2, 16);
-            
-            Box b = new Box(sprites, 500f,200f);
-            boxes.add(b);
+            createBoxes();
+          
         }
+        
 
 	@Override
 	public void update(GameContainer gc, int i) throws SlickException {
@@ -184,4 +186,24 @@ public class Bomberman extends BasicGame{
 			Logger.getLogger(Bomberman.class.getName()).log(Level.SEVERE, null, ex);
 		}
 	}
+        
+        public void createBoxes()
+        {
+            Box b = new Box(sprites, 3*tile,2*tile);
+            Box b1 = new Box(sprites, 3*tile,2*tile);
+            Box b2 = new Box(sprites, 3*tile,2*tile);
+            Box b3 = new Box(sprites, 3*tile,2*tile);
+            Box b4 = new Box(sprites, 3*tile,2*tile);
+            Box b5 = new Box(sprites, 3*tile,2*tile);
+            Box b6 = new Box(sprites, 3*tile,2*tile);
+            Box b7 = new Box(sprites, 3*tile,2*tile);
+            Box b8 = new Box(sprites, 3*tile,2*tile);
+            Box b9 = new Box(sprites, 3*tile,2*tile);
+            Box b10 = new Box(sprites, 3*tile,2*tile);
+            Box b11 = new Box(sprites, 3*tile,2*tile);
+            Box b12 = new Box(sprites, 3*tile,2*tile);
+            Box b13 = new Box(sprites, 3*tile,2*tile);
+            Box b14 = new Box(sprites, 3*tile,2*tile);            
+            boxes.add(b14);
+        }
     }
