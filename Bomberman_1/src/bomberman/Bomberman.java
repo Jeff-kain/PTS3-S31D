@@ -7,6 +7,7 @@ package bomberman;
 
 import Game.Bomb;
 import Game.Box;
+import Game.Player;
 import Game.Playground;
 import Game.Team;
 import java.awt.Rectangle;
@@ -49,6 +50,7 @@ public class Bomberman extends BasicGame{
         private SpriteSheet sprites;
         private Image character;
         private float tile;
+        private Player player;
          
         // TODO code application logic here
         public Bomberman(String gamename)
@@ -64,12 +66,13 @@ public class Bomberman extends BasicGame{
             x = 1;
             y = 1;
             tile = 48f;
-            mouseBall = new Circle(72,72,20);
+            //mouseBall = new Circle(72,72,20);
             bombs = new ArrayList<>();
             boxes = new ArrayList<>();
             map = playground.getMap();
             sprites = new SpriteSheet("res" + File.separator + "sprites3xt.png", 48, 48);
-            character = sprites.getSprite(2, 16);
+            //character = sprites.getSprite(2, 16);
+            player = new Player(sprites, 48f, 48f);
             createBoxes();
           
         }
@@ -85,48 +88,52 @@ public class Bomberman extends BasicGame{
             float sensitivity = 1f;
 
             if(gc.getInput().isKeyPressed(Input.KEY_LEFT)){
-                posX = Math.round(mouseBall.getX()) / 48;
-                posY = Math.round(mouseBall.getY()) / 48;
+                posX = Math.round(player.getX()) / 48;
+                posY = Math.round(player.getY()) / 48;
                 System.out.println("x: " + posX + " y: " + posY);
 
                 if(map.getTileId(posX - 1, posY, objectLayer)==0){
-                    mouseBall.setCenterX(mouseBall.getCenterX() - sensitivity * 48);
+                    //player.setX(player.getX() - sensitivity * 48);
+                    player.moveLeft();
                 }
             }
 
             if(gc.getInput().isKeyPressed(Input.KEY_RIGHT)){
-                posX = Math.round(mouseBall.getX()) / 48;
-                posY = Math.round(mouseBall.getY()) / 48;
+                posX = Math.round(player.getX()) / 48;
+                posY = Math.round(player.getY()) / 48;
                 System.out.println("x: " + posX + " y: " + posY);
 
                 if(map.getTileId(posX + 1, posY, objectLayer)==0){
-                    mouseBall.setCenterX(mouseBall.getCenterX() + sensitivity * 48);
-                    Timer t = new Timer();
+                    //player.setX(player.getX() + sensitivity * 48);
+                    player.moveRight();
                 }
             }
 
             if(gc.getInput().isKeyPressed(Input.KEY_UP)){
-                posX = Math.round(mouseBall.getX()) / 48;
-                posY = Math.round(mouseBall.getY()) / 48;
+                posX = Math.round(player.getX()) / 48;
+                posY = Math.round(player.getY()) / 48;
                 System.out.println("x: " + posX + " y: " + posY);
 
                 if(map.getTileId(posX, posY - 1, objectLayer)==0){
-                    mouseBall.setCenterY(mouseBall.getCenterY() - sensitivity * 48);
+                   // player.setY(player.getY() - sensitivity * 48);
+                    player.moveUp();
                 }
             }
 
             if(gc.getInput().isKeyPressed(Input.KEY_DOWN)){
-                posX = Math.round(mouseBall.getX()) / 48;
-                posY = Math.round(mouseBall.getY()) / 48;
+                posX = Math.round(player.getX()) / 48;
+                posY = Math.round(player.getY()) / 48;
                 System.out.println("x: " + posX + " y: " + posY);   
 
                 if(map.getTileId(posX, posY + 1, objectLayer)==0){
-                    mouseBall.setCenterY(mouseBall.getCenterY() + sensitivity * 48);
+                    //player.setY(player.getY() + sensitivity * 48);
+                    player.moveDown();
                 }
+                
             }
 
             if(gc.getInput().isKeyPressed(Input.KEY_SPACE)){
-                Bomb b = new Bomb(sprites, mouseBall.getX(), mouseBall.getY());
+                Bomb b = new Bomb(sprites, player.getX(), player.getY());
                 bombs.add(b);
             }
         }
@@ -150,14 +157,14 @@ public class Bomberman extends BasicGame{
             g.setColor(Color.green);
             g.fillRect(850.0f, 30.0f, 250f * healthScale2, 20.0f);
 
-            g.setColor(Color.blue);
-            g.fill(mouseBall);    
-            
-            g.drawImage(character, 48, 48);
-        
-            for(Bomb bomb:bombs){
+//            g.setColor(Color.blue);
+//            g.fill(mouseBall);    
+        for(Bomb bomb:bombs){
                 g.drawImage(bomb.getSprite(), bomb.getX(), bomb.getY());
         }
+           g.drawImage(player.getSprite(), player.getX(), player.getY());
+        
+
             for(Box box: boxes)
             {
                 g.drawImage(box.getSprite(), box.getX(), box.getY());
@@ -179,6 +186,7 @@ public class Bomberman extends BasicGame{
 			AppGameContainer appgc;
 			appgc = new AppGameContainer(new Bomberman("Bomberman"));
 			appgc.setDisplayMode(720, 720, false);
+                        appgc.setVSync(true);
 			appgc.start();
 		}
 		catch (SlickException ex)
@@ -189,21 +197,14 @@ public class Bomberman extends BasicGame{
         
         public void createBoxes()
         {
-            Box b = new Box(sprites, 3*tile,2*tile);
-            Box b1 = new Box(sprites, 3*tile,2*tile);
-            Box b2 = new Box(sprites, 3*tile,2*tile);
-            Box b3 = new Box(sprites, 3*tile,2*tile);
-            Box b4 = new Box(sprites, 3*tile,2*tile);
-            Box b5 = new Box(sprites, 3*tile,2*tile);
-            Box b6 = new Box(sprites, 3*tile,2*tile);
-            Box b7 = new Box(sprites, 3*tile,2*tile);
-            Box b8 = new Box(sprites, 3*tile,2*tile);
-            Box b9 = new Box(sprites, 3*tile,2*tile);
-            Box b10 = new Box(sprites, 3*tile,2*tile);
-            Box b11 = new Box(sprites, 3*tile,2*tile);
-            Box b12 = new Box(sprites, 3*tile,2*tile);
-            Box b13 = new Box(sprites, 3*tile,2*tile);
-            Box b14 = new Box(sprites, 3*tile,2*tile);            
-            boxes.add(b14);
+            float boxX;
+            float boxY;
+            for(int i = 0;i<map.getObjectCount(0);i++)
+            {
+                boxX = map.getObjectX(0, i);
+                boxY = map.getObjectY(0, i); 
+                Box b = new Box(sprites, boxX, boxY);
+                boxes.add(b);
+            }
         }
     }
