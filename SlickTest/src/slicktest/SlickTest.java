@@ -5,7 +5,9 @@
  */
 package slicktest;
 
+import java.io.File;
 import java.util.ArrayList;
+import java.util.Timer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.newdawn.slick.geom.Circle;
@@ -17,6 +19,7 @@ import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
+import org.newdawn.slick.tiled.TiledMap;
 
 /**
  *
@@ -26,6 +29,9 @@ public class SlickTest extends BasicGame{
 
     private Circle mouseBall;
     private ArrayList<Circle> bombs;
+    private TiledMap map;
+    private int x;
+    private int y;
     
     public SlickTest(String gameName) {
         super(gameName);
@@ -39,7 +45,7 @@ public class SlickTest extends BasicGame{
         try {
             AppGameContainer appgc;
             appgc = new AppGameContainer(new SlickTest("SlickTest"));
-            appgc.setDisplayMode(640, 480, false);
+            appgc.setDisplayMode(480, 480, false);
             appgc.start();
         } 
         
@@ -52,35 +58,59 @@ public class SlickTest extends BasicGame{
 
     @Override
     public void init(GameContainer gc) throws SlickException {
-        mouseBall = new Circle(200,200,10);
+        x = 1;
+        y = 1;
+        mouseBall = new Circle(24,24,6);
         bombs = new ArrayList<>();
+        map = new TiledMap("res" + File.separator + "map.tmx");
     }
 
     @Override
     public void update(GameContainer gc, int i) throws SlickException {
-        float sensitivity = 0.5f;
+        int objectLayer = map.getLayerIndex("objects");
+        int posX;
+        int posY;
         
-        if(gc.getInput().isKeyDown(Input.KEY_LEFT)){
-            if(mouseBall.getCenterX() != 0){
-                mouseBall.setCenterX(mouseBall.getCenterX() - sensitivity);
+        float sensitivity = 1f;
+        
+        if(gc.getInput().isKeyPressed(Input.KEY_LEFT)){
+            posX = Math.round(mouseBall.getX()) / 16;
+            posY = Math.round(mouseBall.getY()) / 16;
+            System.out.println("x: " + posX + " y: " + posY);
+            
+            if(map.getTileId(posX - 1, posY, objectLayer)==0){
+                mouseBall.setCenterX(mouseBall.getCenterX() - sensitivity * 16);
             }
         }
         
-        if(gc.getInput().isKeyDown(Input.KEY_RIGHT)){
-            if(mouseBall.getCenterX() != gc.getWidth()){
-                mouseBall.setCenterX(mouseBall.getCenterX() + sensitivity);
+        if(gc.getInput().isKeyPressed(Input.KEY_RIGHT)){
+            posX = Math.round(mouseBall.getX()) / 16;
+            posY = Math.round(mouseBall.getY()) / 16;
+            System.out.println("x: " + posX + " y: " + posY);
+            
+            if(map.getTileId(posX + 1, posY, objectLayer)==0){
+                mouseBall.setCenterX(mouseBall.getCenterX() + sensitivity * 16);
+                Timer t = new Timer();
             }
         }
         
-        if(gc.getInput().isKeyDown(Input.KEY_UP)){
-            if(mouseBall.getCenterY() != 0){
-                mouseBall.setCenterY(mouseBall.getCenterY() - sensitivity);
+        if(gc.getInput().isKeyPressed(Input.KEY_UP)){
+            posX = Math.round(mouseBall.getX()) / 16;
+            posY = Math.round(mouseBall.getY()) / 16;
+            System.out.println("x: " + posX + " y: " + posY);
+            
+            if(map.getTileId(posX, posY - 1, objectLayer)==0){
+                mouseBall.setCenterY(mouseBall.getCenterY() - sensitivity * 16);
             }
         }
         
-        if(gc.getInput().isKeyDown(Input.KEY_DOWN)){
-            if(mouseBall.getCenterY() != gc.getHeight()){
-                mouseBall.setCenterY(mouseBall.getCenterY() + sensitivity);
+        if(gc.getInput().isKeyPressed(Input.KEY_DOWN)){
+            posX = Math.round(mouseBall.getX()) / 16;
+            posY = Math.round(mouseBall.getY()) / 16;
+            System.out.println("x: " + posX + " y: " + posY);   
+            
+            if(map.getTileId(posX, posY + 1, objectLayer)==0){
+                mouseBall.setCenterY(mouseBall.getCenterY() + sensitivity * 16);
             }
         }
         
@@ -88,10 +118,15 @@ public class SlickTest extends BasicGame{
             Circle bomb = new Circle(mouseBall.getCenterX(), mouseBall.getCenterY(), 5);
             bombs.add(bomb);
         }
+        
     }
 
     @Override
     public void render(GameContainer gc, Graphics g) throws SlickException {
+        g.scale(2,2);
+        
+        map.render(0, 0);
+        
         g.setColor(Color.blue);
         g.fill(mouseBall);    
         

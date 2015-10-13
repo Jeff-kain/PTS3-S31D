@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" orientation="orthogonal" renderorder="right-down" width="15" height="15" tilewidth="16" tileheight="16" nextobjectid="1">
+ <tileset firstgid="1" name="bomberman" tilewidth="16" tileheight="16" tilecount="285">
+  <image source="sprites/sprites.png" width="240" height="304"/>
+ </tileset>
+ <layer name="background" width="15" height="15">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAC8tmYGDIJhEfhWJS9Y3qHdVLD72kmnF0gDEAUzus4IQDAAA=
+  </data>
+ </layer>
+ <layer name="objects" width="15" height="15">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAC1vGwMCwjEQsAMUgNjkAWa8ilFaG0qpQWh1Ka0JpbSx6KbHXHko7QmlnKO0Kpd2htCeV7R31LwQMRv8KUGAvJRgAsvUyc4QDAAA=
+  </data>
+ </layer>
+</map>
