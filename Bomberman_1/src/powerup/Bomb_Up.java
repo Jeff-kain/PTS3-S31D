@@ -11,4 +11,49 @@ package powerup;
  */
 public class Bomb_Up extends PowerUp{
     
+    public int x;
+    public int y;
+    public Boolean visible;
+    public String name = "Bomb_Up";
+    
+    public Bomb_Up(String name, int x, int y, Boolean visible)
+    {
+        super(name);
+        this.x = x;
+        this.y = y;
+        this.visible = visible;
+        this.name = name;
+    }
+    
+    public String getName()
+    {
+        return this.name;
+    }
+    
+    public int getX()
+    {
+        return this.x;
+    }
+    
+    public int getY()
+    {
+        return this.y;
+    }
+    
+    public void setPosition(int x, int y)
+    {
+        this.x = x;
+        this.y = y;
+    }
+    
+    public Boolean isVisible()
+    {
+        return visible;
+    }
+    
+    public void setVisible(boolean visible){
+        this.visible = visible;
+    }
+    
+    
 }

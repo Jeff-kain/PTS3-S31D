@@ -4,17 +4,22 @@
  * and open the template in the editor.
  */
 package Game;
-
+import powerup.*;
 /**
  *
  * @author jeffrey
  */
 public class Player {
 
-   private String name;
+    private String name;
     private int Speed;
     private Boolean kick;
     private int Bomb_Count;
+    private int x;
+    private int y;
+    private Boolean visible;
+    
+    private Bomb_Up bomb_Up = new Bomb_Up(name, x, y, visible);
     
     public String getName() {
         return name;
@@ -41,10 +46,16 @@ public class Player {
     }
 
     public void setBomb_Count(int Bomb_Count) {
-        this.Bomb_Count = Bomb_Count;
+        while(Bomb_Count <=3)
+        {
+            if(bomb_Up.isVisible() == true){
+                
+            }
+        }        
+        
     }
     
-
+    
     
     
     
