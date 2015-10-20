@@ -5,6 +5,10 @@
  */
 package Game;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import org.newdawn.slick.SlickException;
+
 /**
  *
  * @author jeffrey
@@ -13,6 +17,15 @@ public class Game {
     
     private String naam;
     private String Beschrijving;
+    private static Playground playground = new Playground(); 
+    
+    public Game() {
+
+    }
+    public Playground playground()
+    {
+        return playground;
+    }
 
     public String getNaam() {
         return naam;

@@ -20,4 +20,6 @@ public interface IGameObject {
     public Float getX();
     
     public Float getY();
+    
+    
 }
