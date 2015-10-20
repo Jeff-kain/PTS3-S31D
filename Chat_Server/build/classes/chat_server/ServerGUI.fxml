@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+
+<AnchorPane xmlns:fx="http://javafx.com/fxml/1" id="AnchorPane" prefHeight="400.0" prefWidth="407.0" xmlns="http://javafx.com/javafx/8" fx:controller="chat_server.ServerFXController">
+   <children>
+      <Button layoutX="14.0" layoutY="361.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="87.0" text="Start" fx:id="btnStart" onAction="#btStart"  />
+      <Button layoutX="108.0" layoutY="361.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="87.0" text="End" fx:id="btnEnd" onAction="#btEnd" />
+      <Button layoutX="205.0" layoutY="361.0" mnemonicParsing="false" text=" Online Users" fx:id="btnOnline" onAction="#btOnline"/>
+      <Button layoutX="300.0" layoutY="361.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="87.0" text="Clear" fx:id="btnClear" onAction="#btClear" />
+      <TextArea layoutX="14.0" layoutY="14.0" prefHeight="327.0" prefWidth="381.0" fx:id="taChat"/>
+   </children>
+</AnchorPane>
