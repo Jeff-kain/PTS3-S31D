@@ -1,17 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <map version="1.0" orientation="orthogonal" renderorder="right-down" width="15" height="15" tilewidth="48" tileheight="48" nextobjectid="197">
  <tileset firstgid="1" name="sprites3x" tilewidth="48" tileheight="48" tilecount="285">
-  <image source="sprites3x.png" trans="ff00ff" width="720" height="912"/>
- </tileset>
- <tileset firstgid="286" name="sprites3x" tilewidth="48" tileheight="48" tilecount="285">
-  <image source="../../../PTS3/Bomberman_1/res/sprites3x.png" trans="ff00ff" width="720" height="912"/>
+  <image source="sprites3x.jpg" trans="ff00ff" width="720" height="912"/>
  </tileset>
  <layer name="background" width="15" height="15">
   <data encoding="base64" compression="gzip">
    H4sIAAAAAAAACzvGwMBwjMr4KA3MHMWjeLhiABYKfduEAwAA
   </data>
  </layer>
- <objectgroup name="Boxes" width="48" height="48">
+ <objectgroup name="Boxes">
   <object id="110" type="Box" x="240" y="144" width="48" height="48"/>
   <object id="111" type="Box" x="288" y="144" width="48" height="48"/>
   <object id="112" type="Box" x="240" y="240" width="48" height="48"/>

@@ -5,6 +5,7 @@
  */
 package Game;
 
+import java.io.File;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.newdawn.slick.Image;
@@ -22,13 +23,14 @@ public class Player implements IGameObject {
     private String name;
     private float speed;
     private Boolean kick;
-    private int Bomb_Count;
+    private int bombCount;
     private SpriteSheet sprites;
     private Float x;
     private Float y;
     private Boolean visible;
     private Bomb_Up bomb_Up;
     private Game game = new Game();
+    private TeamColor teamColor;
     
     public Player(SpriteSheet sprites, Float x, Float y) {
         this.sprites = sprites;
@@ -37,6 +39,7 @@ public class Player implements IGameObject {
         this.speed = 48f;
         bomb_Up = new Bomb_Up(name, x, y, visible);
         this.sprite = this.sprites.getSubImage(2, 16);
+        this.name = name;
     }
     
         public enum Direction{
@@ -90,10 +93,29 @@ public class Player implements IGameObject {
         this.kick = kick;
     }
 
-    public int getBomb_Count() {
-        return Bomb_Count;
+    public int getBombCount() {
+        return bombCount;
     }
 
+    public void setBombCount(int bombCount) {
+        this.bombCount = bombCount;
+    }
+    
+    public void setPosition(Float x, Float y) {
+        this.x = x;
+        this.y = y;
+    }
+    
+    public void setTeamColor(TeamColor teamColor) {
+        this.teamColor = teamColor;
+        if(teamColor == TeamColor.Blue) {
+            sprite = sprites.getSubImage(2, 16);
+            System.out.println("Foobar");
+        } else {
+            sprite = sprites.getSubImage(2, 15);
+        }
+    }
+    
     public void setBomb_Count(int Bomb_Count) {
         while (Bomb_Count <= 3) {
             if (bomb_Up.isVisible() == true) {

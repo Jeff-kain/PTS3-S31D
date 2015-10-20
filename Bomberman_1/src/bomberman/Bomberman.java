@@ -5,12 +5,13 @@
  */
 package bomberman;
 
+import Game.Game;
 import Game.Bomb;
 import Game.Box;
-import Game.Game;
 import Game.Player;
 import Game.Playground;
 import Game.Team;
+import Game.TeamColor;
 import java.awt.Rectangle;
 import java.io.File;
 import java.util.ArrayList;
@@ -39,10 +40,12 @@ public class Bomberman extends BasicGame {
     /**
      * @param args the command line arguments
      */
+    private ArrayList<Player> players;
     private Team team1;
     private Team team2;
     private Circle mouseBall;
     private ArrayList<Bomb> bombs;
+    private ArrayList<Box> boxes;
     private TiledMap map;
     private int x;
     private int y;
@@ -54,23 +57,24 @@ public class Bomberman extends BasicGame {
     private Game game;
 
     // TODO code application logic here
-    public Bomberman(String gamename) {
+    public Bomberman(String gamename)
+    {
         super(gamename);
     }
 
     @Override
     public void init(GameContainer gc) throws SlickException {
-        team1 = new Team();
-        team2 = new Team();
         game = new Game();
         playground = game.playground();
+        map = playground.getMap();
+        team1 = new Team(TeamColor.Blue);
+        team2 = new Team(TeamColor.Green);
         x = 1;
         y = 1;
         tile = 48f;
         //mouseBall = new Circle(72,72,20);
         bombs = new ArrayList<>();
-        map = playground.getMap();
-        sprites = new SpriteSheet("res" + File.separator + "sprites3xt.png", 48, 48);
+        sprites = new SpriteSheet("res" + File.separator + "sprites3x.png", 48, 48, Color.decode("#FF00FF"));
         //character = sprites.getSprite(2, 16);
         player = new Player(sprites, 48f, 48f);
         loadMap();
@@ -116,7 +120,7 @@ public class Bomberman extends BasicGame {
 
             if (map.getTileId(posX, posY - 1, objectLayer) == 0) {
                 // player.setY(player.getY() - sensitivity * 48);
-                player.moveUp();
+                player.moveUp();    
             }
         }
 
@@ -140,7 +144,6 @@ public class Bomberman extends BasicGame {
         if (player.intersectWithWall()) {
             player.setPosition(hposx, hposy);
         }
-
     }
 
     @Override
