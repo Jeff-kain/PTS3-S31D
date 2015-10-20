@@ -10,5 +10,5 @@ package Game;
  * @author tverv
  */
 public enum TeamColor {
-    Green, Blue
+    GREEN, BLUE
 }
