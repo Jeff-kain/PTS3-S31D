@@ -118,7 +118,7 @@ public class Bomberman extends BasicGame {
 
             if (map.getTileId(posX, posY - 1, objectLayer) == 0) {
                 // player.setY(player.getY() - sensitivity * 48);
-                player.moveUp();
+                player.moveUp();    
             }
         }
 
