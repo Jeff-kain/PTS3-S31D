@@ -6,9 +6,12 @@
 package Game;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.tiled.TiledMap;
-
 /**
  *
  * @author jeffrey
@@ -16,14 +19,28 @@ import org.newdawn.slick.tiled.TiledMap;
 public class Playground {
     private TiledMap map;
     private final String path = "res" + File.separator + "map3x.tmx";
+    private ArrayList<Box> boxes;
 
-    public Playground() throws SlickException {
-       map = new TiledMap(path);
+
+    public Playground()  {
+        try {
+            map = new TiledMap(path);
+        } catch (SlickException ex) {
+            Logger.getLogger(Playground.class.getName()).log(Level.SEVERE, null, ex);
+        }
+       boxes = new ArrayList<Box>();
     }
     
     public TiledMap getMap() {
         return map;
     }
     
+    public List<Box> getBoxes() {
+        return boxes;
+    }
     
+    public void addBox(Box b)
+    {
+        boxes.add(b);
+    }
 }
