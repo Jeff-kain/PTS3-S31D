@@ -15,12 +15,23 @@ import java.util.ArrayList;
  * @author jeffrey
  */
 public class Team {
-    private Color color;
+    private TeamColor color;
     private float maxHealth =100f;
     private float currentHealth = 80f;
-    private ArrayList<Player> players;
+    private final ArrayList<Player> players;
 
-    public Color getColor() {
+    public Team(TeamColor color) {
+        this.color = color;
+        players = new ArrayList<>();
+    }
+    
+    public void addPlayer(Player player) {
+        System.out.println("Foo");
+        players.add(player);
+        System.out.println("Bar");
+    }
+    
+    public TeamColor getColor() {
         return color;
     }
     
@@ -38,7 +49,7 @@ public class Team {
     {
         if(currentHealth()>0)
         {
-        currentHealth = currentHealth -0.01f;
+            currentHealth = currentHealth -0.01f;
         }
     }
     

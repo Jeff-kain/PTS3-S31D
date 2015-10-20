@@ -7,8 +7,10 @@ package bomberman;
 
 import Game.Bomb;
 import Game.Box;
+import Game.Player;
 import Game.Playground;
 import Game.Team;
+import Game.TeamColor;
 import java.awt.Rectangle;
 import java.io.File;
 import java.util.ArrayList;
@@ -37,6 +39,7 @@ public class Bomberman extends BasicGame{
      * @param args the command line arguments
      */
     
+        private ArrayList<Player> players;
         private Team team1;
         private Team team2;
         private Circle mouseBall;
@@ -58,8 +61,6 @@ public class Bomberman extends BasicGame{
 
 	@Override
 	public void init(GameContainer gc) throws SlickException {
-            team1 = new Team();
-            team2 = new Team();
             playground = new Playground();
             x = 1;
             y = 1;
@@ -69,7 +70,40 @@ public class Bomberman extends BasicGame{
             boxes = new ArrayList<>();
             map = playground.getMap();
             sprites = new SpriteSheet("res" + File.separator + "sprites3xt.png", 48, 48);
-            character = sprites.getSprite(2, 16);
+            team1 = new Team(TeamColor.Blue);
+            team2 = new Team(TeamColor.Green);
+            
+            players = new ArrayList<>();
+            players.add(new Player(sprites, "Player1"));
+            players.add(new Player(sprites, "Player2"));
+            players.add(new Player(sprites, "Player3"));
+            players.add(new Player(sprites, "Player4"));
+            
+            for(int i = 0; i < players.size(); i++) {
+                Player p = players.get(i);
+                System.out.println(p.getName());
+                switch (i) {
+                    case 0:
+                        p.setPosition(48f, 48f);
+                        team1.addPlayer(p);
+                        p.setTeamColor(team1.getColor());
+                    case 1:
+                        p.setPosition(96f, 96f);
+                        team1.addPlayer(p);
+                        p.setTeamColor(team1.getColor());
+                    case 2:
+                        p.setPosition(140f, 140f);
+                        team2.addPlayer(p);
+                        p.setTeamColor(team2.getColor());
+                    case 3:
+                        p.setPosition(188f, 188f);
+                        team2.addPlayer(p);
+                        p.setTeamColor(team2.getColor());
+                }
+                
+                
+            }
+            
             createBoxes();
           
         }
@@ -153,7 +187,9 @@ public class Bomberman extends BasicGame{
             g.setColor(Color.blue);
             g.fill(mouseBall);    
             
-            g.drawImage(character, 48, 48);
+            for(Player player: players) {
+                g.drawImage(player.getSprite(), player.getX(), player.getY());
+            }
         
             for(Bomb bomb:bombs){
                 g.drawImage(bomb.getSprite(), bomb.getX(), bomb.getY());
