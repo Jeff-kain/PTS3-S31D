@@ -37,6 +37,7 @@ public class ServerFXController implements Initializable {
     ArrayList<String> users;  
     
     BufferedReader reader;
+    boolean isStopped;
     Socket sock;
     PrintWriter client;
     
@@ -44,15 +45,21 @@ public class ServerFXController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         initComponents();
+        isStopped = true;
     }
     
     public void initComponents(){taChat.setEditable(false);}
     
+    public void Display(String Input) {
+        taChat.appendText(Input);
+    }
+    
     public void btStart (Event evt) {
         try {
+            isStopped = false;
             Thread starter = new Thread(new ServerStart());
             starter.start();
-            taChat.appendText("Server started...\n");
+            Display("Server started...\n");
         } catch(Exception e) {
             System.out.println(e.getMessage());
         }
@@ -61,16 +68,18 @@ public class ServerFXController implements Initializable {
     public void btEnd (Event evt) {
         
     tellEveryone("Server:is stopping and all users will be disconnected.\n:Chat");
-    taChat.appendText("Server stopping... \n");
-    taChat.appendText("");
+    Display("Server stopping... \n");
+    Display("");
+    isStopped = true;
+    
     }          
     
     public void btOnline (Event evt) {
-        taChat.appendText("\n Online users : \n");
+        Display("\n Online users : \n");
         for (String current_user : users)
         {
-            taChat.appendText(current_user);
-            taChat.appendText("\n");
+            Display(current_user);
+            Display("\n");
         }   
     }
 
@@ -81,30 +90,37 @@ public class ServerFXController implements Initializable {
     public class ServerStart implements Runnable 
     {
         @Override
-        public void run() 
+        public synchronized void run() 
         {
             clientOutputStreams = new ArrayList();
             users = new ArrayList();
-            //InetAddress addr;
+            InetAddress addr;
 
             try {
-                //addr = InetAddress.getByName("192.168.179.1");
                 //System.out.println(addr.toString());
+                //145.93.73.45
                 ServerSocket serverSock = new ServerSocket(2222);
                 
-                while (true) {
+                while (!isStopped) {
                     Socket clientSock = serverSock.accept();
                     PrintWriter writer = new PrintWriter(clientSock.getOutputStream());
                     clientOutputStreams.add(writer);
 
                     Thread listener = new Thread(new ClientHandler(clientSock, writer));
                     listener.start();
-                    taChat.appendText("Got a connection. \n");
+                    Display("Got a connection. \n");
+                }
+                
+                try {
+                    sock.close();
+
+                }
+                catch(IOException e) {
+                    
                 }
             }
             catch (IOException e) {
-                System.out.println(e.getMessage());
-                taChat.appendText("Error making a connection. \n");
+                Display("Error making a connection. \n");
             }
         }
     }
@@ -112,9 +128,9 @@ public class ServerFXController implements Initializable {
     public void userAdd (String data) 
     {
         String message, add = ": :Connect", done = "Server: :Done", name = data;
-        taChat.appendText("Before " + name + " added. \n");
+        Display("Before " + name + " added. \n");
         users.add(name);
-        taChat.appendText("After " + name + " added. \n");
+        Display("After " + name + " added. \n");
         String[] tempList = new String[(users.size())];
         users.toArray(tempList);
 
@@ -151,13 +167,13 @@ public class ServerFXController implements Initializable {
             try {
                 PrintWriter writer = (PrintWriter) it.next();
 		writer.println(message);
-		taChat.appendText("Sending: " + message + "\n");
+		Display("Sending: " + message + "\n");
                 writer.flush();
 
             } 
             catch (Exception e) {
                 System.out.println(e.getMessage());
-		taChat.appendText("Error telling everyone. \n");
+		Display("Error telling everyone. \n");
             }
         } 
     }  
@@ -174,8 +190,7 @@ public class ServerFXController implements Initializable {
                 reader = new BufferedReader(isReader);
             }
             catch (Exception e) {
-                System.out.println(e.getMessage());
-                taChat.appendText("Unexpected error... \n");
+                Display("Unexpected error... \n");
             }
        }
 
@@ -188,12 +203,12 @@ public class ServerFXController implements Initializable {
             try {
                 while ((message = reader.readLine()) != null) 
                 {
-                    taChat.appendText("Received: " + message + "\n");
+                    Display("Received: " + message + "\n");
                     data = message.split(":");
                     
                     for (String token:data) 
                     {
-                        taChat.appendText(token + "\n");
+                        Display(token + "\n");
                     }
 
                     if (data[2].equals(connect)) 
@@ -208,19 +223,17 @@ public class ServerFXController implements Initializable {
                     } 
                     else if (data[2].equals(chat)) 
                     {
-                        System.out.println(message);
                         tellEveryone(message);
                     } 
                     else 
                     {
-                        taChat.appendText("No Conditions were met. \n");
+                        Display("No Conditions were met. \n");
                     }
                 } 
              } 
              catch (Exception e) 
              {
-                System.out.println(e.getMessage());
-                taChat.appendText("Lost a connection. \n");
+                Display("Lost a connection. \n");
                 clientOutputStreams.remove(client);
              } 
 	} 

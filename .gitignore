@@ -2,7 +2,9 @@
 /Bomberman_1/nbproject/
 /Bomberman_1/build/project.properties
 /Bomberman_1/dist/
+/Bomberman_1/build/
+Bomberman_1/out/
+Bomberman_1/libs/jinput-raw_64.dll
+Bomberman_1/libs/
 Bomberman_1/.idea/
 *.iml
-Bomberman_1/out/
-Bomberman_1/libs/
