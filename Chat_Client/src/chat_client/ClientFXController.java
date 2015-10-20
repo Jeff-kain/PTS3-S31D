@@ -32,6 +32,8 @@ public class ClientFXController implements Initializable {
     @FXML TextField tfUsername,tfSend;
     @FXML Button btnConnect, btnDisconnect, btnSend;
     @FXML TextArea taChat;
+    //145.93.52.224
+    //145.93.73.45
 
     String username, address = "localhost";
     ArrayList<String> users = new ArrayList();
@@ -86,7 +88,7 @@ public class ClientFXController implements Initializable {
 
         try {
             
-            //addr = InetAddress.getByName("192.168.179.1");
+            //addr = InetAddress.getByName("145.93.52.224");
             sock = new Socket(address, port);
             InputStreamReader streamreader = new InputStreamReader(sock.getInputStream());
             reader = new BufferedReader(streamreader);
@@ -174,7 +176,7 @@ public class ClientFXController implements Initializable {
                     taChat.end(); 
                     
                 } else if (data[2].equals(connect)) {
-                    //taChat.setText("");
+
                     userAdd(data[0]);
                     
                 } else if (data[2].equals(disconnect)) {
