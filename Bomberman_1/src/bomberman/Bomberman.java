@@ -18,6 +18,8 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
+import org.newdawn.slick.Animation;
 import org.newdawn.slick.AppGameContainer;
 import org.newdawn.slick.BasicGame;
 import org.newdawn.slick.Color;
@@ -170,7 +172,9 @@ public class Bomberman extends BasicGame {
 //            g.setColor(Color.blue);
 //            g.fill(mouseBall);    
         for (Bomb bomb : bombs) {
-            g.drawImage(bomb.getSprite(), bomb.getX(), bomb.getY());
+            //g.drawImage(bomb.getSprite(), bomb.getX(), bomb.getY());
+            Animation bombAnimation = bomb.getAnimation();
+            bombAnimation.draw(bomb.getX(),bomb.getY());
         }
         g.drawImage(player.getSprite(), player.getX(), player.getY());
 
