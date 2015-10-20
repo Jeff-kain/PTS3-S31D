@@ -21,6 +21,14 @@ public class Bomb implements IGameObject{
     private int explodeTime;
     private Animation explodingBomb;
     private boolean exploded;
+
+    public int getExplodeTime() {
+        return explodeTime;
+    }
+
+    public boolean isExploded() {
+        return exploded;
+    }
     private boolean intersectWithPlayer;
     private final static int STEP = 2;
     private int steps;
@@ -31,6 +39,7 @@ public class Bomb implements IGameObject{
         this.y = y;
         this.explodeTime = 200;
         this.sprite = this.sprites.getSubImage(11, 15);
+        this.exploded = false;
     }
 
     public Animation getAnimation() {
@@ -51,5 +60,14 @@ public class Bomb implements IGameObject{
     
     public Float getY() {
         return y;
+    }
+
+    @Override
+    public void Update() {
+            explodeTime--;
+            if(explodeTime<0)
+            {
+                exploded = true;
+            }
     }
 }

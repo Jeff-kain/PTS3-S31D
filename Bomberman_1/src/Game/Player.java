@@ -5,7 +5,11 @@
  */
 package Game;
 
+import java.io.File;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.newdawn.slick.Image;
+import org.newdawn.slick.SlickException;
 import org.newdawn.slick.SpriteSheet;
 import powerup.Bomb_Up;
 
@@ -37,9 +41,10 @@ public class Player implements IGameObject {
         this.sprite = this.sprites.getSubImage(2, 16);
         this.name = name;
     }
-        
-    public Image getSprite() {
-        return this.sprite;
+
+    @Override
+    public void Update() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     public void reloadSprite(Direction direction) {
@@ -66,6 +71,10 @@ public class Player implements IGameObject {
                 this.sprite = this.sprite.getFlippedCopy(true,false);
                 break;
         }
+    }
+        
+    public Image getSprite() {
+        return sprite;
     }
 
     public Float getX() {
@@ -159,6 +168,7 @@ public class Player implements IGameObject {
         }
         return false;
     }
+    
 
     public void setPosition(float x, float y) {
         this.x = x;

@@ -49,4 +49,9 @@ public class Box implements IGameObject {
         Rectangle2D objekt = new Rectangle2D.Float(this.getX(), this.getY(), 48f, 48f);
         return objekt.intersects(predmet);
     }
+
+    @Override
+    public void Update() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
 }

@@ -58,8 +58,7 @@ public class Bomberman extends BasicGame {
     private Game game;
 
     // TODO code application logic here
-    public Bomberman(String gamename)
-    {
+    public Bomberman(String gamename) {
         super(gamename);
     }
 
@@ -146,7 +145,16 @@ public class Bomberman extends BasicGame {
             Bomb b = new Bomb(sprites, player.getX(), player.getY());
             bombs.add(b);
         }
-
+        
+        if (bombs != null) {
+            for (Bomb b : bombs) {
+                if (b.isExploded()) {
+                    //bombs.remove(b);
+                } else {
+                    b.Update();
+                }
+            }
+        }
         if (player.intersectWithWall()) {
             player.setPosition(hposx, hposy);
         }
