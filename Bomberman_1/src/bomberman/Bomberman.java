@@ -66,13 +66,15 @@ public class Bomberman extends BasicGame {
     public void init(GameContainer gc) throws SlickException {
         game = new Game();
         playground = game.playground();
+        map = playground.getMap();
+        team1 = new Team(TeamColor.Blue);
+        team2 = new Team(TeamColor.Green);
         x = 1;
         y = 1;
         tile = 48f;
         //mouseBall = new Circle(72,72,20);
         bombs = new ArrayList<>();
-        map = playground.getMap();
-        sprites = new SpriteSheet("res" + File.separator + "sprites3xt.png", 48, 48);
+        sprites = new SpriteSheet("res" + File.separator + "sprites3x.png", 48, 48, Color.decode("#FF00FF"));
         //character = sprites.getSprite(2, 16);
         player = new Player(sprites, 48f, 48f);
         loadMap();
