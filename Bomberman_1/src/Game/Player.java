@@ -41,6 +41,11 @@ public class Player implements IGameObject {
         this.sprite = this.sprites.getSubImage(2, 16);
         this.name = name;
     }
+
+    @Override
+    public void Update() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
     
         public enum Direction{
         /**
@@ -156,6 +161,7 @@ public class Player implements IGameObject {
         }
         return false;
     }
+    
 
     public void setPosition(float x, float y) {
         this.x = x;

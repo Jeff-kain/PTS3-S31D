@@ -21,5 +21,7 @@ public interface IGameObject {
     
     public Float getY();
     
+    public void Update();
+    
     
 }
