@@ -16,6 +16,8 @@ import Game.Direction;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -45,7 +47,7 @@ public class Bomberman extends BasicGame {
     private Team team1;
     private Team team2;
     private Circle mouseBall;
-    private ArrayList<Bomb> bombs;
+    private List<Bomb> bombs;
     private ArrayList<Box> boxes;
     private TiledMap map;
     private int x;
@@ -73,7 +75,7 @@ public class Bomberman extends BasicGame {
         y = 1;
         tile = 48f;
         //mouseBall = new Circle(72,72,20);
-        bombs = new ArrayList<>();
+        bombs = new CopyOnWriteArrayList<>();
         sprites = new SpriteSheet("res" + File.separator + "sprites3x.png", 48, 48, Color.decode("#FF00FF"));
         //character = sprites.getSprite(2, 16);
         player = new Player(sprites, 48f, 48f);
@@ -149,7 +151,7 @@ public class Bomberman extends BasicGame {
         if (bombs != null) {
             for (Bomb b : bombs) {
                 if (b.isExploded()) {
-                    //bombs.remove(b);
+                    bombs.remove(b);
                 } else {
                     b.Update();
                 }
