@@ -5,11 +5,7 @@
  */
 package Game;
 
-import java.io.File;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import org.newdawn.slick.Image;
-import org.newdawn.slick.SlickException;
 import org.newdawn.slick.SpriteSheet;
 import powerup.Bomb_Up;
 
@@ -41,28 +37,35 @@ public class Player implements IGameObject {
         this.sprite = this.sprites.getSubImage(2, 16);
         this.name = name;
     }
-    
-        public enum Direction{
-        /**
-         *
-         */
-        NORTH,
-        /**
-         *
-         */
-        WEST,
-        /**
-         *
-         */
-        EAST, 
-        /**
-         *
-         */
-        SOUTH
-    }
         
     public Image getSprite() {
-        return sprite;
+        return this.sprite;
+    }
+
+    public void reloadSprite(Direction direction) {
+        int row = 0;
+
+        if(teamColor == teamColor.BLUE) {
+            row = 16;
+        } else {
+            row = 14;
+        }
+
+        switch (direction.name()) {
+            case "NORTH":
+                this.sprite = this.sprites.getSubImage(8,row);
+                break;
+            case "EAST":
+                this.sprite = this.sprites.getSubImage(6,row);
+                break;
+            case "SOUTH":
+                this.sprite = this.sprites.getSubImage(2,row);
+                break;
+            case "WEST":
+                this.sprite = this.sprites.getSubImage(6,row);
+                this.sprite = this.sprite.getFlippedCopy(true,false);
+                break;
+        }
     }
 
     public Float getX() {
@@ -108,7 +111,7 @@ public class Player implements IGameObject {
     
     public void setTeamColor(TeamColor teamColor) {
         this.teamColor = teamColor;
-        if(teamColor == TeamColor.Blue) {
+        if(teamColor == TeamColor.BLUE) {
             sprite = sprites.getSubImage(2, 16);
             System.out.println("Foobar");
         } else {

@@ -12,10 +12,10 @@ import Game.Player;
 import Game.Playground;
 import Game.Team;
 import Game.TeamColor;
-import java.awt.Rectangle;
+import Game.Direction;
+
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Timer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.newdawn.slick.AppGameContainer;
@@ -27,7 +27,6 @@ import org.newdawn.slick.Image;
 import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.SpriteSheet;
-import org.newdawn.slick.fills.GradientFill;
 import org.newdawn.slick.geom.Circle;
 import org.newdawn.slick.tiled.TiledMap;
 
@@ -67,8 +66,8 @@ public class Bomberman extends BasicGame {
         game = new Game();
         playground = game.playground();
         map = playground.getMap();
-        team1 = new Team(TeamColor.Blue);
-        team2 = new Team(TeamColor.Green);
+        team1 = new Team(TeamColor.BLUE);
+        team2 = new Team(TeamColor.GREEN);
         x = 1;
         y = 1;
         tile = 48f;
@@ -77,6 +76,7 @@ public class Bomberman extends BasicGame {
         sprites = new SpriteSheet("res" + File.separator + "sprites3x.png", 48, 48, Color.decode("#FF00FF"));
         //character = sprites.getSprite(2, 16);
         player = new Player(sprites, 48f, 48f);
+        player.setTeamColor(TeamColor.GREEN);
         loadMap();
     }
 
@@ -92,6 +92,7 @@ public class Bomberman extends BasicGame {
         float sensitivity = 1f;
 
         if (gc.getInput().isKeyPressed(Input.KEY_LEFT)) {
+            player.reloadSprite(Direction.WEST);
             posX = Math.round(player.getX()) / 48;
             posY = Math.round(player.getY()) / 48;
             //System.out.println("x: " + posX + " y: " + posY);
@@ -103,6 +104,7 @@ public class Bomberman extends BasicGame {
         }
 
         if (gc.getInput().isKeyPressed(Input.KEY_RIGHT)) {
+            player.reloadSprite(Direction.EAST);
             posX = Math.round(player.getX()) / 48;
             posY = Math.round(player.getY()) / 48;
             //System.out.println("x: " + posX + " y: " + posY);
@@ -114,17 +116,19 @@ public class Bomberman extends BasicGame {
         }
 
         if (gc.getInput().isKeyPressed(Input.KEY_UP)) {
+            player.reloadSprite(Direction.NORTH);
             posX = Math.round(player.getX()) / 48;
             posY = Math.round(player.getY()) / 48;
             //System.out.println("x: " + posX + " y: " + posY);
 
             if (map.getTileId(posX, posY - 1, objectLayer) == 0) {
                 // player.setY(player.getY() - sensitivity * 48);
-                player.moveUp();    
+                player.moveUp();
             }
         }
 
         if (gc.getInput().isKeyPressed(Input.KEY_DOWN)) {
+            player.reloadSprite(Direction.SOUTH);
             posX = Math.round(player.getX()) / 48;
             posY = Math.round(player.getY()) / 48;
             //System.out.println("x: " + posX + " y: " + posY);
