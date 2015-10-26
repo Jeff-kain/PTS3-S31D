@@ -181,8 +181,7 @@ public class Bomberman extends BasicGame {
 //            g.fill(mouseBall);    
         for (Bomb bomb : bombs) {
             //g.drawImage(bomb.getSprite(), bomb.getX(), bomb.getY());
-            Animation bombAnimation = bomb.getAnimation();
-            bombAnimation.draw(bomb.getX(),bomb.getY());
+            bomb.getAnimation().draw(bomb.getX(),bomb.getY());
         }
         g.drawImage(player.getSprite(), player.getX(), player.getY());
 
