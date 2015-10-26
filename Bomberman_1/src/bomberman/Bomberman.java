@@ -16,6 +16,7 @@ import Game.Direction;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.logging.Level;
@@ -48,6 +49,7 @@ public class Bomberman extends BasicGame {
     private Team team2;
     private Circle mouseBall;
     private List<Bomb> bombs;
+    private HashMap<Bomb,Animation> bombAnimations;
     private ArrayList<Box> boxes;
     private TiledMap map;
     private int x;
@@ -76,6 +78,7 @@ public class Bomberman extends BasicGame {
         tile = 48f;
         //mouseBall = new Circle(72,72,20);
         bombs = new CopyOnWriteArrayList<>();
+        bombAnimations = new HashMap<>();
         sprites = new SpriteSheet("res" + File.separator + "sprites3x.png", 48, 48, Color.decode("#FF00FF"));
         //character = sprites.getSprite(2, 16);
         player = new Player(sprites, 48f, 48f);
@@ -157,6 +160,7 @@ public class Bomberman extends BasicGame {
                 }
             }
         }
+
         if (player.intersectWithWall()) {
             player.setPosition(hposx, hposy);
         }
@@ -183,7 +187,21 @@ public class Bomberman extends BasicGame {
 //            g.fill(mouseBall);    
         for (Bomb bomb : bombs) {
             //g.drawImage(bomb.getSprite(), bomb.getX(), bomb.getY());
-            bomb.getAnimation().draw(bomb.getX(),bomb.getY());
+            Animation animation;
+            if(bombAnimations.get(bomb) == null) {
+                animation = bomb.getAnimation();
+                animation.setLooping(false);
+                animation.setAutoUpdate(true);
+                bombAnimations.put(bomb,animation);
+            } else {
+                animation = bombAnimations.get(bomb);
+            }
+
+            animation.draw(bomb.getX(),bomb.getY());
+        }
+
+        for(Animation animation: bombAnimations.values()) {
+
         }
         g.drawImage(player.getSprite(), player.getX(), player.getY());
 

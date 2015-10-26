@@ -44,7 +44,7 @@ public class Bomb implements IGameObject{
 
     public Animation getAnimation() {
         int[] frames = {4,18,5,18,6,18,7,18,8,18,9,18};
-        int[] durations = {100,100,100,100,100,100};
+        int[] durations = {500,500,500,500,500,500};
         Animation animation = new Animation(sprites,frames,durations);
 
         return animation;
