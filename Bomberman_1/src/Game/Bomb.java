@@ -5,6 +5,8 @@
  */
 package Game;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.newdawn.slick.Animation;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
@@ -24,7 +26,6 @@ public class Bomb implements IGameObject {
     private Animation explodingBomb;
     private boolean exploded;
     private Float range;
-    private Game game = new Game();
 
     public int getExplodeTime() {
         return explodeTime;
@@ -101,11 +102,9 @@ public class Bomb implements IGameObject {
                         Explosion flame = new Explosion(sprites, Direction.EAST);
                         flame.setPosition(oldX + 48 + 48 * r, oldY);
                         game.playground().addToLevel(flame);
+                        checkForBase(this.getX(), this.getY());
                     } else {
-                        Explosion flame = new Explosion(sprites, Direction.EAST);
-                        flame.setPosition(oldX + 48 + 48 * r, oldY);
-                        game.playground().addToLevel(flame);
-                        checkForBox(this.getX(), this.getY());
+                        checkForBox(this.getX(), this.getY(), Direction.EAST);
                         this.x -= (48 + 48 * r);
                         break;
                     }
@@ -119,11 +118,10 @@ public class Bomb implements IGameObject {
                         Explosion flame = new Explosion(sprites, Direction.WEST);
                         flame.setPosition(oldX - 48 - 48 * r, oldY);
                         game.playground().addToLevel(flame);
+                        checkForBase(this.getX(), this.getY());
+
                     } else {
-                        Explosion flame = new Explosion(sprites, Direction.WEST);
-                        flame.setPosition(oldX - 48 - 48 * r, oldY);
-                        game.playground().addToLevel(flame);
-                        checkForBox(this.getX(), this.getY());
+                        checkForBox(this.getX(), this.getY(), Direction.WEST);
                         this.x += (48 + 48 * r);
                         break;
                     }
@@ -137,11 +135,10 @@ public class Bomb implements IGameObject {
                         Explosion flame = new Explosion(sprites, Direction.SOUTH);
                         flame.setPosition(oldX, oldY + 48 + 48 * r);
                         game.playground().addToLevel(flame);
+                        checkForBase(this.getX(), this.getY());
+
                     } else {
-                        Explosion flame = new Explosion(sprites, Direction.SOUTH);
-                        flame.setPosition(oldX, oldY + 48 + 48 * r);
-                        game.playground().addToLevel(flame);
-                        checkForBox(this.getX(), this.getY());
+                        checkForBox(this.getX(), this.getY(), Direction.SOUTH);
                         this.y -= (48 + 48 * r);
                         break;
                     }
@@ -155,11 +152,10 @@ public class Bomb implements IGameObject {
                         Explosion flame = new Explosion(sprites, Direction.NORTH);
                         flame.setPosition(oldX, oldY - 48 - 48 * r);
                         game.playground().addToLevel(flame);
+                        checkForBase(this.getX(), this.getY());
+
                     } else {
-                        Explosion flame = new Explosion(sprites, Direction.NORTH);
-                        flame.setPosition(oldX, oldY - 48 - 48 * r);
-                        game.playground().addToLevel(flame);
-                        checkForBox(this.getX(), this.getY());
+                        checkForBox(this.getX(), this.getY(), Direction.NORTH);
                         this.y += (48 + 48 * r);
                         break;
                     }
@@ -170,11 +166,28 @@ public class Bomb implements IGameObject {
 
     }
 
-    public void checkForBox(float x, float y) {
+    public void checkForBox(float x, float y, Direction d) {
         for (Box o : game.playground().getBoxes()) {
             if (o.getX() == x && o.getY() == y) {
+                Explosion flame = null;
+                try {
+                    flame = new Explosion(sprites, d);
+                } catch (SlickException ex) {
+                    Logger.getLogger(Bomb.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                flame.setPosition(o.getX(), o.getY());
+                game.playground().addToLevel(flame);
                 game.playground().RemoveBox(o);
             }
+        }
+    }
+
+    public void checkForBase(float x, float y) {
+        if (game.getTeam1().getX() == x && game.getTeam1().getY() == y) {
+            game.getTeam1().damage();
+        }
+        if (game.getTeam2().getX() == x && game.getTeam2().getY() == y) {
+            game.getTeam2().damage();
         }
     }
 

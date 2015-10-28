@@ -45,8 +45,6 @@ public class Bomberman extends BasicGame {
      * @param args the command line arguments
      */
     private ArrayList<Player> players;
-    private Team team1;
-    private Team team2;
     private Circle mouseBall;
     private List<Bomb> bombs;
     private ArrayList<Box> boxes;
@@ -70,8 +68,6 @@ public class Bomberman extends BasicGame {
         game = new Game();
         playground = game.playground();
         map = playground.getMap();
-        team1 = new Team(TeamColor.BLUE);
-        team2 = new Team(TeamColor.GREEN);
         x = 1;
         y = 1;
         tile = 48f;
@@ -145,10 +141,10 @@ public class Bomberman extends BasicGame {
         }
 
         if (gc.getInput().isKeyPressed(Input.KEY_SPACE)) {
-            Bomb b = new Bomb(sprites, player.getX(), player.getY(),player.getBombRange());
+            Bomb b = new Bomb(sprites, player.getX(), player.getY(), player.getBombRange());
             bombs.add(b);
         }
-        
+
         if (bombs != null) {
             for (Bomb b : bombs) {
                 if (b.isExploded()) {
@@ -158,8 +154,7 @@ public class Bomberman extends BasicGame {
                 }
             }
         }
-        for(IGameObject o : game.playground().getMapobjects())
-        {
+        for (IGameObject o : game.playground().getMapobjects()) {
             o.Update();
         }
         if (player.intersectWithWall()) {
@@ -171,36 +166,40 @@ public class Bomberman extends BasicGame {
     public void render(GameContainer gc, Graphics g) throws SlickException {
         map.render(0, 0);
 
-        float healthScale = team1.currentHealth() / team1.maxHealth();
-        float healthScale2 = team2.currentHealth() / team2.maxHealth();
+        if (game.getTeam1() != null && game.getTeam2() != null) {
+            float healthScale = game.getTeam1().currentHealth() / game.getTeam1().maxHealth();
+            float healthScale2 = game.getTeam2().currentHealth() / game.getTeam2().maxHealth();
 
-        g.setColor(Color.white);
-        g.drawString("Team 1 HP: ", 10.0f, 30.0f);
-        g.setColor(Color.green);
-        g.fillRect(100.0f, 30.0f, 250f * healthScale, 20.0f);
+            g.setColor(Color.white);
+            g.drawString("Team 1 HP: ", 10.0f, 30.0f);
+            g.setColor(Color.green);
+            g.fillRect(100.0f, 30.0f, 250f * healthScale, 20.0f);
 
-        g.setColor(Color.white);
-        g.drawString("Team 2 HP: ", 760.0f, 30.0f);
-        g.setColor(Color.green);
-        g.fillRect(850.0f, 30.0f, 250f * healthScale2, 20.0f);
+            g.setColor(Color.white);
+            g.drawString("Team 2 HP: ", 760.0f, 30.0f);
+            g.setColor(Color.green);
+            g.fillRect(850.0f, 30.0f, 250f * healthScale2, 20.0f);
 
+            g.drawImage(game.getTeam1().getSprite(), game.getTeam1().getX(), game.getTeam1().getY());
+            g.drawImage(game.getTeam2().getSprite(), game.getTeam2().getX(), game.getTeam2().getY());
+        }
 //            g.setColor(Color.blue);
 //            g.fill(mouseBall);    
         for (Bomb bomb : bombs) {
             //g.drawImage(bomb.getSprite(), bomb.getX(), bomb.getY());
             Animation bombAnimation = bomb.getAnimation();
-            bombAnimation.draw(bomb.getX(),bomb.getY());
+            bombAnimation.draw(bomb.getX(), bomb.getY());
         }
         g.drawImage(player.getSprite(), player.getX(), player.getY());
 
         for (Box box : playground.getBoxes()) {
             g.drawImage(box.getSprite(), box.getX(), box.getY());
         }
-        
-        for(IGameObject o: game.playground().getMapobjects())
-        {
-            g.drawImage(o.getSprite(),o.getX(),o.getY());
+
+        for (IGameObject o : game.playground().getMapobjects()) {
+            g.drawImage(o.getSprite(), o.getX(), o.getY());
         }
+
         //g.drawString("Howdy!", 100, 100);
         //        g.setColor(Color.green);
         //        g.fillRect(20.0f, 10.0f, 300.0f, 20.0f);
@@ -223,17 +222,27 @@ public class Bomberman extends BasicGame {
 
     public void loadMap() {
         int objectCount = map.getObjectCount(0);
+        float X;
+        float Y;
         for (int i = 0; i < objectCount; i++) {
             switch (map.getObjectType(0, i)) {
                 case "Box":
-                    float boxX;
-                    float boxY;
-                    boxX = map.getObjectX(0, i);
-                    boxY = map.getObjectY(0, i);
-                    Box b = new Box(sprites, (float) boxX, (float) boxY);
+                    X = map.getObjectX(0, i);
+                    Y = map.getObjectY(0, i);
+                    Box b = new Box(sprites, (float) X, (float) Y);
                     playground.addBox(b);
                     break;
                 case "Player":
+                    break;
+                case "Base1":
+                    X = map.getObjectX(0, i);
+                    Y = map.getObjectY(0, i);
+                    game.setTeam1(sprites, TeamColor.BLUE, (float) X, (float) Y);
+                    break;
+                case "Base2":
+                    X = map.getObjectX(0, i);
+                    Y = map.getObjectY(0, i);
+                    game.setTeam2(sprites, TeamColor.GREEN, (float) X, (float) Y);
                     break;
             }
         }
