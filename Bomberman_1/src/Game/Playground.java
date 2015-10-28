@@ -8,39 +8,63 @@ package Game;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.tiled.TiledMap;
+
 /**
  *
  * @author jeffrey
  */
 public class Playground {
+
     private TiledMap map;
     private final String path = "res" + File.separator + "map.tmx";
-    private ArrayList<Box> boxes;
+    private List<Box> boxes;
+    private List<IGameObject> mapobjects;
 
-
-    public Playground()  {
+    public Playground() {
         try {
             map = new TiledMap(path);
         } catch (SlickException ex) {
             Logger.getLogger(Playground.class.getName()).log(Level.SEVERE, null, ex);
         }
-       boxes = new ArrayList<Box>();
+        boxes = new CopyOnWriteArrayList<Box>();
+        mapobjects = new CopyOnWriteArrayList<IGameObject>();
     }
-    
+
+    public List<IGameObject> getMapobjects() {
+        return mapobjects;
+    }
+
+    public void addToLevel(IGameObject o) {
+        mapobjects.add(o);
+    }
+
+    /**
+     * removes object from level
+     *
+     * @param o specific instance of object
+     */
+    public void removeFromLevel(IGameObject o) {
+        mapobjects.remove(o);
+    }
+
     public TiledMap getMap() {
         return map;
     }
-    
+
     public List<Box> getBoxes() {
         return boxes;
     }
-    
-    public void addBox(Box b)
-    {
+
+    public void addBox(Box b) {
         boxes.add(b);
+    }
+
+    public void RemoveBox(Box b) {
+        boxes.remove(b);
     }
 }

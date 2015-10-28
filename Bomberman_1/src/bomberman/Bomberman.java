@@ -13,6 +13,7 @@ import Game.Playground;
 import Game.Team;
 import Game.TeamColor;
 import Game.Direction;
+import Game.IGameObject;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -144,7 +145,7 @@ public class Bomberman extends BasicGame {
         }
 
         if (gc.getInput().isKeyPressed(Input.KEY_SPACE)) {
-            Bomb b = new Bomb(sprites, player.getX(), player.getY());
+            Bomb b = new Bomb(sprites, player.getX(), player.getY(),player.getBombRange());
             bombs.add(b);
         }
         
@@ -156,6 +157,10 @@ public class Bomberman extends BasicGame {
                     b.Update();
                 }
             }
+        }
+        for(IGameObject o : game.playground().getMapobjects())
+        {
+            o.Update();
         }
         if (player.intersectWithWall()) {
             player.setPosition(hposx, hposy);
@@ -190,6 +195,11 @@ public class Bomberman extends BasicGame {
 
         for (Box box : playground.getBoxes()) {
             g.drawImage(box.getSprite(), box.getX(), box.getY());
+        }
+        
+        for(IGameObject o: game.playground().getMapobjects())
+        {
+            g.drawImage(o.getSprite(),o.getX(),o.getY());
         }
         //g.drawString("Howdy!", 100, 100);
         //        g.setColor(Color.green);

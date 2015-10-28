@@ -44,7 +44,7 @@ public class Box implements IGameObject {
         return y;
     }
 
-    public boolean intersects(Player actor) {
+    public boolean intersects(IGameObject actor) {
         Rectangle2D predmet = new Rectangle2D.Float(actor.getX(), actor.getY(), 48f, 48f);
         Rectangle2D objekt = new Rectangle2D.Float(this.getX(), this.getY(), 48f, 48f);
         return objekt.intersects(predmet);

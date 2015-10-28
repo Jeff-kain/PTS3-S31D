@@ -27,10 +27,19 @@ public class Player implements IGameObject {
     private SpriteSheet sprites;
     private Float x;
     private Float y;
+    private Float bombRange;
     private Boolean visible;
     private Bomb_Up bomb_Up;
     private Game game = new Game();
     private TeamColor teamColor;
+
+    public Float getBombRange() {
+        return bombRange;
+    }
+
+    public void setBombRange(Float bombRange) {
+        this.bombRange = bombRange;
+    }
     
     public Player(SpriteSheet sprites, Float x, Float y) {
         this.sprites = sprites;
@@ -40,6 +49,7 @@ public class Player implements IGameObject {
         bomb_Up = new Bomb_Up(name, x, y, visible);
         this.sprite = this.sprites.getSubImage(2, 16);
         this.name = name;
+        this.bombRange = 2f;
     }
 
     @Override
