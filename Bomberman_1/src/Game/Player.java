@@ -12,6 +12,7 @@ import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.SpriteSheet;
 import powerup.Bomb_Up;
+import powerup.PowerUp;
 
 /**
  *
@@ -32,6 +33,8 @@ public class Player implements IGameObject {
     private Bomb_Up bomb_Up;
     private Game game = new Game();
     private TeamColor teamColor;
+
+    private Playground playground = new Playground();
 
     public Float getBombRange() {
         return bombRange;
@@ -119,9 +122,6 @@ public class Player implements IGameObject {
         return bombCount;
     }
 
-    public void setBombCount(int bombCount) {
-        this.bombCount = bombCount;
-    }
     
     public void setPosition(Float x, Float y) {
         this.x = x;
@@ -137,14 +137,26 @@ public class Player implements IGameObject {
             sprite = sprites.getSubImage(2, 15);
         }
     }
-    
-    public void setBomb_Count(int Bomb_Count) {
-        while (Bomb_Count <= 3) {
-            if (bomb_Up.isVisible() == true) {
 
+    public boolean upBomb() {
+        if (bombCount <= 3) {
+            if (bomb_Up.isVisible()) {
+                for (PowerUp b : playground.getPowerups()) {
+                    if (b instanceof Bomb_Up) {
+                        if (b.intersects(this)) {
+                            ((Bomb_Up) b).setVisible(false);
+                            return true;
+                        }
+                    }
+                }
             }
-        }
 
+        }
+        return false;
+    }
+
+    public void setBombCount(int bombCount) {
+        this.bombCount ++;
     }
 
     // Movements for player

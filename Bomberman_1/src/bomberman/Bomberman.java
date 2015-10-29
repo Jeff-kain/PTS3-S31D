@@ -160,6 +160,10 @@ public class Bomberman extends BasicGame {
         if (player.intersectWithWall()) {
             player.setPosition(hposx, hposy);
         }
+
+        if (player.upBomb()){
+            player.setBombCount(player.getBombCount() + 1);
+        }
     }
 
     @Override

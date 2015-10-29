@@ -13,6 +13,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.tiled.TiledMap;
+import powerup.PowerUp;
 
 /**
  *
@@ -24,6 +25,7 @@ public class Playground {
     private final String path = "res" + File.separator + "map.tmx";
     private List<Box> boxes;
     private List<IGameObject> mapobjects;
+    private List<PowerUp> powerups;
 
     public Playground() {
         try {
@@ -33,6 +35,7 @@ public class Playground {
         }
         boxes = new CopyOnWriteArrayList<Box>();
         mapobjects = new CopyOnWriteArrayList<IGameObject>();
+        powerups = new CopyOnWriteArrayList<PowerUp>();
     }
 
     public List<IGameObject> getMapobjects() {
@@ -67,4 +70,10 @@ public class Playground {
     public void RemoveBox(Box b) {
         boxes.remove(b);
     }
+
+    public void addPowerup(PowerUp p) { powerups.add(p);}
+
+    public void removePowerup (PowerUp p) { powerups.remove(p);}
+
+    public List<PowerUp> getPowerups(){ return powerups;}
 }
