@@ -5,19 +5,30 @@
  */
 package powerup;
 
+import org.newdawn.slick.Color;
+import org.newdawn.slick.Image;
+import org.newdawn.slick.SlickException;
+import org.newdawn.slick.SpriteSheet;
+
+import java.io.File;
+
 /**
  *
  * @author jeffrey
  */
 public class Explosion_Up extends PowerUp {
 
-    public int x;
-    public int y;
+    public Float x;
+    public Float y;
     public Boolean visible;
     public String name = "Explosion_Up";
+    private Image sprite;
+    private SpriteSheet sprites;
 
-    public Explosion_Up(String name, int x, int y, Boolean visible) {
-        super(name);
+    public Explosion_Up(SpriteSheet sprites, String name, Float x, Float y, Boolean visible) throws SlickException {
+        super(name, x, y);
+        this.sprites = new SpriteSheet("res" + File.separator + "Powerups.png", 48, 48, Color.decode("#FF00FF"));
+        this.sprite = this.sprites.getSubImage(0, 0);
         this.x = x;
         this.y = y;
         this.visible = visible;
@@ -28,9 +39,13 @@ public class Explosion_Up extends PowerUp {
         return this.name;
     }
 
-    public void setPosition(int x, int y) {
+    public void setPosition(Float x, Float y) {
         this.x = x;
         this.y = y;
+    }
+
+    public Image getSprite() {
+        return sprite;
     }
 
     public Boolean isVisible() {

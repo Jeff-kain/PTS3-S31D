@@ -17,10 +17,14 @@ import org.newdawn.slick.Image;
 public class PowerUp implements IGameObject{
 
     private final String powerUp;
+    private Float x;
+    private Float y;
 
-    public PowerUp(String powerup)
+    public PowerUp(String powerup, Float x, Float y)
     {
         this.powerUp = powerup;
+        this.x = x;
+        this.y = y;
     }
 
     public boolean intersects(Player actor) {
@@ -30,22 +34,18 @@ public class PowerUp implements IGameObject{
     }
 
     @Override
-    public Image getSprite() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
+    public Image getSprite() { return null; }
 
-    @Override
-    public Float getX() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
+    public Float getX() { return x; }
 
-    @Override
     public Float getY() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return y;
     }
 
     @Override
     public void Update() {
 
     }
+
+
 }

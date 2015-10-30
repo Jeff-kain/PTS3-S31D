@@ -34,6 +34,7 @@ import org.newdawn.slick.SlickException;
 import org.newdawn.slick.SpriteSheet;
 import org.newdawn.slick.geom.Circle;
 import org.newdawn.slick.tiled.TiledMap;
+import powerup.*;
 
 /**
  *
@@ -75,7 +76,7 @@ public class Bomberman extends BasicGame {
         bombs = new CopyOnWriteArrayList<>();
         sprites = new SpriteSheet("res" + File.separator + "sprites3x.png", 48, 48, Color.decode("#FF00FF"));
         //character = sprites.getSprite(2, 16);
-        player = new Player(sprites, 48f, 48f);
+        player = new Player(sprites, 48f, 48f, 1, 48f, false);
         player.setTeamColor(TeamColor.GREEN);
         loadMap();
     }
@@ -204,6 +205,9 @@ public class Bomberman extends BasicGame {
             g.drawImage(o.getSprite(), o.getX(), o.getY());
         }
 
+        for (PowerUp powerUp : playground.getPowerups()) {
+            g.drawImage(powerUp.getSprite(), powerUp.getX(), powerUp.getY());
+        }
         //g.drawString("Howdy!", 100, 100);
         //        g.setColor(Color.green);
         //        g.fillRect(20.0f, 10.0f, 300.0f, 20.0f);
@@ -224,7 +228,7 @@ public class Bomberman extends BasicGame {
         }
     }
 
-    public void loadMap() {
+    public void loadMap() throws SlickException {
         int objectCount = map.getObjectCount(0);
         float X;
         float Y;
@@ -247,6 +251,35 @@ public class Bomberman extends BasicGame {
                     X = map.getObjectX(0, i);
                     Y = map.getObjectY(0, i);
                     game.setTeam2(sprites, TeamColor.GREEN, (float) X, (float) Y);
+                    break;
+                case "Bomb_Up":
+                    X = map.getObjectX(0, i);
+                    Y = map.getObjectY(0, i);
+                    PowerUp p = new Bomb_Up(sprites, "Bomb_Up", (float) X, (float) Y, false);
+                    playground.addPowerup(p);
+                    break;
+                case "Explosion_Up":
+                    X = map.getObjectX(0, i);
+                    Y = map.getObjectY(0, i);
+                    PowerUp p1 = new Explosion_Up(sprites, "Explosion_Up", (float) X, (float) Y, false);
+                    playground.addPowerup(p1);
+                    break;
+                case "Kick":
+                    X = map.getObjectX(0, i);
+                    Y = map.getObjectY(0, i);
+                    PowerUp p2 = new Kick(sprites, "Kick", (float) X, (float) Y, false);
+                    playground.addPowerup(p2);
+                    break;
+                case "Speed_Up":
+                    X = map.getObjectX(0, i);
+                    Y = map.getObjectY(0, i);
+                    PowerUp p3 = new Speed_Up(sprites, "Speed_Up", (float) X, (float) Y, false);
+                    playground.addPowerup(p3);
+                    break;
+                case "PowerUp":
+                    X = map.getObjectX(0, i);
+                    Y = map.getObjectY(0, i);
+                    PowerUp p4 = new PowerUp("Speed_Up", (float) X, (float) Y);//niks doen
                     break;
             }
         }

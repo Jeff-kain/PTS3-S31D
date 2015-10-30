@@ -44,15 +44,17 @@ public class Player implements IGameObject {
         this.bombRange = bombRange;
     }
     
-    public Player(SpriteSheet sprites, Float x, Float y) {
+    public Player(SpriteSheet sprites, Float x, Float y, int bombCount, float speed, Boolean kick) throws SlickException {
         this.sprites = sprites;
         this.x = x;
         this.y = y;
         this.speed = 48f;
-        bomb_Up = new Bomb_Up(name, x, y, visible);
+        bomb_Up = new Bomb_Up(sprites, name, x, y, false);
         this.sprite = this.sprites.getSubImage(2, 16);
         this.name = name;
         this.bombRange = 2f;
+        this.bombCount = bombCount;
+        this.kick = kick;
     }
 
     @Override
@@ -139,7 +141,7 @@ public class Player implements IGameObject {
     }
 
     public boolean upBomb() {
-        if (bombCount <= 3) {
+        if (bombCount <= 5) {
             if (bomb_Up.isVisible()) {
                 for (PowerUp b : playground.getPowerups()) {
                     if (b instanceof Bomb_Up) {
