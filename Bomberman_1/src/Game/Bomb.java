@@ -67,9 +67,8 @@ public class Bomb implements IGameObject {
         return x;
     }
 
-    public Float getY() {
-        return y;
-    }
+    public Float getY() { return y; }
+
 
     @Override
     public void Update() {

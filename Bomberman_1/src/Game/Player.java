@@ -8,11 +8,15 @@ package Game;
 import java.io.File;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
+import bomberman.Bomberman;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.SpriteSheet;
 import powerup.Bomb_Up;
+import powerup.Explosion_Up;
 import powerup.PowerUp;
+import powerup.Speed_Up;
 
 /**
  *
@@ -51,11 +55,11 @@ public class Player implements IGameObject {
         this.x = x;
         this.y = y;
         this.blockSize = 48f;
-        this.speed = 200f;
+        this.speed = 100f;
         bomb_Up = new Bomb_Up(sprites, name, x, y, false);
         this.sprite = this.sprites.getSubImage(2, 16);
         this.name = name;
-        this.bombRange = 2f;
+        this.bombRange = 0.5f;
         this.bombCount = bombCount;
         this.kick = kick;
         visible = true;
@@ -86,6 +90,38 @@ public class Player implements IGameObject {
 
             }
             this.visible = true;
+        }
+        for (IGameObject o : game.playground().getPowerups()){
+            if (o instanceof  Bomb_Up) {
+                Bomb_Up bu = (Bomb_Up) o;
+
+                if(bu.intersects(this)){
+                    this.visible = false;
+                    if(bombCount <4)
+                    setBombCount(getBombCount() + 1);
+                    game.playground().removePowerup(bu);
+                }
+            }
+            if (o instanceof Explosion_Up) {
+                Explosion_Up eu = (Explosion_Up) o;
+
+                if(eu.intersects(this)){
+                    this.visible = false;
+                    if(getBombRange() <2.5f)
+                        setBombRange(getBombRange() + 0.5f);
+                    game.playground().removePowerup(eu);
+                }
+            }
+            if (o instanceof Speed_Up) {
+                Speed_Up su = (Speed_Up) o;
+
+                if(su.intersects(this)){
+                    this.visible = false;
+                    if(getSpeed() <400f)
+                        setSpeed(getSpeed() + 100f);
+                    game.playground().removePowerup(su);
+                }
+            }
         }
     }
 
