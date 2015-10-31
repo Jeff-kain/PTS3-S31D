@@ -50,6 +50,7 @@ public class Bomberman extends BasicGame {
     private HashMap<Bomb,Animation> bombAnimations;
     private Circle mouseBall;
     private List<Bomb> bombs;
+    private List<Bomb> bombs2;
     private ArrayList<Box> boxes;
     private TiledMap map;
     private int x;
@@ -80,6 +81,7 @@ public class Bomberman extends BasicGame {
         tile = 48f;
         //mouseBall = new Circle(72,72,20);
         bombs = new CopyOnWriteArrayList<>();
+        bombs2 = new CopyOnWriteArrayList<>();
         sprites = new SpriteSheet("res" + File.separator + "sprites3x.png", 48, 48, Color.decode("#FF00FF"));
         //character = sprites.getSprite(2, 16);
         game.setTeam1(sprites, TeamColor.BLUE, 48, 624);
@@ -175,8 +177,14 @@ public class Bomberman extends BasicGame {
             }
 
             if (gc.getInput().isKeyPressed(Input.KEY_ENTER)) {
-                Bomb b = new Bomb(sprites, player.getX(), player.getY(), player.getBombRange());
-                bombs.add(b);
+                if (player.getBombCount() == 1) {
+                    Bomb b = new Bomb(sprites, player.getX(), player.getY(), player.getBombRange());
+                    bombs.add(b);
+                    if(bombs.size() > 1)
+                    {
+                        bombs.remove(1);
+                    }
+                }
             }
 
             if (player.intersectWithWall()) {
@@ -252,8 +260,14 @@ public class Bomberman extends BasicGame {
             }
 
             if (gc.getInput().isKeyPressed(Input.KEY_SPACE)) {
-                Bomb b = new Bomb(sprites, player2.getX(), player2.getY(), player2.getBombRange());
-                bombs.add(b);
+                if (player2.getBombCount() == 1) {
+                    Bomb b = new Bomb(sprites, player2.getX(), player2.getY(), player2.getBombRange());
+                    bombs2.add(b);
+                    if(bombs2.size() > 1)
+                    {
+                        bombs2.remove(1);
+                    }
+                }
             }
 
             if (player2.intersectWithWall()) {
@@ -267,10 +281,21 @@ public class Bomberman extends BasicGame {
 
         player.Update();
         player2.Update();
+
         if (bombs != null) {
             for (Bomb b : bombs) {
                 if (b.isExploded()) {
                     bombs.remove(b);
+                } else {
+                    b.Update();
+                }
+            }
+        }
+
+        if (bombs2 != null) {
+            for (Bomb b : bombs2) {
+                if (b.isExploded()) {
+                    bombs2.remove(b);
                 } else {
                     b.Update();
                 }
@@ -305,6 +330,21 @@ public class Bomberman extends BasicGame {
 //            g.setColor(Color.blue);
 //            g.fill(mouseBall);    
         for (Bomb bomb : bombs) {
+            //g.drawImage(bomb.getSprite(), bomb.getX(), bomb.getY());
+            Animation animation;
+            if(bombAnimations.get(bomb) == null) {
+                animation = bomb.getAnimation();
+                animation.setLooping(false);
+                animation.setAutoUpdate(true);
+                bombAnimations.put(bomb,animation);
+            } else {
+                animation = bombAnimations.get(bomb);
+            }
+
+            animation.draw(bomb.getX(),bomb.getY());
+        }
+
+        for (Bomb bomb : bombs2) {
             //g.drawImage(bomb.getSprite(), bomb.getX(), bomb.getY());
             Animation animation;
             if(bombAnimations.get(bomb) == null) {
