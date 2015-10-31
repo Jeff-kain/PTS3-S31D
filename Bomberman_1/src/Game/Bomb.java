@@ -180,6 +180,30 @@ public class Bomb implements IGameObject {
                 game.playground().RemoveBox(o);
             }
         }
+//        for (Player p : game.getTeam1().getPlayers()) {
+//            if (p.getX() == x && p.getY() == y) {
+//                Explosion flame = null;
+//                try {
+//                    flame = new Explosion(sprites, d);
+//                } catch (SlickException ex) {
+//                    Logger.getLogger(Bomb.class.getName()).log(Level.SEVERE, null, ex);
+//                }
+//                flame.setPosition(p.getX(), p.getY());
+//                game.playground().addToLevel(flame);
+//            }
+//        }
+//        for (Player p : game.getTeam2().getPlayers()) {
+//            if (p.getX() == x && p.getY() == y) {
+//                Explosion flame = null;
+//                try {
+//                    flame = new Explosion(sprites, d);
+//                } catch (SlickException ex) {
+//                    Logger.getLogger(Bomb.class.getName()).log(Level.SEVERE, null, ex);
+//                }
+//                flame.setPosition(p.getX(), p.getY());
+//                game.playground().addToLevel(flame);
+//            }
+//        }
     }
 
     public void checkForBase(float x, float y) {
