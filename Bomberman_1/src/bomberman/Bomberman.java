@@ -60,6 +60,7 @@ public class Bomberman extends BasicGame {
     private float tile;
     private Player player;
     private Game game;
+    private int timeOut;
 
     // TODO code application logic here
     public Bomberman(String gamename) {
@@ -83,11 +84,12 @@ public class Bomberman extends BasicGame {
         //character = sprites.getSprite(2, 16);
         player = new Player(sprites, 48f, 48f);
         player.setTeamColor(TeamColor.GREEN);
+        timeOut = 200;
         loadMap();
     }
 
     @Override
-    public void update(GameContainer gc, int i) throws SlickException {
+    public void update(GameContainer gc, int delta) throws SlickException {
         //team1.damage();
         int objectLayer = map.getLayerIndex("indestructable");
         int posX;
@@ -97,54 +99,68 @@ public class Bomberman extends BasicGame {
 
         float sensitivity = 1f;
 
-        if (gc.getInput().isKeyPressed(Input.KEY_LEFT)) {
-            player.reloadSprite(Direction.WEST);
-            posX = Math.round(player.getX()) / 48;
-            posY = Math.round(player.getY()) / 48;
-            //System.out.println("x: " + posX + " y: " + posY);
+        if(timeOut <= 0) {
+            if (gc.getInput().isKeyDown(Input.KEY_LEFT)) {
+                player.reloadSprite(Direction.WEST);
+                posX = Math.round(player.getX()) / 48;
+                posY = Math.round(player.getY()) / 48;
+                //System.out.println("x: " + posX + " y: " + posY);
 
-            if (map.getTileId(posX - 1, posY, objectLayer) == 0) {
-                //player.setX(player.getX() - sensitivity * 48);
-                player.moveLeft();
-            }
-        }
-
-        if (gc.getInput().isKeyPressed(Input.KEY_RIGHT)) {
-            player.reloadSprite(Direction.EAST);
-            posX = Math.round(player.getX()) / 48;
-            posY = Math.round(player.getY()) / 48;
-            //System.out.println("x: " + posX + " y: " + posY);
-            //System.out.print(hposx);
-            if (map.getTileId(posX + 1, posY, objectLayer) == 0) {
-                //player.setX(player.getX() + sensitivity * 48);
-                player.moveRight();
-            }
-        }
-
-        if (gc.getInput().isKeyPressed(Input.KEY_UP)) {
-            player.reloadSprite(Direction.NORTH);
-            posX = Math.round(player.getX()) / 48;
-            posY = Math.round(player.getY()) / 48;
-            //System.out.println("x: " + posX + " y: " + posY);
-
-            if (map.getTileId(posX, posY - 1, objectLayer) == 0) {
-                // player.setY(player.getY() - sensitivity * 48);
-                player.moveUp();
-            }
-        }
-
-        if (gc.getInput().isKeyPressed(Input.KEY_DOWN)) {
-            player.reloadSprite(Direction.SOUTH);
-            posX = Math.round(player.getX()) / 48;
-            posY = Math.round(player.getY()) / 48;
-            //System.out.println("x: " + posX + " y: " + posY);
-
-            if (map.getTileId(posX, posY + 1, objectLayer) == 0) {
-                //player.setY(player.getY() + sensitivity * 48);
-                player.moveDown();
+                if (map.getTileId(posX - 1, posY, objectLayer) == 0) {
+                    //player.setX(player.getX() - sensitivity * 48);
+                    player.moveLeft();
+                }
+                timeOut = 200;
             }
 
+            if (gc.getInput().isKeyDown(Input.KEY_RIGHT)) {
+                player.reloadSprite(Direction.EAST);
+                posX = Math.round(player.getX()) / 48;
+                posY = Math.round(player.getY()) / 48;
+                //System.out.println("x: " + posX + " y: " + posY);
+                //System.out.print(hposx);
+                if (map.getTileId(posX + 1, posY, objectLayer) == 0) {
+                    //player.setX(player.getX() + sensitivity * 48);
+                    player.moveRight();
+                }
+                timeOut = 200;
+            }
+
+            if (gc.getInput().isKeyDown(Input.KEY_UP)) {
+                player.reloadSprite(Direction.NORTH);
+                posX = Math.round(player.getX()) / 48;
+                posY = Math.round(player.getY()) / 48;
+                //System.out.println("x: " + posX + " y: " + posY);
+
+                if (map.getTileId(posX, posY - 1, objectLayer) == 0) {
+                    // player.setY(player.getY() - sensitivity * 48);
+                    player.moveUp();
+                }
+                timeOut = 200;
+            }
+
+            if (gc.getInput().isKeyDown(Input.KEY_DOWN)) {
+                player.reloadSprite(Direction.SOUTH);
+                posX = Math.round(player.getX()) / 48;
+                posY = Math.round(player.getY()) / 48;
+
+                if (map.getTileId(posX, posY + 1, objectLayer) == 0) {
+                    player.moveDown();
+                }
+                timeOut = 200;
+            }
+
+        } else {
+            System.out.println(timeOut);
+
+            if(timeOut > 0) {
+                timeOut -= delta;
+            } else {
+                timeOut = 0;
+            }
+
         }
+
 
         if (gc.getInput().isKeyPressed(Input.KEY_SPACE)) {
             Bomb b = new Bomb(sprites, player.getX(), player.getY());
