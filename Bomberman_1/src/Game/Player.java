@@ -22,6 +22,7 @@ public class Player implements IGameObject {
 
     private Image sprite;
     private String name;
+    private float blockSize;
     private float speed;
     private Boolean kick;
     private int bombCount;
@@ -49,7 +50,8 @@ public class Player implements IGameObject {
         this.sprites = sprites;
         this.x = x;
         this.y = y;
-        this.speed = 48f;
+        this.blockSize = 48f;
+        this.speed = 200f;
         bomb_Up = new Bomb_Up(sprites, name, x, y, false);
         this.sprite = this.sprites.getSubImage(2, 16);
         this.name = name;
@@ -188,23 +190,23 @@ public class Player implements IGameObject {
     // Movements for player
     public void moveLeft() {
 
-        this.x -= speed;
+        this.x -= blockSize;
 
     }
 
     public void moveRight() {
 
-        this.x += speed;
+        this.x += blockSize;
 
     }
 
     public void moveDown() {
 
-        this.y += speed;
+        this.y += blockSize;
     }
 
     public void moveUp() {
-        this.y -= speed;
+        this.y -= blockSize;
 
     }
 

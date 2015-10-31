@@ -61,7 +61,8 @@ public class Bomberman extends BasicGame {
     private Player player;
     private Player player2;
     private Game game;
-    private int timeOut;
+    private float timeOutP1;
+    private float timeOutP2;
 
     // TODO code application logic here
     public Bomberman(String gamename) {
@@ -89,7 +90,8 @@ public class Bomberman extends BasicGame {
         player2.setTeamColor(TeamColor.GREEN);
         game.getTeam1().addPlayer(player);
         game.getTeam2().addPlayer(player2);
-        timeOut = 200;
+        timeOutP1 = player.getSpeed();
+        timeOutP2 = player2.getSpeed();
         loadMap();
     }
 
@@ -110,7 +112,7 @@ public class Bomberman extends BasicGame {
 
         // Player 1 controls
         if (player.getVisible() == true) {
-            if (timeOut <= 0) {
+            if (timeOutP1 <= 0) {
                 if (gc.getInput().isKeyDown(Input.KEY_LEFT)) {
                     player.reloadSprite(Direction.WEST);
                     posX = Math.round(player.getX()) / 48;
@@ -121,10 +123,10 @@ public class Bomberman extends BasicGame {
                         //player.setX(player.getX() - sensitivity * 48);
                         player.moveLeft();
                     }
-                    timeOut = 200;
+                    timeOutP1 = player.getSpeed();
                 }
 
-                if (gc.getInput().isKeyDown(Input.KEY_RIGHT)) {
+                else if (gc.getInput().isKeyDown(Input.KEY_RIGHT)) {
                     player.reloadSprite(Direction.EAST);
                     posX = Math.round(player.getX()) / 48;
                     posY = Math.round(player.getY()) / 48;
@@ -134,10 +136,10 @@ public class Bomberman extends BasicGame {
                         //player.setX(player.getX() + sensitivity * 48);
                         player.moveRight();
                     }
-                    timeOut = 200;
+                    timeOutP1 = player.getSpeed();
                 }
 
-                if (gc.getInput().isKeyDown(Input.KEY_UP)) {
+                else if (gc.getInput().isKeyDown(Input.KEY_UP)) {
                     player.reloadSprite(Direction.NORTH);
                     posX = Math.round(player.getX()) / 48;
                     posY = Math.round(player.getY()) / 48;
@@ -147,10 +149,10 @@ public class Bomberman extends BasicGame {
                         // player.setY(player.getY() - sensitivity * 48);
                         player.moveUp();
                     }
-                    timeOut = 200;
+                    timeOutP1 = player.getSpeed();
                 }
 
-                if (gc.getInput().isKeyDown(Input.KEY_DOWN)) {
+                else if (gc.getInput().isKeyDown(Input.KEY_DOWN)) {
                     player.reloadSprite(Direction.SOUTH);
                     posX = Math.round(player.getX()) / 48;
                     posY = Math.round(player.getY()) / 48;
@@ -158,16 +160,16 @@ public class Bomberman extends BasicGame {
                     if (map.getTileId(posX, posY + 1, objectLayer) == 0) {
                         player.moveDown();
                     }
-                    timeOut = 200;
+                    timeOutP1 = player.getSpeed();
                 }
 
             } else {
                 //System.out.println(timeOut);
 
-                if (timeOut > 0) {
-                    timeOut -= delta;
+                if (timeOutP1 > 0) {
+                    timeOutP1 -= delta;
                 } else {
-                    timeOut = 0;
+                    timeOutP1 = 0;
                 }
 
             }
@@ -187,7 +189,7 @@ public class Bomberman extends BasicGame {
         }
         //player 2 controls
         if (player2.getVisible() == true) {
-            if (timeOut <= 0) {
+            if (timeOutP2 <= 0) {
                 if (gc.getInput().isKeyDown(Input.KEY_A)) {
                     player2.reloadSprite(Direction.WEST);
                     pos2X = Math.round(player2.getX()) / 48;
@@ -198,10 +200,10 @@ public class Bomberman extends BasicGame {
                         //player.setX(player.getX() - sensitivity * 48);
                         player2.moveLeft();
                     }
-                    timeOut = 200;
+                    timeOutP2 = player2.getSpeed();
                 }
 
-                if (gc.getInput().isKeyDown(Input.KEY_D)) {
+                else if (gc.getInput().isKeyDown(Input.KEY_D)) {
                     player2.reloadSprite(Direction.EAST);
                     pos2X = Math.round(player2.getX()) / 48;
                     pos2Y = Math.round(player2.getY()) / 48;
@@ -211,10 +213,10 @@ public class Bomberman extends BasicGame {
                         //player.setX(player.getX() + sensitivity * 48);
                         player2.moveRight();
                     }
-                    timeOut = 200;
+                    timeOutP2 = player2.getSpeed();
                 }
 
-                if (gc.getInput().isKeyDown(Input.KEY_W)) {
+                else if (gc.getInput().isKeyDown(Input.KEY_W)) {
                     player2.reloadSprite(Direction.NORTH);
                     pos2X = Math.round(player2.getX()) / 48;
                     pos2Y = Math.round(player2.getY()) / 48;
@@ -224,10 +226,10 @@ public class Bomberman extends BasicGame {
                         // player.setY(player.getY() - sensitivity * 48);
                         player2.moveUp();
                     }
-                    timeOut = 200;
+                    timeOutP2 = player2.getSpeed();
                 }
 
-                if (gc.getInput().isKeyDown(Input.KEY_S)) {
+                else if (gc.getInput().isKeyDown(Input.KEY_S)) {
                     player2.reloadSprite(Direction.SOUTH);
                     pos2X = Math.round(player2.getX()) / 48;
                     pos2Y = Math.round(player2.getY()) / 48;
@@ -235,16 +237,16 @@ public class Bomberman extends BasicGame {
                     if (map.getTileId(pos2X, pos2Y + 1, objectLayer) == 0) {
                         player2.moveDown();
                     }
-                    timeOut = 200;
+                    timeOutP2 = player2.getSpeed();
                 }
 
             } else {
                 //System.out.println(timeOut);
 
-                if (timeOut > 0) {
-                    timeOut -= delta;
+                if (timeOutP2 > 0) {
+                    timeOutP2 -= delta;
                 } else {
-                    timeOut = 0;
+                    timeOutP2 = 0;
                 }
 
             }
