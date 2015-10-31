@@ -4,7 +4,7 @@
   <image source="sprites3x.png" trans="ff00ff" width="720" height="912"/>
  </tileset>
  <tileset firstgid="286" name="powerups" tilewidth="48" tileheight="48" tilecount="21">
-  <image source="../../Powerups.png" trans="ff00ff" width="1008" height="48"/>
+  <image source="Powerups.png" trans="ff00ff" width="1008" height="48"/>
  </tileset>
  <objectgroup name="Boxes" width="48" height="48">
   <object id="110" type="Box" x="240" y="144" width="48" height="48"/>
