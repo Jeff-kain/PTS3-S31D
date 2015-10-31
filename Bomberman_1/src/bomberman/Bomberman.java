@@ -17,6 +17,7 @@ import Game.IGameObject;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.logging.Level;
@@ -46,6 +47,7 @@ public class Bomberman extends BasicGame {
      * @param args the command line arguments
      */
     private ArrayList<Player> players;
+    private HashMap<Bomb,Animation> bombAnimations;
     private Circle mouseBall;
     private List<Bomb> bombs;
     private ArrayList<Box> boxes;
@@ -70,6 +72,7 @@ public class Bomberman extends BasicGame {
         game = new Game();
         playground = game.playground();
         map = playground.getMap();
+        bombAnimations = new HashMap<>();
         x = 1;
         y = 1;
         tile = 48f;
@@ -207,8 +210,17 @@ public class Bomberman extends BasicGame {
 //            g.fill(mouseBall);    
         for (Bomb bomb : bombs) {
             //g.drawImage(bomb.getSprite(), bomb.getX(), bomb.getY());
-            Animation bombAnimation = bomb.getAnimation();
-            bombAnimation.draw(bomb.getX(), bomb.getY());
+            Animation animation;
+            if(bombAnimations.get(bomb) == null) {
+                animation = bomb.getAnimation();
+                animation.setLooping(false);
+                animation.setAutoUpdate(true);
+                bombAnimations.put(bomb,animation);
+            } else {
+                animation = bombAnimations.get(bomb);
+            }
+
+            animation.draw(bomb.getX(),bomb.getY());
         }
         g.drawImage(player.getSprite(), player.getX(), player.getY());
 
