@@ -9,20 +9,28 @@ import java.lang.Object;
 import java.awt.Color ;
 import java.awt.List;
 import java.util.ArrayList;
+import org.newdawn.slick.Image;
+import org.newdawn.slick.SpriteSheet;
 
 /**
  *
  * @author jeffrey
  */
-public class Team {
+public class Team implements IGameObject{
     private TeamColor color;
     private float maxHealth =100f;
     private float currentHealth = 80f;
     private final ArrayList<Player> players;
+    private float x;
+    private float y;
+    private Image sprite;
 
-    public Team(TeamColor color) {
+    public Team(SpriteSheet sprites,TeamColor color, float x, float y) {
         this.color = color;
         players = new ArrayList<>();
+        this.x=x;
+        this.y=y;
+        sprite = sprites.getSubImage(3, 13);
     }
     
     public void addPlayer(Player player) {
@@ -49,7 +57,7 @@ public class Team {
     {
         if(currentHealth()>0)
         {
-            currentHealth = currentHealth -0.01f;
+            currentHealth = currentHealth -25f;
         }
     }
     
@@ -63,6 +71,23 @@ public class Team {
             }
         }
         return null;
+    }
+
+    public Image getSprite() {
+        return sprite;
+    }
+
+    public Float getX() {
+        return x;
+    }
+
+    public Float getY() {
+        return y;
+    }
+
+    @Override
+    public void Update() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     
 }

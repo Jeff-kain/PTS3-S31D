@@ -12,6 +12,7 @@ import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.SpriteSheet;
 import powerup.Bomb_Up;
+import powerup.PowerUp;
 
 /**
  *
@@ -27,19 +28,33 @@ public class Player implements IGameObject {
     private SpriteSheet sprites;
     private Float x;
     private Float y;
+    private Float bombRange;
     private Boolean visible;
     private Bomb_Up bomb_Up;
     private Game game = new Game();
     private TeamColor teamColor;
+
+    private Playground playground = new Playground();
+
+    public Float getBombRange() {
+        return bombRange;
+    }
+
+    public void setBombRange(Float bombRange) {
+        this.bombRange = bombRange;
+    }
     
-    public Player(SpriteSheet sprites, Float x, Float y) {
+    public Player(SpriteSheet sprites, Float x, Float y, int bombCount, float speed, Boolean kick) throws SlickException {
         this.sprites = sprites;
         this.x = x;
         this.y = y;
         this.speed = 48f;
-        bomb_Up = new Bomb_Up(name, x, y, visible);
+        bomb_Up = new Bomb_Up(sprites, name, x, y, false);
         this.sprite = this.sprites.getSubImage(2, 16);
         this.name = name;
+        this.bombRange = 2f;
+        this.bombCount = bombCount;
+        this.kick = kick;
     }
 
     @Override
@@ -109,9 +124,6 @@ public class Player implements IGameObject {
         return bombCount;
     }
 
-    public void setBombCount(int bombCount) {
-        this.bombCount = bombCount;
-    }
     
     public void setPosition(Float x, Float y) {
         this.x = x;
@@ -127,14 +139,26 @@ public class Player implements IGameObject {
             sprite = sprites.getSubImage(2, 15);
         }
     }
-    
-    public void setBomb_Count(int Bomb_Count) {
-        while (Bomb_Count <= 3) {
-            if (bomb_Up.isVisible() == true) {
 
+    public boolean upBomb() {
+        if (bombCount <= 5) {
+            if (bomb_Up.isVisible()) {
+                for (PowerUp b : playground.getPowerups()) {
+                    if (b instanceof Bomb_Up) {
+                        if (b.intersects(this)) {
+                            ((Bomb_Up) b).setVisible(false);
+                            return true;
+                        }
+                    }
+                }
             }
-        }
 
+        }
+        return false;
+    }
+
+    public void setBombCount(int bombCount) {
+        this.bombCount ++;
     }
 
     // Movements for player

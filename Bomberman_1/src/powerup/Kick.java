@@ -5,53 +5,54 @@
  */
 package powerup;
 
+import org.newdawn.slick.Color;
+import org.newdawn.slick.Image;
+import org.newdawn.slick.SlickException;
+import org.newdawn.slick.SpriteSheet;
+
+import java.io.File;
+
 /**
  *
  * @author jeffrey
  */
 public class Kick extends PowerUp {
-    
-   public int x;
-    public int y;
+
+    public Float x;
+    public Float y;
     public Boolean visible;
     public String name = "Kick_Up";
-    
-    public Kick(String name, int x, int y, Boolean visible)
-    {
-        super(name);
+    private Image sprite;
+    private SpriteSheet sprites;
+
+    public Kick(SpriteSheet sprites, String name, Float x, Float y, Boolean visible) throws SlickException {
+        super(name, x, y);
+        this.sprites = new SpriteSheet("res" + File.separator + "Powerups.png", 48, 48, Color.decode("#FF00FF"));
+        this.sprite = this.sprites.getSubImage(10, 0);
         this.x = x;
         this.y = y;
         this.visible = visible;
         this.name = name;
     }
-    
-    public String getName()
-    {
+
+    public String getName() {
         return this.name;
     }
-    
-    public int getX()
-    {
-        return this.x;
-    }
-    
-    public int getY()
-    {
-        return this.y;
-    }
-    
-    public void setPosition(int x, int y)
-    {
+
+    public void setPosition(Float x, Float y) {
         this.x = x;
         this.y = y;
     }
-    
-    public Boolean isVisible()
-    {
+
+    public Image getSprite() {
+        return sprite;
+    }
+
+    public Boolean isVisible() {
         return visible;
     }
-    
-    public void setVisible(boolean visible){
+
+    public void setVisible(boolean visible) {
         this.visible = visible;
     }
 }
