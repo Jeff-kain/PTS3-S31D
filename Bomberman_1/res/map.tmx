@@ -62,7 +62,6 @@
   <object id="179" type="Box" x="624" y="240" width="48" height="48"/>
   <object id="180" type="Box" x="480" y="240" width="48" height="48"/>
   <object id="181" type="Box" x="432" y="240" width="48" height="48"/>
-  <object id="182" type="PowerUp" x="384" y="144" width="48" height="48"/>
   <object id="183" type="Box" x="528" y="144" width="48" height="48"/>
   <object id="186" type="Box" x="480" y="144" width="48" height="48"/>
   <object id="187" type="Box" x="432" y="144" width="48" height="48"/>
@@ -86,11 +85,11 @@
   <object id="230" type="PowerUp" x="190" y="147" width="48" height="48" visible="0"/>
   <object id="231" type="Bomb_Up" x="142" y="147" width="48" height="48" visible="0"/>
   <object id="232" type="Speed_Up" x="94" y="147" width="48" height="48" visible="0"/>
-  <object id="233" type="Box" x="46" y="147" width="48" height="48"/>
+  <object id="233" type="Box" x="48" y="144" width="48" height="48"/>
   <object id="234" type="Bomb_Up" x="190" y="243" width="48" height="48" visible="0"/>
   <object id="235" type="Explosion_Up" x="142" y="243" width="48" height="48" visible="0"/>
   <object id="236" type="Speed_Up" x="94" y="243" width="48" height="48" visible="0"/>
-  <object id="237" type="Box" x="46" y="243" width="48" height="48"/>
+  <object id="237" type="Box" x="48" y="240" width="48" height="48"/>
   <object id="238" type="PowerUp" x="94" y="339" width="48" height="48" visible="0"/>
   <object id="239" type="Bomb_Up" x="192" y="339" width="48" height="48" visible="0"/>
   <object id="240" type="PowerUp" x="142" y="339" width="48" height="48" visible="0"/>
@@ -101,7 +100,6 @@
   <object id="245" type="Box" x="46" y="435" width="48" height="48"/>
   <object id="246" type="Speed_Up" x="190" y="531" width="48" height="48" visible="0"/>
   <object id="247" type="PowerUp" x="142" y="531" width="48" height="48" visible="0"/>
-  <object id="248" type="Explosion_Up" x="430" y="6271" width="48" height="48"/>
   <object id="249" type="Kick" x="382" y="627" width="48" height="48" visible="0"/>
   <object id="250" type="PowerUp" x="382" y="531" width="48" height="48"/>
   <object id="251" type="Speed_Up" x="526" y="531" width="48" height="48" visible="0"/>
@@ -127,7 +125,6 @@
   <object id="271" type="PowerUp" x="622" y="243" width="48" height="48" visible="0"/>
   <object id="272" type="Bomb_Up" x="478" y="243" width="48" height="48" visible="0"/>
   <object id="273" type="Speed_Up" x="430" y="243" width="48" height="48" visible="0"/>
-  <object id="274" type="Explosion_Up" x="382" y="147" width="48" height="48" visible="0"/>
   <object id="275" type="PowerUp" x="526" y="147" width="48" height="48" visible="0"/>
   <object id="276" type="Speed_Up" x="478" y="147" width="48" height="48" visible="0"/>
   <object id="277" type="Speed_Up" x="430" y="147" width="48" height="48" visible="0"/>

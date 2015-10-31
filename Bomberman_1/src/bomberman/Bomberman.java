@@ -94,7 +94,7 @@ public class Bomberman extends BasicGame {
 
         float sensitivity = 1f;
 
-        if(timeOut <= 0) {
+        if (timeOut <= 0) {
             if (gc.getInput().isKeyDown(Input.KEY_LEFT)) {
                 player.reloadSprite(Direction.WEST);
                 posX = Math.round(player.getX()) / 48;
@@ -148,14 +148,13 @@ public class Bomberman extends BasicGame {
         } else {
             System.out.println(timeOut);
 
-            if(timeOut > 0) {
+            if (timeOut > 0) {
                 timeOut -= delta;
             } else {
                 timeOut = 0;
             }
 
         }
-
 
         if (gc.getInput().isKeyPressed(Input.KEY_SPACE)) {
             Bomb b = new Bomb(sprites, player.getX(), player.getY(), player.getBombRange());
@@ -178,7 +177,7 @@ public class Bomberman extends BasicGame {
             player.setPosition(hposx, hposy);
         }
 
-        if (player.upBomb()){
+        if (player.upBomb()) {
             player.setBombCount(player.getBombCount() + 1);
         }
     }
@@ -213,6 +212,9 @@ public class Bomberman extends BasicGame {
         }
         g.drawImage(player.getSprite(), player.getX(), player.getY());
 
+        for (PowerUp powerUp : playground.getPowerups()) {
+            g.drawImage(powerUp.getSprite(), powerUp.getX(), powerUp.getY());
+        }
         for (Box box : playground.getBoxes()) {
             g.drawImage(box.getSprite(), box.getX(), box.getY());
         }
@@ -221,9 +223,6 @@ public class Bomberman extends BasicGame {
             g.drawImage(o.getSprite(), o.getX(), o.getY());
         }
 
-        for (PowerUp powerUp : playground.getPowerups()) {
-            g.drawImage(powerUp.getSprite(), powerUp.getX(), powerUp.getY());
-        }
         //g.drawString("Howdy!", 100, 100);
         //        g.setColor(Color.green);
         //        g.fillRect(20.0f, 10.0f, 300.0f, 20.0f);
