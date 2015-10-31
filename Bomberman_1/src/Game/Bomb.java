@@ -26,6 +26,7 @@ public class Bomb implements IGameObject {
     private Animation explodingBomb;
     private boolean exploded;
     private Float range;
+    private final int duration = 550;
 
     public int getExplodeTime() {
         return explodeTime;
@@ -49,8 +50,10 @@ public class Bomb implements IGameObject {
     }
 
     public Animation getAnimation() {
+
+
         int[] frames = {4, 18, 5, 18, 6, 18, 7, 18, 8, 18, 9, 18};
-        int[] durations = {100, 100, 100, 100, 100, 100};
+        int[] durations = {duration, duration, duration, duration, duration, duration};
         Animation animation = new Animation(sprites, frames, durations);
 
         return animation;
