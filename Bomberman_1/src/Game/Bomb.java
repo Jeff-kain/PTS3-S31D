@@ -5,6 +5,7 @@
  */
 package Game;
 
+import java.awt.geom.Rectangle2D;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.newdawn.slick.Animation;
@@ -225,6 +226,12 @@ public class Bomb implements IGameObject {
             }
         }
         return false;
+    }
+    
+        public boolean intersects(IGameObject actor) {
+        Rectangle2D predmet = new Rectangle2D.Float(actor.getX(), actor.getY(), 48f, 48f);
+        Rectangle2D objekt = new Rectangle2D.Float(this.getX(), this.getY(), 48f, 48f);
+        return objekt.intersects(predmet);
     }
 
 }

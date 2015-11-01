@@ -47,7 +47,7 @@ public class Bomberman extends BasicGame {
      * @param args the command line arguments
      */
     private ArrayList<Player> players;
-    private HashMap<Bomb,Animation> bombAnimations;
+    private HashMap<Bomb, Animation> bombAnimations;
     private Circle mouseBall;
     private List<Bomb> bombs;
     private List<Bomb> bombs2;
@@ -126,9 +126,7 @@ public class Bomberman extends BasicGame {
                         player.moveLeft();
                     }
                     timeOutP1 = player.getSpeed();
-                }
-
-                else if (gc.getInput().isKeyDown(Input.KEY_RIGHT)) {
+                } else if (gc.getInput().isKeyDown(Input.KEY_RIGHT)) {
                     player.reloadSprite(Direction.EAST);
                     posX = Math.round(player.getX()) / 48;
                     posY = Math.round(player.getY()) / 48;
@@ -139,9 +137,7 @@ public class Bomberman extends BasicGame {
                         player.moveRight();
                     }
                     timeOutP1 = player.getSpeed();
-                }
-
-                else if (gc.getInput().isKeyDown(Input.KEY_UP)) {
+                } else if (gc.getInput().isKeyDown(Input.KEY_UP)) {
                     player.reloadSprite(Direction.NORTH);
                     posX = Math.round(player.getX()) / 48;
                     posY = Math.round(player.getY()) / 48;
@@ -152,9 +148,7 @@ public class Bomberman extends BasicGame {
                         player.moveUp();
                     }
                     timeOutP1 = player.getSpeed();
-                }
-
-                else if (gc.getInput().isKeyDown(Input.KEY_DOWN)) {
+                } else if (gc.getInput().isKeyDown(Input.KEY_DOWN)) {
                     player.reloadSprite(Direction.SOUTH);
                     posX = Math.round(player.getX()) / 48;
                     posY = Math.round(player.getY()) / 48;
@@ -180,8 +174,7 @@ public class Bomberman extends BasicGame {
                 if (player.getBombCount() == 1) {
                     Bomb b = new Bomb(sprites, player.getX(), player.getY(), player.getBombRange());
                     bombs.add(b);
-                    if(bombs.size() > 1)
-                    {
+                    if (bombs.size() > 1) {
                         bombs.remove(1);
                     }
                 }
@@ -189,36 +182,49 @@ public class Bomberman extends BasicGame {
                 if (player.getBombCount() == 2) {
                     Bomb b = new Bomb(sprites, player.getX(), player.getY(), player.getBombRange());
                     bombs.add(b);
-                    if(bombs.size() > 2)
-                    {
+                    if (bombs.size() > 2) {
                         bombs.remove(2);
-                        if(bombs.size() == 0){bombs.add(b);}
+                        if (bombs.size() == 0) {
+                            bombs.add(b);
+                        }
                     }
                 }
 
                 if (player.getBombCount() == 3) {
                     Bomb b = new Bomb(sprites, player.getX(), player.getY(), player.getBombRange());
                     bombs.add(b);
-                    if(bombs.size() > 3)
-                    {
+                    if (bombs.size() > 3) {
                         bombs.remove(3);
-                        if(bombs.size() == 0){bombs.add(b);}
+                        if (bombs.size() == 0) {
+                            bombs.add(b);
+                        }
                     }
                 }
 
                 if (player.getBombCount() == 4) {
                     Bomb b = new Bomb(sprites, player.getX(), player.getY(), player.getBombRange());
                     bombs.add(b);
-                    if(bombs.size() > 4)
-                    {
+                    if (bombs.size() > 4) {
                         bombs.remove(4);
-                        if(bombs.size() == 0){bombs.add(b);}
+                        if (bombs.size() == 0) {
+                            bombs.add(b);
+                        }
                     }
                 }
             }
 
             if (player.intersectWithWall()) {
                 player.setPosition(hposx, hposy);
+            }
+            for (Bomb b : bombs2) {
+                if (b.intersects(player) && player.getKick() == false) {
+                    player.setPosition(hposx, hposy);
+
+                }
+                if (b.intersects(player) && player.getKick() == true) {
+
+                    // TODO KICK A BOMB
+                }
             }
 
             if (player.upBomb()) {
@@ -239,9 +245,7 @@ public class Bomberman extends BasicGame {
                         player2.moveLeft();
                     }
                     timeOutP2 = player2.getSpeed();
-                }
-
-                else if (gc.getInput().isKeyDown(Input.KEY_D)) {
+                } else if (gc.getInput().isKeyDown(Input.KEY_D)) {
                     player2.reloadSprite(Direction.EAST);
                     pos2X = Math.round(player2.getX()) / 48;
                     pos2Y = Math.round(player2.getY()) / 48;
@@ -252,9 +256,7 @@ public class Bomberman extends BasicGame {
                         player2.moveRight();
                     }
                     timeOutP2 = player2.getSpeed();
-                }
-
-                else if (gc.getInput().isKeyDown(Input.KEY_W)) {
+                } else if (gc.getInput().isKeyDown(Input.KEY_W)) {
                     player2.reloadSprite(Direction.NORTH);
                     pos2X = Math.round(player2.getX()) / 48;
                     pos2Y = Math.round(player2.getY()) / 48;
@@ -265,9 +267,7 @@ public class Bomberman extends BasicGame {
                         player2.moveUp();
                     }
                     timeOutP2 = player2.getSpeed();
-                }
-
-                else if (gc.getInput().isKeyDown(Input.KEY_S)) {
+                } else if (gc.getInput().isKeyDown(Input.KEY_S)) {
                     player2.reloadSprite(Direction.SOUTH);
                     pos2X = Math.round(player2.getX()) / 48;
                     pos2Y = Math.round(player2.getY()) / 48;
@@ -293,8 +293,7 @@ public class Bomberman extends BasicGame {
                 if (player2.getBombCount() == 1) {
                     Bomb b = new Bomb(sprites, player2.getX(), player2.getY(), player2.getBombRange());
                     bombs2.add(b);
-                    if(bombs2.size() > 1)
-                    {
+                    if (bombs2.size() > 1) {
                         bombs2.remove(1);
                     }
                 }
@@ -302,36 +301,49 @@ public class Bomberman extends BasicGame {
                 if (player2.getBombCount() == 2) {
                     Bomb b = new Bomb(sprites, player2.getX(), player2.getY(), player2.getBombRange());
                     bombs2.add(b);
-                    if(bombs2.size() > 2)
-                    {
+                    if (bombs2.size() > 2) {
                         bombs2.remove(2);
-                        if(bombs2.size() == 0){bombs2.add(b);}
+                        if (bombs2.size() == 0) {
+                            bombs2.add(b);
+                        }
                     }
                 }
 
                 if (player2.getBombCount() == 3) {
                     Bomb b = new Bomb(sprites, player2.getX(), player2.getY(), player2.getBombRange());
                     bombs2.add(b);
-                    if(bombs2.size() > 3)
-                    {
+                    if (bombs2.size() > 3) {
                         bombs2.remove(3);
-                        if(bombs2.size() == 0){bombs2.add(b);}
+                        if (bombs2.size() == 0) {
+                            bombs2.add(b);
+                        }
                     }
                 }
 
                 if (player2.getBombCount() == 4) {
                     Bomb b = new Bomb(sprites, player2.getX(), player2.getY(), player2.getBombRange());
                     bombs2.add(b);
-                    if(bombs2.size() > 4)
-                    {
+                    if (bombs2.size() > 4) {
                         bombs2.remove(4);
-                        if(bombs2.size() == 0){bombs2.add(b);}
+                        if (bombs2.size() == 0) {
+                            bombs2.add(b);
+                        }
                     }
                 }
             }
 
             if (player2.intersectWithWall()) {
                 player2.setPosition(hpos2x, hpos2y);
+            }
+            for (Bomb b : bombs) {
+                if (b.intersects(player2) && player2.getKick() == false) {
+                    player2.setPosition(hpos2x, hpos2y);
+
+                }
+                if (b.intersects(player2) && player2.getKick() == true) {
+
+                    // TODO KICK A BOMB
+                }
             }
 
             if (player2.upBomb()) {
@@ -392,31 +404,31 @@ public class Bomberman extends BasicGame {
         for (Bomb bomb : bombs) {
             //g.drawImage(bomb.getSprite(), bomb.getX(), bomb.getY());
             Animation animation;
-            if(bombAnimations.get(bomb) == null) {
+            if (bombAnimations.get(bomb) == null) {
                 animation = bomb.getAnimation();
                 animation.setLooping(false);
                 animation.setAutoUpdate(true);
-                bombAnimations.put(bomb,animation);
+                bombAnimations.put(bomb, animation);
             } else {
                 animation = bombAnimations.get(bomb);
             }
 
-            animation.draw(bomb.getX(),bomb.getY());
+            animation.draw(bomb.getX(), bomb.getY());
         }
 
         for (Bomb bomb : bombs2) {
             //g.drawImage(bomb.getSprite(), bomb.getX(), bomb.getY());
             Animation animation;
-            if(bombAnimations.get(bomb) == null) {
+            if (bombAnimations.get(bomb) == null) {
                 animation = bomb.getAnimation();
                 animation.setLooping(false);
                 animation.setAutoUpdate(true);
-                bombAnimations.put(bomb,animation);
+                bombAnimations.put(bomb, animation);
             } else {
                 animation = bombAnimations.get(bomb);
             }
 
-            animation.draw(bomb.getX(),bomb.getY());
+            animation.draw(bomb.getX(), bomb.getY());
         }
 //        for (Player p : game.getTeam1().getPlayers()) {
 //            g.drawImage(p.getSprite(), p.getX(), p.getY());

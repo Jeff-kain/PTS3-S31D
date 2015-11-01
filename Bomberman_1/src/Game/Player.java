@@ -96,7 +96,6 @@ public class Player implements IGameObject {
                 Bomb_Up bu = (Bomb_Up) o;
 
                 if(bu.intersects(this)){
-                    this.visible = false;
                     if(bombCount <4)
                     setBombCount(getBombCount() + 1);
                     game.playground().removePowerup(bu);
@@ -106,7 +105,6 @@ public class Player implements IGameObject {
                 Explosion_Up eu = (Explosion_Up) o;
 
                 if(eu.intersects(this)){
-                    this.visible = false;
                     if(getBombRange() <2.5f)
                         setBombRange(getBombRange() + 0.5f);
                     game.playground().removePowerup(eu);
@@ -116,7 +114,6 @@ public class Player implements IGameObject {
                 Speed_Up su = (Speed_Up) o;
 
                 if(su.intersects(this)){
-                    this.visible = false;
                     if(getSpeed() <400f)
                         setSpeed(getSpeed() + 100f);
                     game.playground().removePowerup(su);
@@ -253,6 +250,11 @@ public class Player implements IGameObject {
                 return true;
             }
         }
+        return false;
+    }
+    
+    public boolean intersectWithBomb()
+    {
         return false;
     }
 
