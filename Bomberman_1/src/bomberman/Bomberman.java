@@ -216,16 +216,6 @@ public class Bomberman extends BasicGame {
             if (player.intersectWithWall()) {
                 player.setPosition(hposx, hposy);
             }
-            for (Bomb b : bombs2) {
-                if (b.intersects(player) && player.getKick() == false) {
-                    player.setPosition(hposx, hposy);
-
-                }
-                if (b.intersects(player) && player.getKick() == true) {
-
-                    // TODO KICK A BOMB
-                }
-            }
 
             if (player.upBomb()) {
                 player.setBombCount(player.getBombCount() + 1);
@@ -335,16 +325,6 @@ public class Bomberman extends BasicGame {
             if (player2.intersectWithWall()) {
                 player2.setPosition(hpos2x, hpos2y);
             }
-            for (Bomb b : bombs) {
-                if (b.intersects(player2) && player2.getKick() == false) {
-                    player2.setPosition(hpos2x, hpos2y);
-
-                }
-                if (b.intersects(player2) && player2.getKick() == true) {
-
-                    // TODO KICK A BOMB
-                }
-            }
 
             if (player2.upBomb()) {
                 player2.setBombCount(player2.getBombCount() + 1);
@@ -354,6 +334,46 @@ public class Bomberman extends BasicGame {
         player.Update();
         player2.Update();
 
+        for (Bomb b : bombs2) {
+            // player 1 bomb collision 
+            if (b.intersects(player) && player.getKick() == false) {
+                player.setPosition(hposx, hposy);
+
+            }
+            if (b.intersects(player) && player.getKick() == true) {
+
+                // TODO KICK A BOMB
+            }
+            //player 2 bomb collision
+            if (b.intersects(player2) && player2.getKick() == false) {
+                player2.setPosition(hpos2x, hpos2y);
+
+            }
+            if (b.intersects(player2) && player2.getKick() == true) {
+
+                // TODO KICK A BOMB
+            }
+        }
+        for (Bomb b : bombs) {
+            // player 2 bomb collision
+            if (b.intersects(player2) && player2.getKick() == false) {
+                player2.setPosition(hpos2x, hpos2y);
+
+            }
+            if (b.intersects(player2) && player2.getKick() == true) {
+
+                // TODO KICK A BOMB
+            }
+            // player 1 bomb collision 
+            if (b.intersects(player) && player.getKick() == false) {
+                player.setPosition(hposx, hposy);
+
+            }
+            if (b.intersects(player) && player.getKick() == true) {
+
+                // TODO KICK A BOMB
+            }
+        }
         if (bombs != null) {
             for (Bomb b : bombs) {
                 if (b.isExploded()) {

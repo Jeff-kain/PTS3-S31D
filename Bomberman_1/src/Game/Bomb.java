@@ -52,7 +52,6 @@ public class Bomb implements IGameObject {
 
     public Animation getAnimation() {
 
-
         int[] frames = {4, 18, 5, 18, 6, 18, 7, 18, 8, 18, 9, 18};
         int[] durations = {duration, duration, duration, duration, duration, duration};
         Animation animation = new Animation(sprites, frames, durations);
@@ -68,8 +67,9 @@ public class Bomb implements IGameObject {
         return x;
     }
 
-    public Float getY() { return y; }
-
+    public Float getY() {
+        return y;
+    }
 
     @Override
     public void Update() {
@@ -101,7 +101,8 @@ public class Bomb implements IGameObject {
                     Explosion flameMid = new Explosion(sprites);
                     flameMid.setPosition(oldX, oldY);
                     game.playground().addToLevel(flameMid);
-                    if (!this.intersectWithWall()) {
+                    int tileid = game.playground().getMap().getTileId(Math.round(oldX / 48) - 1, Math.round(oldY / 48), 1);
+                    if (!this.intersectWithWall() && tileid <= 0) {
                         Explosion flame = new Explosion(sprites, Direction.EAST);
                         flame.setPosition(oldX + 48 + 48 * r, oldY);
                         game.playground().addToLevel(flame);
@@ -117,7 +118,9 @@ public class Bomb implements IGameObject {
             case WEST:
                 for (int r = 0; r < range; r++) {
                     this.x -= (48 + 48 * r);
-                    if (!this.intersectWithWall()) {
+                    int tileid = game.playground().getMap().getTileId(Math.round(oldX / 48) + 1, Math.round(oldY / 48), 1);
+
+                    if (!this.intersectWithWall() && tileid <= 0) {
                         Explosion flame = new Explosion(sprites, Direction.WEST);
                         flame.setPosition(oldX - 48 - 48 * r, oldY);
                         game.playground().addToLevel(flame);
@@ -134,7 +137,9 @@ public class Bomb implements IGameObject {
             case SOUTH:
                 for (int r = 0; r < range; r++) {
                     this.y += (48 + 48 * r);
-                    if (!this.intersectWithWall()) {
+                    int tileid = game.playground().getMap().getTileId(Math.round(oldX / 48), Math.round(oldY / 48) +1, 1);
+
+                    if (!this.intersectWithWall() && tileid <= 0) {
                         Explosion flame = new Explosion(sprites, Direction.SOUTH);
                         flame.setPosition(oldX, oldY + 48 + 48 * r);
                         game.playground().addToLevel(flame);
@@ -151,7 +156,9 @@ public class Bomb implements IGameObject {
             case NORTH:
                 for (int r = 0; r < range; r++) {
                     this.y -= (48 + 48 * r);
-                    if (!this.intersectWithWall()) {
+                    int tileid = game.playground().getMap().getTileId(Math.round(oldX / 48), Math.round(oldY / 48) -1, 1);
+
+                    if (!this.intersectWithWall() && tileid <= 0) {
                         Explosion flame = new Explosion(sprites, Direction.NORTH);
                         flame.setPosition(oldX, oldY - 48 - 48 * r);
                         game.playground().addToLevel(flame);
@@ -227,8 +234,8 @@ public class Bomb implements IGameObject {
         }
         return false;
     }
-    
-        public boolean intersects(IGameObject actor) {
+
+    public boolean intersects(IGameObject actor) {
         Rectangle2D predmet = new Rectangle2D.Float(actor.getX(), actor.getY(), 48f, 48f);
         Rectangle2D objekt = new Rectangle2D.Float(this.getX(), this.getY(), 48f, 48f);
         return objekt.intersects(predmet);
