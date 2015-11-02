@@ -171,45 +171,10 @@ public class Bomberman extends BasicGame {
             }
 
             if (gc.getInput().isKeyPressed(Input.KEY_ENTER)) {
-                if (player.getBombCount() == 1) {
-                    Bomb b = new Bomb(sprites, player.getX(), player.getY(), player.getBombRange());
-                    bombs.add(b);
-                    if (bombs.size() > 1) {
-                        bombs.remove(1);
-                    }
-                }
+                Bomb b = new Bomb(sprites, player.getX(), player.getY(), player.getBombRange());
 
-                if (player.getBombCount() == 2) {
-                    Bomb b = new Bomb(sprites, player.getX(), player.getY(), player.getBombRange());
+                if(bombs.size() < player.getBombCount()) {
                     bombs.add(b);
-                    if (bombs.size() > 2) {
-                        bombs.remove(2);
-                        if (bombs.size() == 0) {
-                            bombs.add(b);
-                        }
-                    }
-                }
-
-                if (player.getBombCount() == 3) {
-                    Bomb b = new Bomb(sprites, player.getX(), player.getY(), player.getBombRange());
-                    bombs.add(b);
-                    if (bombs.size() > 3) {
-                        bombs.remove(3);
-                        if (bombs.size() == 0) {
-                            bombs.add(b);
-                        }
-                    }
-                }
-
-                if (player.getBombCount() == 4) {
-                    Bomb b = new Bomb(sprites, player.getX(), player.getY(), player.getBombRange());
-                    bombs.add(b);
-                    if (bombs.size() > 4) {
-                        bombs.remove(4);
-                        if (bombs.size() == 0) {
-                            bombs.add(b);
-                        }
-                    }
                 }
             }
 
@@ -280,45 +245,10 @@ public class Bomberman extends BasicGame {
             }
 
             if (gc.getInput().isKeyPressed(Input.KEY_SPACE)) {
-                if (player2.getBombCount() == 1) {
-                    Bomb b = new Bomb(sprites, player2.getX(), player2.getY(), player2.getBombRange());
-                    bombs2.add(b);
-                    if (bombs2.size() > 1) {
-                        bombs2.remove(1);
-                    }
-                }
+                Bomb b = new Bomb(sprites, player2.getX(), player2.getY(), player2.getBombRange());
 
-                if (player2.getBombCount() == 2) {
-                    Bomb b = new Bomb(sprites, player2.getX(), player2.getY(), player2.getBombRange());
+                if(bombs2.size() < player2.getBombCount()) {
                     bombs2.add(b);
-                    if (bombs2.size() > 2) {
-                        bombs2.remove(2);
-                        if (bombs2.size() == 0) {
-                            bombs2.add(b);
-                        }
-                    }
-                }
-
-                if (player2.getBombCount() == 3) {
-                    Bomb b = new Bomb(sprites, player2.getX(), player2.getY(), player2.getBombRange());
-                    bombs2.add(b);
-                    if (bombs2.size() > 3) {
-                        bombs2.remove(3);
-                        if (bombs2.size() == 0) {
-                            bombs2.add(b);
-                        }
-                    }
-                }
-
-                if (player2.getBombCount() == 4) {
-                    Bomb b = new Bomb(sprites, player2.getX(), player2.getY(), player2.getBombRange());
-                    bombs2.add(b);
-                    if (bombs2.size() > 4) {
-                        bombs2.remove(4);
-                        if (bombs2.size() == 0) {
-                            bombs2.add(b);
-                        }
-                    }
                 }
             }
 
