@@ -525,12 +525,12 @@ public class Bomberman extends BasicGame {
                     PowerUp p1 = new Explosion_Up(sprites, "Explosion_Up", (float) X, (float) Y, false);
                     playground.addPowerup(p1);
                     break;
-                case "Kick":
-                    X = map.getObjectX(0, i);
-                    Y = map.getObjectY(0, i);
-                    PowerUp p2 = new Kick(sprites, "Kick", (float) X, (float) Y, false);
-                    playground.addPowerup(p2);
-                    break;
+//                case "Kick":
+//                    X = map.getObjectX(0, i);
+//                    Y = map.getObjectY(0, i);
+//                    PowerUp p2 = new Kick(sprites, "Kick", (float) X, (float) Y, false);
+//                    playground.addPowerup(p2);
+//                    break;
                 case "Speed_Up":
                     X = map.getObjectX(0, i);
                     Y = map.getObjectY(0, i);

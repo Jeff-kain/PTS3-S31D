@@ -55,7 +55,7 @@ public class Player implements IGameObject {
         this.x = x;
         this.y = y;
         this.blockSize = 48f;
-        this.speed = 100f;
+        this.speed = 200f;
         bomb_Up = new Bomb_Up(sprites, name, x, y, false);
         this.sprite = this.sprites.getSubImage(2, 16);
         this.name = name;
@@ -114,8 +114,8 @@ public class Player implements IGameObject {
                 Speed_Up su = (Speed_Up) o;
 
                 if(su.intersects(this)){
-                    if(getSpeed() <400f)
-                        setSpeed(getSpeed() + 100f);
+                    if(getSpeed() > 100f)
+                        setSpeed(getSpeed() - 50f);
                     game.playground().removePowerup(su);
                 }
             }

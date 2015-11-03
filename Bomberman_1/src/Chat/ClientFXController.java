@@ -90,8 +90,8 @@ public class ClientFXController implements Initializable {
 
         try {
             
-            //addr = InetAddress.getByName("145.93.52.224");
-            sock = new Socket(address, port);
+            addr = InetAddress.getByName("145.93.72.124");
+            sock = new Socket(addr, port);
             InputStreamReader streamreader = new InputStreamReader(sock.getInputStream());
             reader = new BufferedReader(streamreader);
             writer = new PrintWriter(sock.getOutputStream());
