@@ -22,6 +22,7 @@ public class Player implements IGameObject {
 
     private Image sprite;
     private String name;
+    private float blockSize;
     private float speed;
     private Boolean kick;
     private int bombCount;
@@ -35,6 +36,7 @@ public class Player implements IGameObject {
     private TeamColor teamColor;
 
     private Playground playground = new Playground();
+    private int respawn;
 
     public Float getBombRange() {
         return bombRange;
@@ -43,29 +45,54 @@ public class Player implements IGameObject {
     public void setBombRange(Float bombRange) {
         this.bombRange = bombRange;
     }
-    
+
     public Player(SpriteSheet sprites, Float x, Float y, int bombCount, float speed, Boolean kick) throws SlickException {
         this.sprites = sprites;
         this.x = x;
         this.y = y;
-        this.speed = 48f;
+        this.blockSize = 48f;
+        this.speed = 200f;
         bomb_Up = new Bomb_Up(sprites, name, x, y, false);
         this.sprite = this.sprites.getSubImage(2, 16);
         this.name = name;
         this.bombRange = 2f;
         this.bombCount = bombCount;
         this.kick = kick;
+        visible = true;
+        respawn = 0;
     }
 
     @Override
     public void Update() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        for (IGameObject o : game.playground().getMapobjects()) {
+            if (o instanceof Explosion) {
+                Explosion exp = (Explosion) o;
+
+                if (exp.intersects(this)) {
+                    this.visible = false;
+                    respawn = 500;
+                }
+            }
+        }
+        if (respawn > 0) {
+            respawn--;
+        }
+        if (respawn == 0 && visible == false) {
+            if (teamColor == TeamColor.BLUE) {
+                setPosition(96, 48);
+
+            } else {
+                setPosition(624, 576);
+
+            }
+            this.visible = true;
+        }
     }
 
     public void reloadSprite(Direction direction) {
         int row = 0;
 
-        if(teamColor == teamColor.BLUE) {
+        if (teamColor == teamColor.BLUE) {
             row = 16;
         } else {
             row = 14;
@@ -73,21 +100,21 @@ public class Player implements IGameObject {
 
         switch (direction.name()) {
             case "NORTH":
-                this.sprite = this.sprites.getSubImage(8,row);
+                this.sprite = this.sprites.getSubImage(8, row);
                 break;
             case "EAST":
-                this.sprite = this.sprites.getSubImage(6,row);
+                this.sprite = this.sprites.getSubImage(6, row);
                 break;
             case "SOUTH":
-                this.sprite = this.sprites.getSubImage(2,row);
+                this.sprite = this.sprites.getSubImage(2, row);
                 break;
             case "WEST":
-                this.sprite = this.sprites.getSubImage(6,row);
-                this.sprite = this.sprite.getFlippedCopy(true,false);
+                this.sprite = this.sprites.getSubImage(6, row);
+                this.sprite = this.sprite.getFlippedCopy(true, false);
                 break;
         }
     }
-        
+
     public Image getSprite() {
         return sprite;
     }
@@ -124,15 +151,14 @@ public class Player implements IGameObject {
         return bombCount;
     }
 
-    
     public void setPosition(Float x, Float y) {
         this.x = x;
         this.y = y;
     }
-    
+
     public void setTeamColor(TeamColor teamColor) {
         this.teamColor = teamColor;
-        if(teamColor == TeamColor.BLUE) {
+        if (teamColor == TeamColor.BLUE) {
             sprite = sprites.getSubImage(2, 16);
             System.out.println("Foobar");
         } else {
@@ -158,31 +184,32 @@ public class Player implements IGameObject {
     }
 
     public void setBombCount(int bombCount) {
-        this.bombCount ++;
+        this.bombCount++;
     }
 
     // Movements for player
     public void moveLeft() {
 
-            this.x -= speed;
-        
+        this.x -= blockSize;
+
     }
 
     public void moveRight() {
 
-            this.x += speed;
-        
+        this.x += blockSize;
+
     }
 
     public void moveDown() {
 
-            this.y += speed;
+        this.y += blockSize;
     }
 
     public void moveUp() {
-            this.y -= speed;
+        this.y -= blockSize;
 
     }
+
     public boolean intersectWithWall() {
         for (Box w : game.playground().getBoxes()) {
             if (w.intersects(this)) {
@@ -192,10 +219,17 @@ public class Player implements IGameObject {
         }
         return false;
     }
-    
 
     public void setPosition(float x, float y) {
         this.x = x;
         this.y = y;
+    }
+
+    public Boolean getVisible() {
+        return visible;
+    }
+
+    public void setVisible(Boolean visible) {
+        this.visible = visible;
     }
 }

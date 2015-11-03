@@ -25,6 +25,10 @@ public class Team implements IGameObject{
     private float y;
     private Image sprite;
 
+    public ArrayList<Player> getPlayers() {
+        return players;
+    }
+
     public Team(SpriteSheet sprites,TeamColor color, float x, float y) {
         this.color = color;
         players = new ArrayList<>();
