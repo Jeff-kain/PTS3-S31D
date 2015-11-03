@@ -22,6 +22,7 @@ import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.lwjgl.input.Mouse;
 
 import org.newdawn.slick.Animation;
 import org.newdawn.slick.AppGameContainer;
@@ -64,6 +65,10 @@ public class Bomberman extends BasicGame {
     private Game game;
     private float timeOutP1;
     private float timeOutP2;
+    private boolean isEnded;
+    private static String[] arguments;
+    
+    //private AppGameContainer appgc;
 
     // TODO code application logic here
     public Bomberman(String gamename) {
@@ -79,6 +84,7 @@ public class Bomberman extends BasicGame {
         x = 1;
         y = 1;
         tile = 48f;
+        isEnded = false;
         //mouseBall = new Circle(72,72,20);
         bombs = new CopyOnWriteArrayList<>();
         bombs2 = new CopyOnWriteArrayList<>();
@@ -112,274 +118,302 @@ public class Bomberman extends BasicGame {
 
         float sensitivity = 1f;
 
-        // Player 1 controls
-        if (player.getVisible() == true) {
-            if (timeOutP1 <= 0) {
-                if (gc.getInput().isKeyDown(Input.KEY_LEFT)) {
-                    player.reloadSprite(Direction.WEST);
-                    posX = Math.round(player.getX()) / 48;
-                    posY = Math.round(player.getY()) / 48;
-                    //System.out.println("x: " + posX + " y: " + posY);
+        if (isEnded) {
+            posX = Mouse.getX();
+            posY = Mouse.getY();
 
-                    if (map.getTileId(posX - 1, posY, objectLayer) == 0) {
-                        //player.setX(player.getX() - sensitivity * 48);
-                        player.moveLeft();
-                    }
-                    timeOutP1 = player.getSpeed();
-                } else if (gc.getInput().isKeyDown(Input.KEY_RIGHT)) {
-                    player.reloadSprite(Direction.EAST);
-                    posX = Math.round(player.getX()) / 48;
-                    posY = Math.round(player.getY()) / 48;
-                    //System.out.println("x: " + posX + " y: " + posY);
-                    //System.out.print(hposx);
-                    if (map.getTileId(posX + 1, posY, objectLayer) == 0) {
-                        //player.setX(player.getX() + sensitivity * 48);
-                        player.moveRight();
-                    }
-                    timeOutP1 = player.getSpeed();
-                } else if (gc.getInput().isKeyDown(Input.KEY_UP)) {
-                    player.reloadSprite(Direction.NORTH);
-                    posX = Math.round(player.getX()) / 48;
-                    posY = Math.round(player.getY()) / 48;
-                    //System.out.println("x: " + posX + " y: " + posY);
-
-                    if (map.getTileId(posX, posY - 1, objectLayer) == 0) {
-                        // player.setY(player.getY() - sensitivity * 48);
-                        player.moveUp();
-                    }
-                    timeOutP1 = player.getSpeed();
-                } else if (gc.getInput().isKeyDown(Input.KEY_DOWN)) {
-                    player.reloadSprite(Direction.SOUTH);
-                    posX = Math.round(player.getX()) / 48;
-                    posY = Math.round(player.getY()) / 48;
-
-                    if (map.getTileId(posX, posY + 1, objectLayer) == 0) {
-                        player.moveDown();
-                    }
-                    timeOutP1 = player.getSpeed();
+            //Stop 250 / 300
+            if ((posX > 250 && posX < 350) && (posY > 300 && posY < 400)) {
+                if (Mouse.isButtonDown(0)) {
+                    System.exit(0);
                 }
+            }
 
-            } else {
-                //System.out.println(timeOut);
+            //Replay 380, 300
+            if ((posX > 380 && posX < 480) && (posY > 300 && posY < 400)) {
+                if (Mouse.isButtonDown(0)) {
+                    try {
+                        //main(arguments);
+                        AppGameContainer appgc;
+                        appgc = new AppGameContainer(new Bomberman("Bomberman"));
+                        appgc.start();
+                    } catch (SlickException ex) {
+                        Logger.getLogger(Bomberman.class.getName()).log(Level.SEVERE, null, ex);
+                   }
+                    }
+                }
+            }
 
-                if (timeOutP1 > 0) {
-                    timeOutP1 -= delta;
+            // Player 1 controls
+            if (player.getVisible() == true) {
+                if (timeOutP1 <= 0) {
+                    if (gc.getInput().isKeyDown(Input.KEY_LEFT)) {
+                        player.reloadSprite(Direction.WEST);
+                        posX = Math.round(player.getX()) / 48;
+                        posY = Math.round(player.getY()) / 48;
+                        //System.out.println("x: " + posX + " y: " + posY);
+
+                        if (map.getTileId(posX - 1, posY, objectLayer) == 0) {
+                            //player.setX(player.getX() - sensitivity * 48);
+                            player.moveLeft();
+                        }
+                        timeOutP1 = player.getSpeed();
+                    } else if (gc.getInput().isKeyDown(Input.KEY_RIGHT)) {
+                        player.reloadSprite(Direction.EAST);
+                        posX = Math.round(player.getX()) / 48;
+                        posY = Math.round(player.getY()) / 48;
+                    //System.out.println("x: " + posX + " y: " + posY);
+                        //System.out.print(hposx);
+                        if (map.getTileId(posX + 1, posY, objectLayer) == 0) {
+                            //player.setX(player.getX() + sensitivity * 48);
+                            player.moveRight();
+                        }
+                        timeOutP1 = player.getSpeed();
+                    } else if (gc.getInput().isKeyDown(Input.KEY_UP)) {
+                        player.reloadSprite(Direction.NORTH);
+                        posX = Math.round(player.getX()) / 48;
+                        posY = Math.round(player.getY()) / 48;
+                        //System.out.println("x: " + posX + " y: " + posY);
+
+                        if (map.getTileId(posX, posY - 1, objectLayer) == 0) {
+                            // player.setY(player.getY() - sensitivity * 48);
+                            player.moveUp();
+                        }
+                        timeOutP1 = player.getSpeed();
+                    } else if (gc.getInput().isKeyDown(Input.KEY_DOWN)) {
+                        player.reloadSprite(Direction.SOUTH);
+                        posX = Math.round(player.getX()) / 48;
+                        posY = Math.round(player.getY()) / 48;
+
+                        if (map.getTileId(posX, posY + 1, objectLayer) == 0) {
+                            player.moveDown();
+                        }
+                        timeOutP1 = player.getSpeed();
+                    }
+
                 } else {
-                    timeOutP1 = 0;
+                    //System.out.println(timeOut);
+
+                    if (timeOutP1 > 0) {
+                        timeOutP1 -= delta;
+                    } else {
+                        timeOutP1 = 0;
+                    }
+
                 }
 
-            }
+                if (gc.getInput().isKeyPressed(Input.KEY_ENTER)) {
+                    Bomb b = new Bomb(sprites, player.getX(), player.getY(), player.getBombRange());
 
-            if (gc.getInput().isKeyPressed(Input.KEY_ENTER)) {
-                Bomb b = new Bomb(sprites, player.getX(), player.getY(), player.getBombRange());
-
-                if(bombs.size() < player.getBombCount()) {
-                    bombs.add(b);
-                }
-            }
-
-            if (player.intersectWithWall()) {
-                player.setPosition(hposx, hposy);
-            }
-
-            if (player.upBomb()) {
-                player.setBombCount(player.getBombCount() + 1);
-            }
-        }
-        //player 2 controls
-        if (player2.getVisible() == true) {
-            if (timeOutP2 <= 0) {
-                if (gc.getInput().isKeyDown(Input.KEY_A)) {
-                    player2.reloadSprite(Direction.WEST);
-                    pos2X = Math.round(player2.getX()) / 48;
-                    pos2Y = Math.round(player2.getY()) / 48;
-                    //System.out.println("x: " + posX + " y: " + posY);
-
-                    if (map.getTileId(pos2X - 1, pos2Y, objectLayer) == 0) {
-                        //player.setX(player.getX() - sensitivity * 48);
-                        player2.moveLeft();
+                    if (bombs.size() < player.getBombCount()) {
+                        bombs.add(b);
                     }
-                    timeOutP2 = player2.getSpeed();
-                } else if (gc.getInput().isKeyDown(Input.KEY_D)) {
-                    player2.reloadSprite(Direction.EAST);
-                    pos2X = Math.round(player2.getX()) / 48;
-                    pos2Y = Math.round(player2.getY()) / 48;
-                    //System.out.println("x: " + posX + " y: " + posY);
-                    //System.out.print(hposx);
-                    if (map.getTileId(pos2X + 1, pos2Y, objectLayer) == 0) {
-                        //player.setX(player.getX() + sensitivity * 48);
-                        player2.moveRight();
-                    }
-                    timeOutP2 = player2.getSpeed();
-                } else if (gc.getInput().isKeyDown(Input.KEY_W)) {
-                    player2.reloadSprite(Direction.NORTH);
-                    pos2X = Math.round(player2.getX()) / 48;
-                    pos2Y = Math.round(player2.getY()) / 48;
-                    //System.out.println("x: " + posX + " y: " + posY);
-
-                    if (map.getTileId(pos2X, pos2Y - 1, objectLayer) == 0) {
-                        // player.setY(player.getY() - sensitivity * 48);
-                        player2.moveUp();
-                    }
-                    timeOutP2 = player2.getSpeed();
-                } else if (gc.getInput().isKeyDown(Input.KEY_S)) {
-                    player2.reloadSprite(Direction.SOUTH);
-                    pos2X = Math.round(player2.getX()) / 48;
-                    pos2Y = Math.round(player2.getY()) / 48;
-
-                    if (map.getTileId(pos2X, pos2Y + 1, objectLayer) == 0) {
-                        player2.moveDown();
-                    }
-                    timeOutP2 = player2.getSpeed();
                 }
 
-            } else {
-                //System.out.println(timeOut);
+                if (player.intersectWithWall()) {
+                    player.setPosition(hposx, hposy);
+                }
 
-                if (timeOutP2 > 0) {
-                    timeOutP2 -= delta;
+                if (player.upBomb()) {
+                    player.setBombCount(player.getBombCount() + 1);
+                }
+            }
+            //player 2 controls
+            if (player2.getVisible() == true) {
+                if (timeOutP2 <= 0) {
+                    if (gc.getInput().isKeyDown(Input.KEY_A)) {
+                        player2.reloadSprite(Direction.WEST);
+                        pos2X = Math.round(player2.getX()) / 48;
+                        pos2Y = Math.round(player2.getY()) / 48;
+                        //System.out.println("x: " + posX + " y: " + posY);
+
+                        if (map.getTileId(pos2X - 1, pos2Y, objectLayer) == 0) {
+                            //player.setX(player.getX() - sensitivity * 48);
+                            player2.moveLeft();
+                        }
+                        timeOutP2 = player2.getSpeed();
+                    } else if (gc.getInput().isKeyDown(Input.KEY_D)) {
+                        player2.reloadSprite(Direction.EAST);
+                        pos2X = Math.round(player2.getX()) / 48;
+                        pos2Y = Math.round(player2.getY()) / 48;
+                    //System.out.println("x: " + posX + " y: " + posY);
+                        //System.out.print(hposx);
+                        if (map.getTileId(pos2X + 1, pos2Y, objectLayer) == 0) {
+                            //player.setX(player.getX() + sensitivity * 48);
+                            player2.moveRight();
+                        }
+                        timeOutP2 = player2.getSpeed();
+                    } else if (gc.getInput().isKeyDown(Input.KEY_W)) {
+                        player2.reloadSprite(Direction.NORTH);
+                        pos2X = Math.round(player2.getX()) / 48;
+                        pos2Y = Math.round(player2.getY()) / 48;
+                        //System.out.println("x: " + posX + " y: " + posY);
+
+                        if (map.getTileId(pos2X, pos2Y - 1, objectLayer) == 0) {
+                            // player.setY(player.getY() - sensitivity * 48);
+                            player2.moveUp();
+                        }
+                        timeOutP2 = player2.getSpeed();
+                    } else if (gc.getInput().isKeyDown(Input.KEY_S)) {
+                        player2.reloadSprite(Direction.SOUTH);
+                        pos2X = Math.round(player2.getX()) / 48;
+                        pos2Y = Math.round(player2.getY()) / 48;
+
+                        if (map.getTileId(pos2X, pos2Y + 1, objectLayer) == 0) {
+                            player2.moveDown();
+                        }
+                        timeOutP2 = player2.getSpeed();
+                    }
+
                 } else {
-                    timeOutP2 = 0;
+                    //System.out.println(timeOut);
+
+                    if (timeOutP2 > 0) {
+                        timeOutP2 -= delta;
+                    } else {
+                        timeOutP2 = 0;
+                    }
+
                 }
 
-            }
+                if (gc.getInput().isKeyPressed(Input.KEY_SPACE)) {
+                    Bomb b = new Bomb(sprites, player2.getX(), player2.getY(), player2.getBombRange());
 
-            if (gc.getInput().isKeyPressed(Input.KEY_SPACE)) {
-                Bomb b = new Bomb(sprites, player2.getX(), player2.getY(), player2.getBombRange());
+                    if (bombs2.size() < player2.getBombCount()) {
+                        bombs2.add(b);
+                    }
+                }
 
-                if(bombs2.size() < player2.getBombCount()) {
-                    bombs2.add(b);
+                if (player2.intersectWithWall()) {
+                    player2.setPosition(hpos2x, hpos2y);
+                }
+
+                if (player2.upBomb()) {
+                    player2.setBombCount(player2.getBombCount() + 1);
                 }
             }
 
-            if (player2.intersectWithWall()) {
-                player2.setPosition(hpos2x, hpos2y);
-            }
+            player.Update();
+            player2.Update();
 
-            if (player2.upBomb()) {
-                player2.setBombCount(player2.getBombCount() + 1);
-            }
-        }
-
-        player.Update();
-        player2.Update();
-
-        for (Bomb b : bombs2) {
-            // player 1 bomb collision 
-            if (b.intersects(player) && player.getKick() == false) {
-                player.setPosition(hposx, hposy);
-
-            }
-            if (b.intersects(player) && player.getKick() == true) {
-
-                // TODO KICK A BOMB
-            }
-            //player 2 bomb collision
-            if (b.intersects(player2) && player2.getKick() == false) {
-                player2.setPosition(hpos2x, hpos2y);
-
-            }
-            if (b.intersects(player2) && player2.getKick() == true) {
-
-                // TODO KICK A BOMB
-            }
-        }
-        for (Bomb b : bombs) {
-            // player 2 bomb collision
-            if (b.intersects(player2) && player2.getKick() == false) {
-                player2.setPosition(hpos2x, hpos2y);
-
-            }
-            if (b.intersects(player2) && player2.getKick() == true) {
-
-                // TODO KICK A BOMB
-            }
-            // player 1 bomb collision 
-            if (b.intersects(player) && player.getKick() == false) {
-                player.setPosition(hposx, hposy);
-
-            }
-            if (b.intersects(player) && player.getKick() == true) {
-
-                // TODO KICK A BOMB
-            }
-        }
-        if (bombs != null) {
-            for (Bomb b : bombs) {
-                if (b.isExploded()) {
-                    bombs.remove(b);
-                } else {
-                    b.Update();
-                }
-            }
-        }
-
-        if (bombs2 != null) {
             for (Bomb b : bombs2) {
-                if (b.isExploded()) {
-                    bombs2.remove(b);
-                } else {
-                    b.Update();
+                // player 1 bomb collision 
+                if (b.intersects(player) && player.getKick() == false) {
+                    player.setPosition(hposx, hposy);
+
+                }
+                if (b.intersects(player) && player.getKick() == true) {
+
+                    // TODO KICK A BOMB
+                }
+                //player 2 bomb collision
+                if (b.intersects(player2) && player2.getKick() == false) {
+                    player2.setPosition(hpos2x, hpos2y);
+
+                }
+                if (b.intersects(player2) && player2.getKick() == true) {
+
+                    // TODO KICK A BOMB
                 }
             }
+            for (Bomb b : bombs) {
+                // player 2 bomb collision
+                if (b.intersects(player2) && player2.getKick() == false) {
+                    player2.setPosition(hpos2x, hpos2y);
+
+                }
+                if (b.intersects(player2) && player2.getKick() == true) {
+
+                    // TODO KICK A BOMB
+                }
+                // player 1 bomb collision 
+                if (b.intersects(player) && player.getKick() == false) {
+                    player.setPosition(hposx, hposy);
+
+                }
+                if (b.intersects(player) && player.getKick() == true) {
+
+                    // TODO KICK A BOMB
+                }
+            }
+            if (bombs != null) {
+                for (Bomb b : bombs) {
+                    if (b.isExploded()) {
+                        bombs.remove(b);
+                    } else {
+                        b.Update();
+                    }
+                }
+            }
+
+            if (bombs2 != null) {
+                for (Bomb b : bombs2) {
+                    if (b.isExploded()) {
+                        bombs2.remove(b);
+                    } else {
+                        b.Update();
+                    }
+                }
+            }
+            for (IGameObject o : game.playground().getMapobjects()) {
+                o.Update();
+            }
         }
-        for (IGameObject o : game.playground().getMapobjects()) {
-            o.Update();
-        }
-    }
 
-    @Override
-    public void render(GameContainer gc, Graphics g) throws SlickException {
-        map.render(0, 0);
+        @Override
+        public void render
+        (GameContainer gc, Graphics g) throws SlickException {
+            map.render(0, 0);
 
-        if (game.getTeam1() != null && game.getTeam2() != null) {
-            float healthScale = game.getTeam1().currentHealth() / game.getTeam1().maxHealth();
-            float healthScale2 = game.getTeam2().currentHealth() / game.getTeam2().maxHealth();
+            if (game.getTeam1() != null && game.getTeam2() != null) {
+                float healthScale = game.getTeam1().currentHealth() / game.getTeam1().maxHealth();
+                float healthScale2 = game.getTeam2().currentHealth() / game.getTeam2().maxHealth();
 
-            g.setColor(Color.white);
-            g.drawString("Team 1 HP: ", 10.0f, 30.0f);
-            g.setColor(Color.green);
-            g.fillRect(100.0f, 30.0f, 250f * healthScale, 20.0f);
+                g.setColor(Color.white);
+                g.drawString("Team 1 HP: ", 10.0f, 30.0f);
+                g.setColor(Color.green);
+                g.fillRect(100.0f, 30.0f, 250f * healthScale, 20.0f);
 
-            g.setColor(Color.white);
-            g.drawString("Team 2 HP: ", 760.0f, 30.0f);
-            g.setColor(Color.green);
-            g.fillRect(850.0f, 30.0f, 250f * healthScale2, 20.0f);
+                g.setColor(Color.white);
+                g.drawString("Team 2 HP: ", 760.0f, 30.0f);
+                g.setColor(Color.green);
+                g.fillRect(850.0f, 30.0f, 250f * healthScale2, 20.0f);
 
-            g.drawImage(game.getTeam1().getSprite(), game.getTeam1().getX(), game.getTeam1().getY());
-            g.drawImage(game.getTeam2().getSprite(), game.getTeam2().getX(), game.getTeam2().getY());
-        }
+                g.drawImage(game.getTeam1().getSprite(), game.getTeam1().getX(), game.getTeam1().getY());
+                g.drawImage(game.getTeam2().getSprite(), game.getTeam2().getX(), game.getTeam2().getY());
+            }
 //            g.setColor(Color.blue);
 //            g.fill(mouseBall);    
-        for (Bomb bomb : bombs) {
-            //g.drawImage(bomb.getSprite(), bomb.getX(), bomb.getY());
-            Animation animation;
-            if (bombAnimations.get(bomb) == null) {
-                animation = bomb.getAnimation();
-                animation.setLooping(false);
-                animation.setAutoUpdate(true);
-                bombAnimations.put(bomb, animation);
-            } else {
-                animation = bombAnimations.get(bomb);
+
+            for (Bomb bomb : bombs) {
+                //g.drawImage(bomb.getSprite(), bomb.getX(), bomb.getY());
+                Animation animation;
+                if (bombAnimations.get(bomb) == null) {
+                    animation = bomb.getAnimation();
+                    animation.setLooping(false);
+                    animation.setAutoUpdate(true);
+                    bombAnimations.put(bomb, animation);
+                } else {
+                    animation = bombAnimations.get(bomb);
+                }
+
+                animation.draw(bomb.getX(), bomb.getY());
             }
 
-            animation.draw(bomb.getX(), bomb.getY());
-        }
+            for (Bomb bomb : bombs2) {
+                //g.drawImage(bomb.getSprite(), bomb.getX(), bomb.getY());
+                Animation animation;
+                if (bombAnimations.get(bomb) == null) {
+                    animation = bomb.getAnimation();
+                    animation.setLooping(false);
+                    animation.setAutoUpdate(true);
+                    bombAnimations.put(bomb, animation);
+                } else {
+                    animation = bombAnimations.get(bomb);
+                }
 
-        for (Bomb bomb : bombs2) {
-            //g.drawImage(bomb.getSprite(), bomb.getX(), bomb.getY());
-            Animation animation;
-            if (bombAnimations.get(bomb) == null) {
-                animation = bomb.getAnimation();
-                animation.setLooping(false);
-                animation.setAutoUpdate(true);
-                bombAnimations.put(bomb, animation);
-            } else {
-                animation = bombAnimations.get(bomb);
+                animation.draw(bomb.getX(), bomb.getY());
             }
-
-            animation.draw(bomb.getX(), bomb.getY());
-        }
 //        for (Player p : game.getTeam1().getPlayers()) {
 //            g.drawImage(p.getSprite(), p.getX(), p.getY());
 //        }
@@ -387,34 +421,62 @@ public class Bomberman extends BasicGame {
 //        for (Player p : game.getTeam2().getPlayers()) {
 //            g.drawImage(p.getSprite(), p.getX(), p.getY());
 //        }
-        if (player.getVisible() == true) {
-            g.drawImage(player.getSprite(), player.getX(), player.getY());
-        }
-        if (player2.getVisible() == true) {
-            g.drawImage(player2.getSprite(), player2.getX(), player2.getY());
-        }
+            if (player.getVisible() == true) {
+                g.drawImage(player.getSprite(), player.getX(), player.getY());
+            }
+            if (player2.getVisible() == true) {
+                g.drawImage(player2.getSprite(), player2.getX(), player2.getY());
+            }
 
-        for (PowerUp powerUp : playground.getPowerups()) {
-            g.drawImage(powerUp.getSprite(), powerUp.getX(), powerUp.getY());
-        }
-        for (Box box : playground.getBoxes()) {
-            g.drawImage(box.getSprite(), box.getX(), box.getY());
-        }
+            for (PowerUp powerUp : playground.getPowerups()) {
+                g.drawImage(powerUp.getSprite(), powerUp.getX(), powerUp.getY());
+            }
+            for (Box box : playground.getBoxes()) {
+                g.drawImage(box.getSprite(), box.getX(), box.getY());
+            }
 
-        for (IGameObject o : game.playground().getMapobjects()) {
-            g.drawImage(o.getSprite(), o.getX(), o.getY());
-        }
+            for (IGameObject o : game.playground().getMapobjects()) {
+                g.drawImage(o.getSprite(), o.getX(), o.getY());
+            }
 
+            if (game.getTeam1().currentHealth() <= 100) {
+
+                isEnded = true;
+                g.setColor(Color.blue);
+                g.fillRect(220.0f, 220.0f, 270.0f, 230.0f);
+                g.setColor(Color.white);
+                g.drawString("Team2 has won the game!", 250, 250);
+
+                Image play = new Image("res/play.png");
+                Image replay = new Image("res/replay.png");
+                g.drawImage(play, 250, 300);
+                g.drawImage(replay, 380, 300);
+            } else if (game.getTeam2().currentHealth() == 0) {
+
+                isEnded = true;
+                g.setColor(Color.blue);
+                g.fillRect(220.0f, 220.0f, 270.0f, 230.0f);
+                g.setColor(Color.white);
+                g.drawString("Team2 has won the game!", 250, 250);
+
+                Image play = new Image("res/play.png");
+                Image replay = new Image("res/replay.png");
+                g.drawImage(play, 250, 300);
+                g.drawImage(replay, 380, 300);
+            }
         //g.drawString("Howdy!", 100, 100);
-        //        g.setColor(Color.green);
-        //        g.fillRect(20.0f, 10.0f, 300.0f, 20.0f);
-        //        
-        //        g.setColor(Color.blue);
-        //        g.fillRect(20.0f, 10.0f, team1.maxHealth() / team1.currentHealth() * 300.0f, 20.0f);
-    }
+            //        g.setColor(Color.green);
+            //        g.fillRect(20.0f, 10.0f, 300.0f, 20.0f);
+            //        
+            //        g.setColor(Color.blue);
+            //        g.fillRect(20.0f, 10.0f, team1.maxHealth() / team1.currentHealth() * 300.0f, 20.0f);
+        }
+
+    
 
     public static void main(String[] args) {
         try {
+            arguments = args;
             AppGameContainer appgc;
             appgc = new AppGameContainer(new Bomberman("Bomberman"));
             appgc.setDisplayMode(720, 720, false);
