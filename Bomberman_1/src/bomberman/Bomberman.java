@@ -67,6 +67,7 @@ public class Bomberman extends BasicGame {
     private float timeOutP2;
     private boolean isEnded;
     private static String[] arguments;
+    private static AppGameContainer appgc;
     
     //private AppGameContainer appgc;
 
@@ -132,14 +133,15 @@ public class Bomberman extends BasicGame {
             //Replay 380, 300
             if ((posX > 380 && posX < 480) && (posY > 300 && posY < 400)) {
                 if (Mouse.isButtonDown(0)) {
-                    try {
-                        //main(arguments);
-                        AppGameContainer appgc;
-                        appgc = new AppGameContainer(new Bomberman("Bomberman"));
-                        appgc.start();
-                    } catch (SlickException ex) {
-                        Logger.getLogger(Bomberman.class.getName()).log(Level.SEVERE, null, ex);
-                   }
+                    appgc.reinit();
+//                    try {
+//                        //main(arguments);
+//                        AppGameContainer appgc;
+//                        appgc = new AppGameContainer(new Bomberman("Bomberman"));
+//                        appgc.start();
+//                    } catch (SlickException ex) {
+//                        Logger.getLogger(Bomberman.class.getName()).log(Level.SEVERE, null, ex);
+//                   }
                     }
                 }
             }
@@ -372,12 +374,12 @@ public class Bomberman extends BasicGame {
                 g.setColor(Color.white);
                 g.drawString("Team 1 HP: ", 10.0f, 30.0f);
                 g.setColor(Color.green);
-                g.fillRect(100.0f, 30.0f, 250f * healthScale, 20.0f);
+                g.fillRect(100.0f, 25.0f, 250f * healthScale, 20.0f);
 
                 g.setColor(Color.white);
-                g.drawString("Team 2 HP: ", 760.0f, 30.0f);
+                g.drawString("Team 2 HP: ", 400.0f, 30.0f);
                 g.setColor(Color.green);
-                g.fillRect(850.0f, 30.0f, 250f * healthScale2, 20.0f);
+                g.fillRect(490.0f, 25.0f, 250f * healthScale2, 20.0f);
 
                 g.drawImage(game.getTeam1().getSprite(), game.getTeam1().getX(), game.getTeam1().getY());
                 g.drawImage(game.getTeam2().getSprite(), game.getTeam2().getX(), game.getTeam2().getY());
@@ -439,7 +441,7 @@ public class Bomberman extends BasicGame {
                 g.drawImage(o.getSprite(), o.getX(), o.getY());
             }
 
-            if (game.getTeam1().currentHealth() <= 100) {
+            if (game.getTeam1().currentHealth() <= 0) {
 
                 isEnded = true;
                 g.setColor(Color.blue);
@@ -451,7 +453,7 @@ public class Bomberman extends BasicGame {
                 Image replay = new Image("res/replay.png");
                 g.drawImage(play, 250, 300);
                 g.drawImage(replay, 380, 300);
-            } else if (game.getTeam2().currentHealth() == 0) {
+            } else if (game.getTeam2().currentHealth() <= 0) {
 
                 isEnded = true;
                 g.setColor(Color.blue);
@@ -477,7 +479,7 @@ public class Bomberman extends BasicGame {
     public static void main(String[] args) {
         try {
             arguments = args;
-            AppGameContainer appgc;
+            //AppGameContainer appgc;
             appgc = new AppGameContainer(new Bomberman("Bomberman"));
             appgc.setDisplayMode(720, 720, false);
             appgc.setVSync(true);
