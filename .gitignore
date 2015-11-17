@@ -8,3 +8,4 @@ Bomberman_1/libs/jinput-raw_64.dll
 Bomberman_1/libs/
 Bomberman_1/.idea/
 *.iml
+*.class
