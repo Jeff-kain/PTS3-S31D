@@ -9,11 +9,7 @@
  <tileset firstgid="307" name="castlesprites" tilewidth="48" tileheight="48" tilecount="2">
   <image source="castlesprites.png" trans="ff00ff" width="96" height="48"/>
  </tileset>
-<<<<<<< HEAD
  <objectgroup name="Boxes" width="48" height="48">
-=======
- <objectgroup name="Boxes" width="96" height="48">
->>>>>>> origin/master
   <object id="110" type="Box" x="240" y="144" width="48" height="48"/>
   <object id="111" type="Box" x="288" y="144" width="48" height="48"/>
   <object id="112" type="Box" x="240" y="240" width="48" height="48"/>
