@@ -58,6 +58,7 @@ public class Bomberman extends BasicGame {
     private int y;
     private Playground playground;
     private SpriteSheet sprites;
+    private SpriteSheet spritesCastle;
     private Image character;
     private float tile;
     private Player player;
@@ -90,6 +91,7 @@ public class Bomberman extends BasicGame {
         bombs = new CopyOnWriteArrayList<>();
         bombs2 = new CopyOnWriteArrayList<>();
         sprites = new SpriteSheet("res" + File.separator + "sprites3x.png", 48, 48, Color.decode("#FF00FF"));
+        spritesCastle = new SpriteSheet("res" + File.separator + "castlesprites.png", 48, 48, Color.decode("#FF00FF"));
         //character = sprites.getSprite(2, 16);
         game.setTeam1(sprites, TeamColor.BLUE, 48, 624);
         game.setTeam2(sprites, TeamColor.GREEN, 624, 48);
@@ -503,15 +505,15 @@ public class Bomberman extends BasicGame {
                     break;
                 case "Player":
                     break;
-                case "Base1":
+                case "BlueCastle":
                     X = map.getObjectX(0, i);
                     Y = map.getObjectY(0, i);
-                    game.setTeam1(sprites, TeamColor.BLUE, (float) X, (float) Y);
+                    game.setTeam1(spritesCastle, TeamColor.BLUE, (float) X, (float) Y);
                     break;
-                case "Base2":
+                case "RedCastle":
                     X = map.getObjectX(0, i);
                     Y = map.getObjectY(0, i);
-                    game.setTeam2(sprites, TeamColor.GREEN, (float) X, (float) Y);
+                    game.setTeam2(spritesCastle, TeamColor.GREEN, (float) X, (float) Y);
                     break;
                 case "Bomb_Up":
                     X = map.getObjectX(0, i);

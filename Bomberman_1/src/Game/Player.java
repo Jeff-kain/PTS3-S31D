@@ -50,6 +50,10 @@ public class Player implements IGameObject {
         this.bombRange = bombRange;
     }
 
+    public TeamColor getTeamColor() {
+        return teamColor;
+    }
+
     public Player(SpriteSheet sprites, Float x, Float y, int bombCount, float speed, Boolean kick) throws SlickException {
         this.sprites = sprites;
         this.x = x;
@@ -73,6 +77,13 @@ public class Player implements IGameObject {
                 Explosion exp = (Explosion) o;
 
                 if (exp.intersects(this)) {
+                    if (this.teamColor == TeamColor.BLUE && visible == true) {
+                        game.getTeam1().damage(50f);
+                    }
+                    if (this.teamColor == TeamColor.GREEN && visible == true) {
+                        game.getTeam2().damage(50f);
+
+                    }
                     this.visible = false;
                     respawn = 500;
                 }
@@ -91,31 +102,34 @@ public class Player implements IGameObject {
             }
             this.visible = true;
         }
-        for (IGameObject o : game.playground().getPowerups()){
-            if (o instanceof  Bomb_Up) {
+        for (IGameObject o : game.playground().getPowerups()) {
+            if (o instanceof Bomb_Up) {
                 Bomb_Up bu = (Bomb_Up) o;
 
-                if(bu.intersects(this)){
-                    if(bombCount <4)
-                    setBombCount(getBombCount() + 1);
+                if (bu.intersects(this)) {
+                    if (bombCount < 4) {
+                        setBombCount(getBombCount() + 1);
+                    }
                     game.playground().removePowerup(bu);
                 }
             }
             if (o instanceof Explosion_Up) {
                 Explosion_Up eu = (Explosion_Up) o;
 
-                if(eu.intersects(this)){
-                    if(getBombRange() <2.5f)
+                if (eu.intersects(this)) {
+                    if (getBombRange() < 2.5f) {
                         setBombRange(getBombRange() + 0.5f);
+                    }
                     game.playground().removePowerup(eu);
                 }
             }
             if (o instanceof Speed_Up) {
                 Speed_Up su = (Speed_Up) o;
 
-                if(su.intersects(this)){
-                    if(getSpeed() > 100f)
+                if (su.intersects(this)) {
+                    if (getSpeed() > 100f) {
                         setSpeed(getSpeed() - 50f);
+                    }
                     game.playground().removePowerup(su);
                 }
             }
@@ -252,9 +266,8 @@ public class Player implements IGameObject {
         }
         return false;
     }
-    
-    public boolean intersectWithBomb()
-    {
+
+    public boolean intersectWithBomb() {
         return false;
     }
 

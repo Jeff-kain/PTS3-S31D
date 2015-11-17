@@ -218,10 +218,10 @@ public class Bomb implements IGameObject {
 
     public void checkForBase(float x, float y) {
         if (game.getTeam1().getX() == x && game.getTeam1().getY() == y) {
-            game.getTeam1().damage();
+            game.getTeam1().damage(25f);
         }
         if (game.getTeam2().getX() == x && game.getTeam2().getY() == y) {
-            game.getTeam2().damage();
+            game.getTeam2().damage(25f);
         }
     }
 
