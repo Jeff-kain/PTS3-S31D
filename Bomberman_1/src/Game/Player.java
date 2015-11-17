@@ -128,7 +128,7 @@ public class Player implements IGameObject {
         if (teamColor == teamColor.BLUE) {
             row = 16;
         } else {
-            row = 14;
+            row = 17;
         }
 
         switch (direction.name()) {
@@ -195,7 +195,7 @@ public class Player implements IGameObject {
             sprite = sprites.getSubImage(2, 16);
             System.out.println("Foobar");
         } else {
-            sprite = sprites.getSubImage(2, 15);
+            sprite = sprites.getSubImage(2, 17);
         }
     }
 
