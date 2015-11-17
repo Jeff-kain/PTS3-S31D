@@ -27,6 +27,7 @@ public class Team implements IGameObject {
     private Image sprite;
 
     public ArrayList<Player> getPlayers() {
+        System.out.println("Size: " + players.size());
         return players;
     }
 
@@ -44,9 +45,8 @@ public class Team implements IGameObject {
     }
 
     public void addPlayer(Player player) {
-        System.out.println("Foo");
         players.add(player);
-        System.out.println("Bar");
+        System.out.println(players.size());
     }
 
     public TeamColor getColor() {

@@ -6,8 +6,13 @@
 package Game;
 
 import java.awt.geom.Rectangle2D;
+import java.util.ArrayList;
+import java.util.Timer;
+import java.util.TimerTask;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
+import bomberman.Bomberman;
 import org.newdawn.slick.Animation;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
@@ -28,17 +33,17 @@ public class Bomb implements IGameObject {
     private boolean exploded;
     private Float range;
     private final int duration = 550;
-
     public int getExplodeTime() {
         return explodeTime;
     }
-
     public boolean isExploded() {
         return exploded;
     }
     private boolean intersectWithPlayer;
     private final static int STEP = 2;
+    private ArrayList<Player> players;
     private int steps;
+    private int kickRange;
 
     public Bomb(SpriteSheet sprites, Float x, Float y, float range) {
         this.sprites = sprites;
@@ -48,6 +53,7 @@ public class Bomb implements IGameObject {
         this.sprite = this.sprites.getSubImage(11, 15);
         this.exploded = false;
         this.range = range;
+        this.kickRange = 3;
     }
 
     public Animation getAnimation() {
@@ -82,6 +88,31 @@ public class Bomb implements IGameObject {
             }
         }
         explodeTime--;
+
+        ArrayList<Player> players = Game.getInstance().getAllPlayers();
+
+        System.out.println(players.size());
+        for(Player p: players) {
+
+            if(intersects(p)) {
+
+                p.setKick(true);
+                if(p.getKick()){
+                    kickBomb(p.getLastDirection());
+                }
+            }
+        }
+
+    }
+
+    public void kickBomb(Direction direction) {
+        Timer timer = new Timer();
+        timer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                x += 1f;
+            }
+        }, 0, 100);
     }
 
     public void createFlames() throws SlickException {

@@ -13,7 +13,7 @@ import org.newdawn.slick.Image;
  * @author jeffrey
  */
 public interface IGameObject {
-    public Game game = new Game();
+    public Game game = Game.getInstance();
     
     public Image getSprite();
     

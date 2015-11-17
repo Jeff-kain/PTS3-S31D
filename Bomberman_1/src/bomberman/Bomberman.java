@@ -79,7 +79,7 @@ public class Bomberman extends BasicGame {
 
     @Override
     public void init(GameContainer gc) throws SlickException {
-        game = new Game();
+        game = Game.getInstance();
         playground = game.playground();
         map = playground.getMap();
         bombAnimations = new HashMap<>();

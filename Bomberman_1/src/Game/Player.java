@@ -36,8 +36,9 @@ public class Player implements IGameObject {
     private Float bombRange;
     private Boolean visible;
     private Bomb_Up bomb_Up;
-    private Game game = new Game();
+    private Game game = Game.getInstance();
     private TeamColor teamColor;
+    private Direction lastDirection;
 
     private Playground playground = new Playground();
     private int respawn;
@@ -138,6 +139,7 @@ public class Player implements IGameObject {
 
     public void reloadSprite(Direction direction) {
         int row = 0;
+        lastDirection = direction;
 
         if (teamColor == teamColor.BLUE) {
             row = 16;
@@ -196,6 +198,10 @@ public class Player implements IGameObject {
 
     public int getBombCount() {
         return bombCount;
+    }
+
+    public Direction getLastDirection(){
+        return lastDirection;
     }
 
     public void setPosition(Float x, Float y) {

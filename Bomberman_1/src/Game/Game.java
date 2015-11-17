@@ -5,10 +5,9 @@
  */
 package Game;
 
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import org.newdawn.slick.SlickException;
 import org.newdawn.slick.SpriteSheet;
+
+import java.util.ArrayList;
 
 /**
  *
@@ -16,11 +15,17 @@ import org.newdawn.slick.SpriteSheet;
  */
 public class Game {
 
+
+    private static Game instance;
     private String naam;
     private String Beschrijving;
-    private static Playground playground = new Playground();
+    private static Playground playground;
     private static Team team1;
     private static Team team2;
+
+    private Game() {
+        playground = new Playground();
+    }
 
     public void setTeam1(SpriteSheet sprites, TeamColor Color, float x, float y) {
         team1 = new Team(sprites, Color, x, y);
@@ -38,10 +43,6 @@ public class Game {
         return team2;
     }
 
-    public Game() {
-
-    }
-
     public Playground playground() {
         return playground;
     }
@@ -52,5 +53,22 @@ public class Game {
 
     public String getBeschrijving() {
         return Beschrijving;
+    }
+
+    public ArrayList<Player> getAllPlayers() {
+        ArrayList<Player> players = new ArrayList<>();
+        players.addAll(team1.getPlayers());
+        players.addAll(team2.getPlayers());
+
+        return players;
+    }
+
+    public static Game getInstance() {
+        if(instance == null) {
+            instance = new Game();
+            return instance;
+        }
+
+        return instance;
     }
 }
