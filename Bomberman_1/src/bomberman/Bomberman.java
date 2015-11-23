@@ -93,17 +93,16 @@ public class Bomberman extends BasicGame {
         sprites = new SpriteSheet("res" + File.separator + "sprites3x.png", 48, 48, Color.decode("#FF00FF"));
         spritesCastle = new SpriteSheet("res" + File.separator + "castlesprites.png", 48, 48, Color.decode("#FF00FF"));
         //character = sprites.getSprite(2, 16);
-        game.setTeam1(sprites, TeamColor.BLUE, 48, 624);
-        game.setTeam2(sprites, TeamColor.GREEN, 624, 48);
         player = new Player(sprites, 48f, 48f, 1, 48f, false);
         player.setTeamColor(TeamColor.BLUE);
         player2 = new Player(sprites, 624f, 624f, 1, 48f, false);
         player2.setTeamColor(TeamColor.GREEN);
-        game.getTeam1().addPlayer(player);
-        game.getTeam2().addPlayer(player2);
         timeOutP1 = player.getSpeed();
         timeOutP2 = player2.getSpeed();
         loadMap();
+
+        game.getTeam1().addPlayer(player);
+        game.getTeam2().addPlayer(player2);
     }
 
     @Override

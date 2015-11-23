@@ -20,8 +20,8 @@ public class Game {
     private String naam;
     private String Beschrijving;
     private static Playground playground;
-    private static Team team1;
-    private static Team team2;
+    private Team team1;
+    private Team team2;
 
     private Game() {
         playground = new Playground();
