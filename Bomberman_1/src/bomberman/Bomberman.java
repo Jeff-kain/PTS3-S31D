@@ -413,7 +413,7 @@ public class Bomberman extends BasicGame {
             }
 
             if (game.getTeam1().currentHealth() <= 0) {
-
+                game.getTeam1().setCurrentHealth(0);
                 isEnded = true;
                 g.setColor(Color.blue);
                 g.fillRect(220.0f, 220.0f, 270.0f, 230.0f);
@@ -425,7 +425,7 @@ public class Bomberman extends BasicGame {
                 g.drawImage(play, 250, 300);
                 g.drawImage(replay, 380, 300);
             } else if (game.getTeam2().currentHealth() <= 0) {
-
+                game.getTeam2().setCurrentHealth(0f);
                 isEnded = true;
                 g.setColor(Color.blue);
                 g.fillRect(220.0f, 220.0f, 270.0f, 230.0f);
