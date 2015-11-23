@@ -38,9 +38,13 @@ public class Team implements IGameObject {
         if (color == TeamColor.BLUE) {
             sprite = sprites.getSubImage(0, 0);
         } else {
-            sprite = sprites.getSubImage(1,0 );
+            sprite = sprites.getSubImage(1, 0);
         }
 
+    }
+
+    public void setCurrentHealth(float currentHealth) {
+        this.currentHealth = currentHealth;
     }
 
     public void addPlayer(Player player) {
