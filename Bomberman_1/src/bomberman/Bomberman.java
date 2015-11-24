@@ -54,8 +54,6 @@ public class Bomberman extends BasicGame {
     private List<Bomb> bombs2;
     private ArrayList<Box> boxes;
     private TiledMap map;
-    private int x;
-    private int y;
     private Playground playground;
     private SpriteSheet sprites;
     private SpriteSheet spritesCastle;
@@ -83,8 +81,6 @@ public class Bomberman extends BasicGame {
         playground = game.playground();
         map = playground.getMap();
         bombAnimations = new HashMap<>();
-        x = 1;
-        y = 1;
         tile = 48f;
         isEnded = false;
         //mouseBall = new Circle(72,72,20);
@@ -355,11 +351,8 @@ public class Bomberman extends BasicGame {
                 g.drawImage(game.getTeam1().getSprite(), game.getTeam1().getX(), game.getTeam1().getY());
                 g.drawImage(game.getTeam2().getSprite(), game.getTeam2().getX(), game.getTeam2().getY());
             }
-//            g.setColor(Color.blue);
-//            g.fill(mouseBall);    
 
             for (Bomb bomb : bombs) {
-                //g.drawImage(bomb.getSprite(), bomb.getX(), bomb.getY());
                 Animation animation;
                 if (bombAnimations.get(bomb) == null) {
                     animation = bomb.getAnimation();
@@ -387,13 +380,7 @@ public class Bomberman extends BasicGame {
 
                 animation.draw(bomb.getX(), bomb.getY());
             }
-//        for (Player p : game.getTeam1().getPlayers()) {
-//            g.drawImage(p.getSprite(), p.getX(), p.getY());
-//        }
-//
-//        for (Player p : game.getTeam2().getPlayers()) {
-//            g.drawImage(p.getSprite(), p.getX(), p.getY());
-//        }
+
             if (player.getVisible() == true) {
                 g.drawImage(player.getSprite(), player.getX(), player.getY());
             }
@@ -437,12 +424,6 @@ public class Bomberman extends BasicGame {
                 g.drawImage(play, 250, 300);
                 g.drawImage(replay, 380, 300);
             }
-        //g.drawString("Howdy!", 100, 100);
-            //        g.setColor(Color.green);
-            //        g.fillRect(20.0f, 10.0f, 300.0f, 20.0f);
-            //        
-            //        g.setColor(Color.blue);
-            //        g.fillRect(20.0f, 10.0f, team1.maxHealth() / team1.currentHealth() * 300.0f, 20.0f);
         }
 
     
