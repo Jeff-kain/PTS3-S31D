@@ -5,8 +5,14 @@
  */
 package Game;
 
+import java.awt.geom.Rectangle2D;
+import java.util.ArrayList;
+import java.util.Timer;
+import java.util.TimerTask;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
+import bomberman.Bomberman;
 import org.newdawn.slick.Animation;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
@@ -26,17 +32,19 @@ public class Bomb implements IGameObject {
     private Animation explodingBomb;
     private boolean exploded;
     private Float range;
-
+    private final int duration = 550;
     public int getExplodeTime() {
         return explodeTime;
     }
-
     public boolean isExploded() {
         return exploded;
     }
     private boolean intersectWithPlayer;
     private final static int STEP = 2;
+    private ArrayList<Player> players;
     private int steps;
+    private float kickRange;
+    private boolean moving = false;
 
     public Bomb(SpriteSheet sprites, Float x, Float y, float range) {
         this.sprites = sprites;
@@ -46,11 +54,13 @@ public class Bomb implements IGameObject {
         this.sprite = this.sprites.getSubImage(11, 15);
         this.exploded = false;
         this.range = range;
+        this.kickRange = 1f;
     }
 
     public Animation getAnimation() {
+
         int[] frames = {4, 18, 5, 18, 6, 18, 7, 18, 8, 18, 9, 18};
-        int[] durations = {100, 100, 100, 100, 100, 100};
+        int[] durations = {duration, duration, duration, duration, duration, duration};
         Animation animation = new Animation(sprites, frames, durations);
 
         return animation;
@@ -79,6 +89,80 @@ public class Bomb implements IGameObject {
             }
         }
         explodeTime--;
+
+        Game game = Game.getInstance();
+        ArrayList<Player> players = game.getAllPlayers();
+        for(Player p: players) {
+            if(intersects(p)) {
+                p.setKick(true);
+                if(moving == false) {
+                    if(p.getKick()){
+                        kickBomb(p.getLastDirection());
+                    }
+                }
+            }
+        }
+
+    }
+
+    public void kickBomb(Direction direction) {
+        this.moving = true;
+
+        Thread t = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                float range = kickRange * 48f;
+                float travelled = 0f;
+
+                while (travelled < range) {
+                    switch (direction.name()) {
+                        case "NORTH":
+                            y -= 0.5f;
+                            break;
+
+                        case "EAST":
+                            x += 0.5f;
+                            break;
+
+                        case "SOUTH":
+                            y += 0.5f;
+                            break;
+
+                        case "WEST":
+                            x -= 0.5f;
+                            break;
+
+                        default:
+                            break;
+                    }
+
+                    travelled += 0.5f;
+                    System.out.println(travelled);
+
+                    try {
+                        Thread.sleep(1);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+
+                System.out.println(x + " - " + y);
+                moving = false;
+            }
+        });
+
+        t.start();
+
+
+        Timer timer = new Timer();
+
+
+        timer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+
+            }
+        }, 0, 100);
     }
 
     public void createFlames() throws SlickException {
@@ -98,7 +182,8 @@ public class Bomb implements IGameObject {
                     Explosion flameMid = new Explosion(sprites);
                     flameMid.setPosition(oldX, oldY);
                     game.playground().addToLevel(flameMid);
-                    if (!this.intersectWithWall()) {
+                    int tileid = game.playground().getMap().getTileId(Math.round(oldX / 48) + 1, Math.round(oldY / 48), 1);
+                    if (!this.intersectWithWall() && tileid <= 0) {
                         Explosion flame = new Explosion(sprites, Direction.EAST);
                         flame.setPosition(oldX + 48 + 48 * r, oldY);
                         game.playground().addToLevel(flame);
@@ -114,7 +199,9 @@ public class Bomb implements IGameObject {
             case WEST:
                 for (int r = 0; r < range; r++) {
                     this.x -= (48 + 48 * r);
-                    if (!this.intersectWithWall()) {
+                    int tileid = game.playground().getMap().getTileId(Math.round(oldX / 48) - 1, Math.round(oldY / 48), 1);
+
+                    if (!this.intersectWithWall() && tileid <= 0) {
                         Explosion flame = new Explosion(sprites, Direction.WEST);
                         flame.setPosition(oldX - 48 - 48 * r, oldY);
                         game.playground().addToLevel(flame);
@@ -131,7 +218,9 @@ public class Bomb implements IGameObject {
             case SOUTH:
                 for (int r = 0; r < range; r++) {
                     this.y += (48 + 48 * r);
-                    if (!this.intersectWithWall()) {
+                    int tileid = game.playground().getMap().getTileId(Math.round(oldX / 48), Math.round(oldY / 48) +1, 1);
+
+                    if (!this.intersectWithWall() && tileid <= 0) {
                         Explosion flame = new Explosion(sprites, Direction.SOUTH);
                         flame.setPosition(oldX, oldY + 48 + 48 * r);
                         game.playground().addToLevel(flame);
@@ -148,7 +237,9 @@ public class Bomb implements IGameObject {
             case NORTH:
                 for (int r = 0; r < range; r++) {
                     this.y -= (48 + 48 * r);
-                    if (!this.intersectWithWall()) {
+                    int tileid = game.playground().getMap().getTileId(Math.round(oldX / 48), Math.round(oldY / 48) -1, 1);
+
+                    if (!this.intersectWithWall() && tileid <= 0) {
                         Explosion flame = new Explosion(sprites, Direction.NORTH);
                         flame.setPosition(oldX, oldY - 48 - 48 * r);
                         game.playground().addToLevel(flame);
@@ -180,25 +271,55 @@ public class Bomb implements IGameObject {
                 game.playground().RemoveBox(o);
             }
         }
+//        for (Player p : game.getTeam1().getPlayers()) {
+//            if (p.getX() == x && p.getY() == y) {
+//                Explosion flame = null;
+//                try {
+//                    flame = new Explosion(sprites, d);
+//                } catch (SlickException ex) {
+//                    Logger.getLogger(Bomb.class.getName()).log(Level.SEVERE, null, ex);
+//                }
+//                flame.setPosition(p.getX(), p.getY());
+//                game.playground().addToLevel(flame);
+//            }
+//        }
+//        for (Player p : game.getTeam2().getPlayers()) {
+//            if (p.getX() == x && p.getY() == y) {
+//                Explosion flame = null;
+//                try {
+//                    flame = new Explosion(sprites, d);
+//                } catch (SlickException ex) {
+//                    Logger.getLogger(Bomb.class.getName()).log(Level.SEVERE, null, ex);
+//                }
+//                flame.setPosition(p.getX(), p.getY());
+//                game.playground().addToLevel(flame);
+//            }
+//        }
     }
 
     public void checkForBase(float x, float y) {
         if (game.getTeam1().getX() == x && game.getTeam1().getY() == y) {
-            game.getTeam1().damage();
+            game.getTeam1().damage(25f);
         }
         if (game.getTeam2().getX() == x && game.getTeam2().getY() == y) {
-            game.getTeam2().damage();
+            game.getTeam2().damage(25f);
         }
     }
 
     public boolean intersectWithWall() {
         for (Box w : game.playground().getBoxes()) {
             if (w.intersects(this)) {
-                System.out.println(this.getX());
+                //System.out.println(this.getX());
                 return true;
             }
         }
         return false;
+    }
+
+    public boolean intersects(IGameObject actor) {
+        Rectangle2D predmet = new Rectangle2D.Float(actor.getX(), actor.getY(), 48f, 48f);
+        Rectangle2D objekt = new Rectangle2D.Float(this.getX(), this.getY(), 48f, 48f);
+        return objekt.intersects(predmet);
     }
 
 }

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.text.*?>
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane id="AnchorPane" prefHeight="282.0" prefWidth="466.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="chat_client.ClientFXController">
+   <children>
+      <TextArea fx:id="taChat" layoutX="13.0" layoutY="14.0" prefHeight="230.0" prefWidth="440.0" />
+      <Button fx:id="btnSend" layoutX="377.0" layoutY="250.0" mnemonicParsing="false" onAction="#btSend" prefHeight="25.0" prefWidth="76.0" text="Send" />
+      <TextField fx:id="tfSend" layoutX="113.0" layoutY="250.0" prefHeight="25.0" prefWidth="257.0" />
+      <Label fx:id="TextUsername" layoutX="13.0" layoutY="254.0" text="Username :" />
+   </children>
+</AnchorPane>
