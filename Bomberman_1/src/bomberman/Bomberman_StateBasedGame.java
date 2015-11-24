@@ -5,26 +5,22 @@
  */
 package bomberman;
 
-import Game.Game;
 import Game.Bomb;
 import Game.Box;
+import Game.Direction;
+import Game.Game;
+import Game.IGameObject;
 import Game.Player;
 import Game.Playground;
-import Game.Team;
 import Game.TeamColor;
-import Game.Direction;
-import Game.IGameObject;
-
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
 import org.newdawn.slick.Animation;
 import org.newdawn.slick.AppGameContainer;
-import org.newdawn.slick.BasicGame;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
@@ -33,23 +29,33 @@ import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.SpriteSheet;
 import org.newdawn.slick.geom.Circle;
+import org.newdawn.slick.state.StateBasedGame;
 import org.newdawn.slick.tiled.TiledMap;
-import powerup.*;
+import powerup.Bomb_Up;
+import powerup.Explosion_Up;
+import powerup.Kick;
+import powerup.PowerUp;
+import powerup.Speed_Up;
 
 /**
  *
- * @author jeffrey
-// */
-public class Bomberman {
-    public static void main(String[] args) {
-        try {
-            AppGameContainer appgc;
-            appgc = new AppGameContainer(new Bomberman_StateBasedGame("Bomberman"));
-            appgc.setDisplayMode(720, 720, false);
-            appgc.setVSync(true);
-            appgc.start();
-        } catch (SlickException ex) {
-            Logger.getLogger(Bomberman.class.getName()).log(Level.SEVERE, null, ex);
-        }
+ * @author Rob
+ */
+public class Bomberman_StateBasedGame extends StateBasedGame
+{
+
+    public Bomberman_StateBasedGame(String name) {
+        super(name);
+    }
+
+    @Override
+    public void initStatesList(GameContainer gc) throws SlickException {
+        addState(new Menu_StateBasedGame()); // ID = 0
+        addState(new Lobby_StateBasedGame()); //ID = 1
+        addState(new Game_StateBasedGame()); // ID = 2
+        addState(new GameOver_StateBasedGame()); // ID = 3
+    }
+    
+    public static void main(String[] args){
     }
 }
