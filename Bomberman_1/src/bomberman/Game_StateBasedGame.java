@@ -312,6 +312,7 @@ public class Game_StateBasedGame extends BasicGameState {
                 Bomb b = new Bomb(sprites, player.getX(), player.getY(), player.getBombRange());
 
                 if (bombs.size() < player.getBombCount()) {
+                    player.setKickDirection(Direction.NONE);
                     bombs.add(b);
                 }
             }
@@ -371,6 +372,7 @@ public class Game_StateBasedGame extends BasicGameState {
                 Bomb b = new Bomb(sprites, player2.getX(), player2.getY(), player2.getBombRange());
 
                 if (bombs2.size() < player2.getBombCount()) {
+                    player2.setKickDirection(Direction.NONE);
                     bombs2.add(b);
                 }
             }
@@ -487,12 +489,12 @@ public class Game_StateBasedGame extends BasicGameState {
                     PowerUp p1 = new Explosion_Up(sprites, "Explosion_Up", (float) X, (float) Y, false);
                     playground.addPowerup(p1);
                     break;
-//                case "Kick":
-//                    X = map.getObjectX(0, i);
-//                    Y = map.getObjectY(0, i);
-//                    PowerUp p2 = new Kick(sprites, "Kick", (float) X, (float) Y, false);
-//                    playground.addPowerup(p2);
-//                    break;
+                case "Kick":
+                    X = map.getObjectX(0, i);
+                    Y = map.getObjectY(0, i);
+                    PowerUp p2 = new Kick(sprites, "Kick", (float) X, (float) Y, false);
+                    playground.addPowerup(p2);
+                    break;
                 case "Speed_Up":
                     X = map.getObjectX(0, i);
                     Y = map.getObjectY(0, i);

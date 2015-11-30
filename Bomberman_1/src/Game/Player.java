@@ -5,18 +5,10 @@
  */
 package Game;
 
-import java.io.File;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
-import bomberman.Bomberman;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.SpriteSheet;
-import powerup.Bomb_Up;
-import powerup.Explosion_Up;
-import powerup.PowerUp;
-import powerup.Speed_Up;
+import powerup.*;
 
 /**
  *
@@ -38,7 +30,7 @@ public class Player implements IGameObject {
     private Bomb_Up bomb_Up;
     private Game game = Game.getInstance();
     private TeamColor teamColor;
-    private Direction lastDirection;
+    private Direction kickDirection;
 
     private Playground playground = new Playground();
     private int respawn;
@@ -67,6 +59,7 @@ public class Player implements IGameObject {
         this.bombRange = 0.5f;
         this.bombCount = bombCount;
         this.kick = kick;
+        this.kickDirection = Direction.NONE;
         visible = true;
         respawn = 0;
     }
@@ -134,12 +127,21 @@ public class Player implements IGameObject {
                     game.playground().removePowerup(su);
                 }
             }
+
+            if(o instanceof Kick) {
+                Kick k = (Kick)o;
+
+                if(k.intersects(this)) {
+                    this.setKick(true);
+                    game.playground().removePowerup(k);
+                }
+            }
         }
     }
 
     public void reloadSprite(Direction direction) {
         int row = 0;
-        lastDirection = direction;
+        kickDirection = direction;
 
         if (teamColor == teamColor.BLUE) {
             row = 16;
@@ -200,9 +202,9 @@ public class Player implements IGameObject {
         return bombCount;
     }
 
-    public Direction getLastDirection(){
-        return lastDirection;
-    }
+    public Direction getKickDirection(){ return kickDirection; }
+
+    public void setKickDirection(Direction direction) { kickDirection = direction; }
 
     public void setPosition(Float x, Float y) {
         this.x = x;

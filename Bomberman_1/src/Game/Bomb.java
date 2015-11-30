@@ -12,7 +12,6 @@ import java.util.TimerTask;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import bomberman.Bomberman;
 import org.newdawn.slick.Animation;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
@@ -94,10 +93,10 @@ public class Bomb implements IGameObject {
         ArrayList<Player> players = game.getAllPlayers();
         for(Player p: players) {
             if(intersects(p)) {
-                p.setKick(true);
-                if(moving == false) {
+                if(!moving) {
                     if(p.getKick()){
-                        kickBomb(p.getLastDirection());
+                        kickBomb(p.getKickDirection());
+
                     }
                 }
             }
@@ -108,47 +107,47 @@ public class Bomb implements IGameObject {
     public void kickBomb(Direction direction) {
         this.moving = true;
 
-        Thread t = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                float range = kickRange * 48f;
-                float travelled = 0f;
+        Thread t = new Thread(() -> {
+            float range1 = kickRange * 48f;
+            float travelled = 0f;
 
-                while (travelled < range) {
-                    switch (direction.name()) {
-                        case "NORTH":
-                            y -= 0.5f;
-                            break;
+            while (travelled < range1) {
+                switch (direction.name()) {
+                    case "NORTH":
+                        y -= 0.5f;
+                        break;
 
-                        case "EAST":
-                            x += 0.5f;
-                            break;
+                    case "EAST":
+                        x += 0.5f;
+                        break;
 
-                        case "SOUTH":
-                            y += 0.5f;
-                            break;
+                    case "SOUTH":
+                        y += 0.5f;
+                        break;
 
-                        case "WEST":
-                            x -= 0.5f;
-                            break;
+                    case "WEST":
+                        x -= 0.5f;
+                        break;
 
-                        default:
-                            break;
-                    }
+                    case "NONE":
+                        break;
 
-                    travelled += 0.5f;
-                    System.out.println(travelled);
-
-                    try {
-                        Thread.sleep(1);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
+                    default:
+                        break;
                 }
 
-                System.out.println(x + " - " + y);
-                moving = false;
+                travelled += 0.5f;
+                System.out.println(travelled);
+
+                try {
+                    Thread.sleep(1);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
             }
+
+            System.out.println(x + " - " + y);
+            moving = false;
         });
 
         t.start();
@@ -318,8 +317,8 @@ public class Bomb implements IGameObject {
 
     public boolean intersects(IGameObject actor) {
         Rectangle2D predmet = new Rectangle2D.Float(actor.getX(), actor.getY(), 48f, 48f);
-        Rectangle2D objekt = new Rectangle2D.Float(this.getX(), this.getY(), 48f, 48f);
-        return objekt.intersects(predmet);
+        Rectangle2D object = new Rectangle2D.Float(this.getX(), this.getY(), 48f, 48f);
+        return object.intersects(predmet);
     }
 
 }
