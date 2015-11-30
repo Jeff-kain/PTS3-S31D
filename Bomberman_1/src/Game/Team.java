@@ -8,6 +8,7 @@ package Game;
 import java.lang.Object;
 import java.awt.Color;
 import java.awt.List;
+import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.SpriteSheet;
@@ -93,6 +94,12 @@ public class Team implements IGameObject {
     @Override
     public void Update() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    public boolean intersects(IGameObject actor) {
+        Rectangle2D predmet = new Rectangle2D.Float(actor.getX(), actor.getY(), 48f, 48f);
+        Rectangle2D objekt = new Rectangle2D.Float(this.getX(), this.getY(), 48f, 48f);
+        return objekt.intersects(predmet);
     }
 
 }
