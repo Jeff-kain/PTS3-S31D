@@ -39,6 +39,12 @@ public class Bomb implements IGameObject {
     public boolean isExploded() {
         return exploded;
     }
+
+    public void setPosition(Float x, Float y) {
+        this.x = x;
+        this.y = y;
+    }
+
     private boolean intersectWithPlayer;
     private final static int STEP = 2;
     private ArrayList<Player> players;
@@ -54,7 +60,7 @@ public class Bomb implements IGameObject {
         this.sprite = this.sprites.getSubImage(11, 15);
         this.exploded = false;
         this.range = range;
-        this.kickRange = 1f;
+        this.kickRange = 15f;
     }
 
     public Animation getAnimation() {
@@ -158,17 +164,36 @@ public class Bomb implements IGameObject {
                         travelled += 0.5f;
                     } else {
                         boxCollided = true;
-                        setPosition(oldposX, oldposY);
+
+                        switch(direction.name()) {
+                            case "NORTH":
+                                setPosition(x,y + 0.5f);
+                                break;
+
+                            case "EAST":
+                                setPosition(x - 0.5f,y);
+                                break;
+
+                            case "SOUTH":
+                                setPosition(x,y + 0.5f);
+                                break;
+
+                            case "WEST":
+                                setPosition(x + 0.5f,y);
+                                break;
+                        }
+
+                        moving = false;
                         break;
 
                     }
 
-                    // System.out.println(travelled);
-//                    try {
-//                        Thread.sleep(1);
-//                    } catch (InterruptedException e) {
-//                        e.printStackTrace();
-//                    }
+                     System.out.println(travelled);
+                    try {
+                        Thread.sleep(1);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
                 }
 
                 System.out.println(x + " - " + y);
