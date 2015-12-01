@@ -270,37 +270,39 @@ public class Game_StateBasedGame extends BasicGameState {
             posX = Math.round(player.getX()) / 48;
             posY = Math.round(player.getY()) / 48;
 
+            System.out.println(timeOutP1);
+
             if (timeOutP1 <= 0) {
                 if (gc.getInput().isKeyDown(Input.KEY_LEFT)) {
-                    player.reloadSprite(Direction.WEST);
-
                     if (map.getTileId(posX - 1, posY, objectLayer) == 0) {
-                        player.moveLeft();
+                        player.move(Direction.WEST);
                     }
+
+                    timeOutP1 = player.getSpeed();
 
                 } else if (gc.getInput().isKeyDown(Input.KEY_RIGHT)) {
-                    player.reloadSprite(Direction.EAST);
                     if (map.getTileId(posX + 1, posY, objectLayer) == 0) {
-                        player.moveRight();
+                        player.move(Direction.EAST);
                     }
+
+                    timeOutP1 = player.getSpeed();
 
                 } else if (gc.getInput().isKeyDown(Input.KEY_UP)) {
-                    player.reloadSprite(Direction.NORTH);
-
                     if (map.getTileId(posX, posY - 1, objectLayer) == 0) {
-                        player.moveUp();
+                        player.move(Direction.NORTH);
                     }
+
+                    timeOutP1 = player.getSpeed();
 
                 } else if (gc.getInput().isKeyDown(Input.KEY_DOWN)) {
-                    player.reloadSprite(Direction.SOUTH);
-
                     if (map.getTileId(posX, posY + 1, objectLayer) == 0) {
-                        player.moveDown();
+                        player.move(Direction.SOUTH);
                     }
-                }
 
-                timeOutP1 = player.getSpeed();
+                    timeOutP1 = player.getSpeed();
+                }
             }
+
 
             if (timeOutP1 > 0) {
                 timeOutP1 -= delta;
@@ -332,34 +334,33 @@ public class Game_StateBasedGame extends BasicGameState {
 
             if (timeOutP2 <= 0) {
                 if (gc.getInput().isKeyDown(Input.KEY_A)) {
-                    player2.reloadSprite(Direction.WEST);
-
                     if (map.getTileId(pos2X - 1, pos2Y, objectLayer) == 0) {
-                        player2.moveLeft();
+                        player2.move(Direction.WEST);
                     }
+
+                    timeOutP2 = player2.getSpeed();
 
                 } else if (gc.getInput().isKeyDown(Input.KEY_D)) {
-                    player2.reloadSprite(Direction.EAST);
                     if (map.getTileId(pos2X + 1, pos2Y, objectLayer) == 0) {
-                        player2.moveRight();
+                        player2.move(Direction.EAST);
                     }
+
+                    timeOutP2 = player2.getSpeed();
 
                 } else if (gc.getInput().isKeyDown(Input.KEY_W)) {
-                    player2.reloadSprite(Direction.NORTH);
-
                     if (map.getTileId(pos2X, pos2Y - 1, objectLayer) == 0) {
-                        player2.moveUp();
+                        player2.move(Direction.NORTH);
                     }
+
+                    timeOutP2 = player2.getSpeed();
 
                 } else if (gc.getInput().isKeyDown(Input.KEY_S)) {
-                    player2.reloadSprite(Direction.SOUTH);
-
                     if (map.getTileId(pos2X, pos2Y + 1, objectLayer) == 0) {
-                        player2.moveDown();
+                        player2.move(Direction.SOUTH);
                     }
-                }
 
-                timeOutP2 = player2.getSpeed();
+                    timeOutP2 = player2.getSpeed();
+                }
             }
 
             if (timeOutP2 > 0) {
