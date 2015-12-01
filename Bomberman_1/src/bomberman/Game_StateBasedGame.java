@@ -14,6 +14,7 @@ import Game.Team;
 import Game.TeamColor;
 import Game.Direction;
 import Game.IGameObject;
+import Game.Wall;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -76,7 +77,6 @@ public class Game_StateBasedGame extends BasicGameState {
     private static AppGameContainer appgc;
     private String WinningTeam;
 
-
     @Override
     public int getID() {
         return 2;
@@ -115,7 +115,9 @@ public class Game_StateBasedGame extends BasicGameState {
     @Override
     public void render(GameContainer gc, StateBasedGame sbg, Graphics g) throws SlickException {
         map.render(0, 0);
-
+        for (Wall wall : playground.getWalls()) {
+            g.drawImage(wall.getSprite(), wall.getX(), wall.getY());
+        }
         if (game.getTeam1() != null && game.getTeam2() != null) {
             float healthScale = game.getTeam1().currentHealth() / game.getTeam1().maxHealth();
             float healthScale2 = game.getTeam2().currentHealth() / game.getTeam2().maxHealth();
@@ -274,29 +276,21 @@ public class Game_StateBasedGame extends BasicGameState {
                 if (gc.getInput().isKeyDown(Input.KEY_LEFT)) {
                     player.reloadSprite(Direction.WEST);
 
-                    if (map.getTileId(posX - 1, posY, objectLayer) == 0) {
-                        player.moveLeft();
-                    }
+                    player.moveLeft();
 
                 } else if (gc.getInput().isKeyDown(Input.KEY_RIGHT)) {
                     player.reloadSprite(Direction.EAST);
-                    if (map.getTileId(posX + 1, posY, objectLayer) == 0) {
-                        player.moveRight();
-                    }
+                    player.moveRight();
 
                 } else if (gc.getInput().isKeyDown(Input.KEY_UP)) {
                     player.reloadSprite(Direction.NORTH);
 
-                    if (map.getTileId(posX, posY - 1, objectLayer) == 0) {
-                        player.moveUp();
-                    }
+                    player.moveUp();
 
                 } else if (gc.getInput().isKeyDown(Input.KEY_DOWN)) {
                     player.reloadSprite(Direction.SOUTH);
+                    player.moveDown();
 
-                    if (map.getTileId(posX, posY + 1, objectLayer) == 0) {
-                        player.moveDown();
-                    }
                 }
 
                 timeOutP1 = player.getSpeed();
@@ -317,7 +311,7 @@ public class Game_StateBasedGame extends BasicGameState {
                 }
             }
 
-            if (player.intersectWithWall()) {
+            if (player.intersectWithBox() || player.intersectWithWall()) {
                 player.setPosition(hposx, hposy);
             }
 
@@ -377,7 +371,7 @@ public class Game_StateBasedGame extends BasicGameState {
                 }
             }
 
-            if (player2.intersectWithWall()) {
+            if (player2.intersectWithBox() || player2.intersectWithWall()) {
                 player2.setPosition(hpos2x, hpos2y);
             }
 
@@ -452,7 +446,7 @@ public class Game_StateBasedGame extends BasicGameState {
             o.Update();
         }
     }
-    
+
     public void loadMap() throws SlickException {
         int objectCount = map.getObjectCount(0);
         float X;
@@ -506,8 +500,14 @@ public class Game_StateBasedGame extends BasicGameState {
                     Y = map.getObjectY(0, i);
                     PowerUp p4 = new PowerUp("Speed_Up", (float) X, (float) Y);//niks doen
                     break;
+                case "Wall":
+                    X = map.getObjectX(0, i);
+                    Y = map.getObjectY(0, i);
+                    Wall wall = new Wall(sprites, (float) X, (float) Y);
+                    playground.addWall(wall);
+                    break;
+
             }
         }
     }
 }
-

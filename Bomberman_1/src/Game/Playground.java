@@ -26,6 +26,7 @@ public class Playground {
     private List<Box> boxes;
     private List<IGameObject> mapobjects;
     private List<PowerUp> powerups;
+    private List<Wall> walls;
 
     public Playground() {
         try {
@@ -36,6 +37,7 @@ public class Playground {
         boxes = new CopyOnWriteArrayList<Box>();
         mapobjects = new CopyOnWriteArrayList<IGameObject>();
         powerups = new CopyOnWriteArrayList<PowerUp>();
+        walls = new CopyOnWriteArrayList<Wall>();
     }
 
     public List<IGameObject> getMapobjects() {
@@ -55,6 +57,15 @@ public class Playground {
         mapobjects.remove(o);
     }
 
+    public List<Wall> getWalls() {
+        return walls;
+    }
+    
+    public void addWall(Wall w)
+    {
+        walls.add(w);
+    }
+
     public TiledMap getMap() {
         return map;
     }
@@ -71,9 +82,15 @@ public class Playground {
         boxes.remove(b);
     }
 
-    public void addPowerup(PowerUp p) { powerups.add(p);}
+    public void addPowerup(PowerUp p) {
+        powerups.add(p);
+    }
 
-    public void removePowerup (PowerUp p) { powerups.remove(p);}
+    public void removePowerup(PowerUp p) {
+        powerups.remove(p);
+    }
 
-    public List<PowerUp> getPowerups(){ return powerups;}
+    public List<PowerUp> getPowerups() {
+        return powerups;
+    }
 }
