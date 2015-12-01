@@ -101,6 +101,7 @@ public class Bomb implements IGameObject {
         for(Player p: players) {
             if(intersects(p)) {
                 if(!moving) {
+                    p.setKick(true);
                     if(p.getKick()){
                         kickBomb(p.getKickDirection());
 
@@ -112,7 +113,6 @@ public class Bomb implements IGameObject {
     }
 
     public void kickBomb(Direction direction) {
-        this.moving = true;
 
         Thread t = new Thread(new Runnable() {
             @Override
@@ -124,6 +124,7 @@ public class Bomb implements IGameObject {
                 float oldposY = y;
                 int tileid = 0;
                 while (travelled < range) {
+
                     if (!intersectWithWall() && boxCollided == false) {
                         switch (direction.name()) {
                             case "NORTH":
@@ -154,14 +155,15 @@ public class Bomb implements IGameObject {
                                 }
                                 break;
 
-                    case "NONE":
-                        break;
+                            case "NONE":
+                                break;
 
-                    default:
-                        break;
-                }
+                            default:
+                                break;
+                        }
 
                         travelled += 0.5f;
+
                     } else {
                         boxCollided = true;
 
@@ -182,7 +184,7 @@ public class Bomb implements IGameObject {
                                 setPosition(x + 0.5f,y);
                                 break;
                         }
-
+                        System.out.println("Bla");
                         moving = false;
                         break;
 
