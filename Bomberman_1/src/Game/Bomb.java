@@ -106,7 +106,6 @@ public class Bomb implements IGameObject {
                     p.setKick(true);
                     if (p.getKick()) {
                         kickBomb(p.getKickDirection());
-
                     }
                 }
             }
@@ -115,7 +114,6 @@ public class Bomb implements IGameObject {
     }
 
     public void kickBomb(Direction direction) {
-
         Thread t = new Thread(new Runnable() {
             @Override
             public void run() {
@@ -186,21 +184,17 @@ public class Bomb implements IGameObject {
                                 setPosition(x + 0.5f, y);
                                 break;
                         }
-                        System.out.println("Bla");
                         moving = false;
                         break;
 
                     }
-
-                    System.out.println(travelled);
                     try {
-                        Thread.sleep(1);
+                        Thread.sleep(10);
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
                 }
 
-                System.out.println(x + " - " + y);
                 moving = false;
             }
         }

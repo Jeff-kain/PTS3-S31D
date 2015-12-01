@@ -215,7 +215,6 @@ public class Player implements IGameObject {
         this.teamColor = teamColor;
         if (teamColor == TeamColor.BLUE) {
             sprite = sprites.getSubImage(2, 16);
-            System.out.println("Foobar");
         } else {
             sprite = sprites.getSubImage(2, 17);
         }
@@ -242,33 +241,40 @@ public class Player implements IGameObject {
         this.bombCount++;
     }
 
-    // Movements for player
-    public void moveLeft() {
+    public void move(Direction direction) {
+        int row = 0;
+        kickDirection = direction;
 
-        this.x -= blockSize;
+        if (teamColor == teamColor.BLUE) {
+            row = 16;
+        } else {
+            row = 17;
+        }
 
-    }
-
-    public void moveRight() {
-
-        this.x += blockSize;
-
-    }
-
-    public void moveDown() {
-
-        this.y += blockSize;
-    }
-
-    public void moveUp() {
-        this.y -= blockSize;
-
+        switch (direction.name()) {
+            case "NORTH":
+                this.sprite = this.sprites.getSubImage(8, row);
+                this.y -= blockSize;
+                break;
+            case "EAST":
+                this.sprite = this.sprites.getSubImage(6, row);
+                this.x += blockSize;
+                break;
+            case "SOUTH":
+                this.sprite = this.sprites.getSubImage(2, row);
+                this.y += blockSize;
+                break;
+            case "WEST":
+                this.x -= blockSize;
+                this.sprite = this.sprites.getSubImage(6, row);
+                this.sprite = this.sprite.getFlippedCopy(true, false);
+                break;
+        }
     }
 
     public boolean intersectWithBox() {
         for (Box w : game.playground().getBoxes()) {
             if (w.intersects(this)) {
-                System.out.println(this.getX());
                 return true;
             }
         }
