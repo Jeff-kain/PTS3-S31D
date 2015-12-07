@@ -272,7 +272,7 @@ public class Player implements IGameObject {
         }
     }
 
-    public boolean intersectWithWall() {
+    public boolean intersectWithBox() {
         for (Box w : game.playground().getBoxes()) {
             if (w.intersects(this)) {
                 return true;
@@ -281,6 +281,14 @@ public class Player implements IGameObject {
         return false;
     }
 
+    public boolean intersectWithWall() {
+        for (Wall w : game.playground().getWalls()) {
+            if (w.intersects(this)) {
+                return true;
+            }
+        }
+        return false;
+    }
     public boolean intersectWithBomb() {
         return false;
     }

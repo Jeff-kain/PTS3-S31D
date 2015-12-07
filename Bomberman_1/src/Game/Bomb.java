@@ -33,9 +33,11 @@ public class Bomb implements IGameObject {
     private boolean exploded;
     private Float range;
     private final int duration = 550;
+
     public int getExplodeTime() {
         return explodeTime;
     }
+
     public boolean isExploded() {
         return exploded;
     }
@@ -98,11 +100,11 @@ public class Bomb implements IGameObject {
 
         Game game = Game.getInstance();
         ArrayList<Player> players = game.getAllPlayers();
-        for(Player p: players) {
-            if(intersects(p)) {
-                if(!moving) {
+        for (Player p : players) {
+            if (intersects(p)) {
+                if (!moving) {
                     p.setKick(true);
-                    if(p.getKick()){
+                    if (p.getKick()) {
                         kickBomb(p.getKickDirection());
                     }
                 }
@@ -123,7 +125,7 @@ public class Bomb implements IGameObject {
                 int tileid = 0;
                 while (travelled < range) {
 
-                    if (!intersectWithWall() && boxCollided == false) {
+                    if (!intersectWithBox() && !intersectWithWall() && boxCollided == false) {
                         switch (direction.name()) {
                             case "NORTH":
                                 tileid = game.playground().getMap().getTileId(Math.round(oldposX / 48), Math.round(oldposY / 48) - 1, 1);
@@ -165,28 +167,27 @@ public class Bomb implements IGameObject {
                     } else {
                         boxCollided = true;
 
-                        switch(direction.name()) {
+                        switch (direction.name()) {
                             case "NORTH":
-                                setPosition(x,y + 0.5f);
+                                setPosition(x, y + 0.5f);
                                 break;
 
                             case "EAST":
-                                setPosition(x - 0.5f,y);
+                                setPosition(x - 0.5f, y);
                                 break;
 
                             case "SOUTH":
-                                setPosition(x,y + 0.5f);
+                                setPosition(x, y + 0.5f);
                                 break;
 
                             case "WEST":
-                                setPosition(x + 0.5f,y);
+                                setPosition(x + 0.5f, y);
                                 break;
                         }
                         moving = false;
                         break;
 
                     }
-
                     try {
                         Thread.sleep(10);
                     } catch (InterruptedException e) {
@@ -201,9 +202,7 @@ public class Bomb implements IGameObject {
 
         t.start();
 
-
         Timer timer = new Timer();
-
 
         timer.schedule(new TimerTask() {
             @Override
@@ -230,8 +229,7 @@ public class Bomb implements IGameObject {
                     Explosion flameMid = new Explosion(sprites);
                     flameMid.setPosition(oldX, oldY);
                     game.playground().addToLevel(flameMid);
-                    int tileid = game.playground().getMap().getTileId(Math.round(oldX / 48) + 1, Math.round(oldY / 48), 1);
-                    if (!this.intersectWithWall() && tileid <= 0) {
+                    if (!this.intersectWithBox() && !this.intersectWithWall()) {
                         Explosion flame = new Explosion(sprites, Direction.EAST);
                         flame.setPosition(oldX + 48 + 48 * r, oldY);
                         game.playground().addToLevel(flame);
@@ -247,9 +245,7 @@ public class Bomb implements IGameObject {
             case WEST:
                 for (int r = 0; r < range; r++) {
                     this.x -= (48 + 48 * r);
-                    int tileid = game.playground().getMap().getTileId(Math.round(oldX / 48) - 1, Math.round(oldY / 48), 1);
-
-                    if (!this.intersectWithWall() && tileid <= 0) {
+                    if (!this.intersectWithBox()&& !this.intersectWithWall()) {
                         Explosion flame = new Explosion(sprites, Direction.WEST);
                         flame.setPosition(oldX - 48 - 48 * r, oldY);
                         game.playground().addToLevel(flame);
@@ -266,9 +262,7 @@ public class Bomb implements IGameObject {
             case SOUTH:
                 for (int r = 0; r < range; r++) {
                     this.y += (48 + 48 * r);
-                    int tileid = game.playground().getMap().getTileId(Math.round(oldX / 48), Math.round(oldY / 48) +1, 1);
-
-                    if (!this.intersectWithWall() && tileid <= 0) {
+                    if (!this.intersectWithBox() && !this.intersectWithWall()) {
                         Explosion flame = new Explosion(sprites, Direction.SOUTH);
                         flame.setPosition(oldX, oldY + 48 + 48 * r);
                         game.playground().addToLevel(flame);
@@ -285,9 +279,7 @@ public class Bomb implements IGameObject {
             case NORTH:
                 for (int r = 0; r < range; r++) {
                     this.y -= (48 + 48 * r);
-                    int tileid = game.playground().getMap().getTileId(Math.round(oldX / 48), Math.round(oldY / 48) -1, 1);
-
-                    if (!this.intersectWithWall() && tileid <= 0) {
+                    if (!this.intersectWithBox() && !this.intersectWithWall()) {
                         Explosion flame = new Explosion(sprites, Direction.NORTH);
                         flame.setPosition(oldX, oldY - 48 - 48 * r);
                         game.playground().addToLevel(flame);
@@ -354,10 +346,19 @@ public class Bomb implements IGameObject {
         }
     }
 
-    public boolean intersectWithWall() {
+    public boolean intersectWithBox() {
         for (Box w : game.playground().getBoxes()) {
             if (w.intersects(this)) {
                 //System.out.println(this.getX());
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public boolean intersectWithWall() {
+        for (Wall w : game.playground().getWalls()) {
+            if (w.intersects(this)) {
                 return true;
             }
         }
