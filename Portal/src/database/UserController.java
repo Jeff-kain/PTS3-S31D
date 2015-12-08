@@ -36,7 +36,7 @@ public class UserController {
         //db = new DatabaseConnection();
         props = new Properties();
 	InputStream input = null;
-        File file = new File("C:\\Users\\Rob\\Documents\\GitHub\\PTS3-S31D\\Portal\\src\\database\\config.properties");
+        File file = new File("D:\\Development\\Java\\Proftaak\\PTS3-S31D\\Portal\\src\\database\\config.properties");
         
 	try {
 		input = new FileInputStream(file);

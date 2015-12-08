@@ -5,6 +5,7 @@
  */
 package portal;
 
+import database.UserController;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -12,6 +13,7 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.util.concurrent.ExecutorService;
 
 /**
  *
@@ -19,22 +21,29 @@ import java.io.IOException;
  */
 public class Portal extends Application {
 
+    UserController uc;
+    ExecutorService executor;
+    boolean isOk;
+
+    public static Stage Stage;
+
     @Override
     public void start(Stage primaryStage) {
+        Stage = primaryStage;
 
         //Loading the .fxml file.
         Parent root = null;
         try {
-            root = FXMLLoader.load(getClass().getResource("Views/MainWindow.fxml"));
+            root = FXMLLoader.load(getClass().getResource("Views/Login.fxml"));
         } catch (IOException e) {
             e.printStackTrace();
         }
 
-        Scene scene = new Scene(root, 800, 480);
-        
-        primaryStage.setTitle("Portal");
-        primaryStage.setScene(scene);
-        primaryStage.show();
+        Scene scene = new Scene(root, 300, 400);
+
+        Stage.setTitle("Login");
+        Stage.setScene(scene);
+        Stage.show();
     }
 
     /**
