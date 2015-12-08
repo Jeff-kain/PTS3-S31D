@@ -10,3 +10,6 @@ Bomberman_1/.idea/
 *.iml
 *.class
 Chat_Server/nbproject/
+/Portal/nbproject/private/
+Portal/.idea/
+Portal/out/
