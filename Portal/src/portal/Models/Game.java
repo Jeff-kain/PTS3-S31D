@@ -7,9 +7,8 @@ public class Game {
     private String name;
     private String path;
 
-    public Game(String name, String path) {
+    public Game(String name) {
         this.name = name;
-        this.path = path;
     }
 
     public String getPath() {

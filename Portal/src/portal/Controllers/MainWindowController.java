@@ -1,5 +1,6 @@
 package portal.Controllers;
 
+import database.DatabaseConnection;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -7,6 +8,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
 import portal.Models.Game;
 
@@ -25,8 +27,9 @@ public class MainWindowController implements Initializable {
     ObservableList<Game> observableGames;
 
     @FXML private ListView<Game> lvwGame;
-    @FXML private TextArea taChat;
-    @FXML private TextField tfMessage;
+    @FXML private TextArea txaMessages;
+    @FXML private TextField tfdMessage;
+    @FXML private Button btnSend;
 
     public MainWindowController() {
 
@@ -34,12 +37,15 @@ public class MainWindowController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        Game bomberman = new Game("Bomberman", "Bla");
+        try {
+            DatabaseConnection dc = DatabaseConnection.getInstance();
 
-        observableGames = FXCollections.observableArrayList();
-        observableGames.add(bomberman);
+            observableGames = dc.getGames();
 
-        lvwGame.setItems(observableGames);
+            lvwGame.setItems(observableGames);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
     
     public void btSend(Event event) {

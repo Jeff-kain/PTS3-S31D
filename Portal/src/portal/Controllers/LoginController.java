@@ -27,7 +27,7 @@ public class LoginController implements Initializable {
     //Controls
     @FXML private Button btnLogin;
     @FXML private TextField tfdUsername;
-    @FXML private TextField tfdPassword;
+    @FXML private TextField pfdPassword;
 
     /**
      * Initializes the controller class.
@@ -40,7 +40,7 @@ public class LoginController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         try {
             // TODO
-            dc = new DatabaseConnection();
+            dc = DatabaseConnection.getInstance();
         } catch (IOException ex) {
             ex.printStackTrace();
         }
@@ -50,7 +50,7 @@ public class LoginController implements Initializable {
 
     public void btnLogin(Event evt) {
         try {
-            Boolean result = uc.CheckLogin(tfdUsername.getText(),tfdPassword.getText());
+            Boolean result = dc.CheckLogin(tfdUsername.getText(),pfdPassword.getText());
 
             if(result) {
                 loadMainWindow();

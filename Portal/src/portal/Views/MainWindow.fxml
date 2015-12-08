@@ -59,7 +59,7 @@
           </Menu>
         </menus>
       </MenuBar>
-      <Button fx:id="tfMessage" mnemonicParsing="false" onAction="#btSend" text="Send" GridPane.columnIndex="2" GridPane.rowIndex="5">
+      <Button fx:id="btnSend" mnemonicParsing="false" onAction="#btSend" text="Send" GridPane.columnIndex="2" GridPane.rowIndex="5">
          <GridPane.margin>
             <Insets bottom="5.0" left="5.0" top="5.0" />
          </GridPane.margin>
@@ -74,6 +74,10 @@
             <Insets left="5.0" right="5.0" top="5.0" />
          </GridPane.margin>
       </TextField>
-      <TextArea fx:id="taChat" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="2" GridPane.rowIndex="2" />
+      <TextArea fx:id="txaMessages" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="2" GridPane.rowIndex="2">
+         <GridPane.margin>
+            <Insets left="5.0" right="5.0" top="5.0" />
+         </GridPane.margin>
+      </TextArea>
    </children>
 </GridPane>

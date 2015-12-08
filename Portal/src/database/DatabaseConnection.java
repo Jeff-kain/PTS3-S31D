@@ -5,6 +5,13 @@
  */
 package database;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableArray;
+import javafx.collections.ObservableList;
+import portal.Models.Game;
+
+import javax.xml.crypto.Data;
+import java.awt.*;
 import java.io.File;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -16,7 +23,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.ArrayList;
 import java.util.Properties;
+import javafx.collections.FXCollections;
 
 /**
  *
@@ -24,7 +33,7 @@ import java.util.Properties;
  */
 public class DatabaseConnection {
     
-    //private DatabaseConnection db;
+    private static DatabaseConnection instance = null;
     private Properties props;
     private Connection conn;
     
@@ -32,30 +41,30 @@ public class DatabaseConnection {
     private String username;
     private String password;
     
-    public DatabaseConnection() throws FileNotFoundException, IOException{
+    private DatabaseConnection() throws FileNotFoundException, IOException {
         //db = new DatabaseConnection();
         props = new Properties();
-	InputStream input = null;
+	    InputStream input = null;
         File file = new File("./src/database/config.properties");
         
-	try {
-		input = new FileInputStream(file);
+        try {
+            input = new FileInputStream(file);
 
-		// load a properties file
-		props.load(input);
+            // load a properties file
+            props.load(input);
 
-		// get the property value and print it out
-		System.out.println(props.getProperty("url"));
-		System.out.println(props.getProperty("username"));
-                System.out.println(props.getProperty("password"));
-                
-                url = props.getProperty("url");
-                username = props.getProperty("username");
-                password = props.getProperty("password");
+            // get the property value and print it out
+            System.out.println(props.getProperty("url"));
+            System.out.println(props.getProperty("username"));
+            System.out.println(props.getProperty("password"));
 
-	} catch (IOException ex) {
-		ex.printStackTrace();
-	} finally {
+            url = props.getProperty("url");
+            username = props.getProperty("username");
+            password = props.getProperty("password");
+
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        } finally {
             if (input != null) {
                 try {
                     input.close();
@@ -65,7 +74,46 @@ public class DatabaseConnection {
             }
         }
     }
-    
+
+    public static DatabaseConnection getInstance() throws IOException {
+        if(instance != null) {
+            return instance;
+        } else {
+            instance = new DatabaseConnection();
+            return instance;
+        }
+    }
+
+    public ObservableList<Game> getGames() {
+        ObservableList<Game> games = FXCollections.observableArrayList();
+
+        boolean isOpen = open();
+        System.out.println(isOpen);
+
+        try {
+            ResultSet rs;
+            Statement stat = null;
+
+            stat = conn.createStatement();
+
+            String query = "select * from GAMES";
+
+            stat = conn.prepareStatement(query);
+            rs = stat.executeQuery(query);
+
+            while (rs.next()) {
+                String name = rs.getString("NAME");
+
+                Game game = new Game(name);
+                games.add(game);
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return games;
+    }
     
     public boolean open() {
         try {
