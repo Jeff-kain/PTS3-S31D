@@ -187,9 +187,24 @@ public class Game_StateBasedGame extends BasicGameState {
 //        for (Box box : playground.getBoxes()) {
 //            g.drawImage(box.getSprite(), box.getX(), box.getY());
 //        }
-
         for (IGameObject o : game.playground().getMapobjects()) {
+            if (o instanceof Bomb) {
+                Bomb bomb = (Bomb) o;
+                Animation animation;
+                if (bombAnimations.get(bomb) == null) {
+                    animation = bomb.getAnimation();
+                    animation.setLooping(false);
+                    animation.setAutoUpdate(true);
+                    bombAnimations.put(bomb, animation);
+                } else {
+                    animation = bombAnimations.get(o);
+                }
+                animation.draw(bomb.getX(), bomb.getY());
+            }
+            else
+            {
             g.drawImage(o.getSprite(), o.getX(), o.getY());
+            }
         }
 
         if (game.getTeam1().currentHealth() <= 0) {
@@ -308,7 +323,7 @@ public class Game_StateBasedGame extends BasicGameState {
 
             if (bombs.size() < player.getBombCount()) {
                 player.setKickDirection(Direction.NONE);
-                bombs.add(b);
+                playground.addToLevel(b);
             }
         }
 
@@ -359,7 +374,8 @@ public class Game_StateBasedGame extends BasicGameState {
 
                 if (bombs2.size() < player2.getBombCount()) {
                     player2.setKickDirection(Direction.NONE);
-                    bombs2.add(b);
+                    playground.addToLevel(b);
+                    // bombs2.add(b);
                 }
             }
 
@@ -373,74 +389,88 @@ public class Game_StateBasedGame extends BasicGameState {
         }
 
         player.Update();
-
         player2.Update();
+//
+//        for (Bomb b : bombs2) {
+//            // player 1 bomb collision
+//            if (b.intersects(player) && player.getKick() == false) {
+//                player.setPosition(hposx, hposy);
+//
+//            }
+//            if (b.intersects(player) && player.getKick() == true) {
+//
+//                // TODO KICK A BOMB
+//            }
+//            //player 2 bomb collision
+//            if (b.intersects(player2) && player2.getKick() == false) {
+//                player2.setPosition(hpos2x, hpos2y);
+//
+//            }
+//            if (b.intersects(player2) && player2.getKick() == true) {
+//
+//                // TODO KICK A BOMB
+//            }
+//        }
+//        for (Bomb b : bombs) {
+//            // player 2 bomb collision
+//            if (b.intersects(player2) && player2.getKick() == false) {
+//                player2.setPosition(hpos2x, hpos2y);
+//
+//            }
+//            if (b.intersects(player2) && player2.getKick() == true) {
+//
+//                // TODO KICK A BOMB
+//            }
+//            // player 1 bomb collision
+//            if (b.intersects(player) && player.getKick() == false) {
+//                player.setPosition(hposx, hposy);
+//
+//            }
+//            if (b.intersects(player) && player.getKick() == true) {
+//
+//                // TODO KICK A BOMB
+//            }
+//        }
+//        if (bombs
+//                != null) {
+//            for (Bomb b : bombs) {
+//                if (b.isExploded()) {
+//                    bombs.remove(b);
+//                } else {
+//                    b.Update();
+//                }
+//            }
+//        }
+//
+//        if (bombs2
+//                != null) {
+//            for (Bomb b : bombs2) {
+//                if (b.isExploded()) {
+//                    bombs2.remove(b);
+//                } else {
+//                    b.Update();
+//                }
+//            }
+//        }
+        for (IGameObject o : game.playground().getMapobjects()) {
+            if (o instanceof Bomb) {
+                Bomb b = (Bomb) o;
+                if (b.intersects(player2) && player2.getKick() == false) {
+                    player2.setPosition(hpos2x, hpos2y);
+                }
+                // player 1 bomb collision
+                if (b.intersects(player) && player.getKick() == false) {
+                    player.setPosition(hposx, hposy);
 
-        for (Bomb b : bombs2) {
-            // player 1 bomb collision
-            if (b.intersects(player) && player.getKick() == false) {
-                player.setPosition(hposx, hposy);
-
-            }
-            if (b.intersects(player) && player.getKick() == true) {
-
-                // TODO KICK A BOMB
-            }
-            //player 2 bomb collision
-            if (b.intersects(player2) && player2.getKick() == false) {
-                player2.setPosition(hpos2x, hpos2y);
-
-            }
-            if (b.intersects(player2) && player2.getKick() == true) {
-
-                // TODO KICK A BOMB
-            }
-        }
-        for (Bomb b : bombs) {
-            // player 2 bomb collision
-            if (b.intersects(player2) && player2.getKick() == false) {
-                player2.setPosition(hpos2x, hpos2y);
-
-            }
-            if (b.intersects(player2) && player2.getKick() == true) {
-
-                // TODO KICK A BOMB
-            }
-            // player 1 bomb collision
-            if (b.intersects(player) && player.getKick() == false) {
-                player.setPosition(hposx, hposy);
-
-            }
-            if (b.intersects(player) && player.getKick() == true) {
-
-                // TODO KICK A BOMB
-            }
-        }
-        if (bombs
-                != null) {
-            for (Bomb b : bombs) {
+                }
                 if (b.isExploded()) {
-                    bombs.remove(b);
+                    playground.removeFromLevel(b);
                 } else {
                     b.Update();
                 }
+            } else {
+                o.Update();
             }
-        }
-
-        if (bombs2
-                != null) {
-            for (Bomb b : bombs2) {
-                if (b.isExploded()) {
-                    bombs2.remove(b);
-                } else {
-                    b.Update();
-                }
-            }
-        }
-        for (IGameObject o
-                : game.playground()
-                .getMapobjects()) {
-            o.Update();
         }
     }
 
