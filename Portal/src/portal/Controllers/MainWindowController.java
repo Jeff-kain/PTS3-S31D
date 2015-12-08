@@ -2,6 +2,7 @@ package portal.Controllers;
 
 import chat.ChatMessage;
 import chat.Client;
+import database.DatabaseConnection;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -9,6 +10,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
 import portal.Models.Game;
 
@@ -33,8 +35,9 @@ public class MainWindowController implements Initializable {
     ObservableList<Game> observableGames;
 
     @FXML private ListView<Game> lvwGame;
-    @FXML private TextArea taChat;
-    @FXML private TextField tfMessage;
+    @FXML private TextArea txaMessages;
+    @FXML private TextField tfdMessage;
+    @FXML private Button btnSend;
 
     // the server, the port and the username
     private String server, username;
@@ -49,12 +52,15 @@ public class MainWindowController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        Game bomberman = new Game("Bomberman", "Bla");
+        try {
+            DatabaseConnection dc = DatabaseConnection.getInstance();
 
-        observableGames = FXCollections.observableArrayList();
-        observableGames.add(bomberman);
-
-        lvwGame.setItems(observableGames);
+            observableGames = dc.getGames();
+            lvwGame.setItems(observableGames);
+            
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         
         initChat();
     }
@@ -63,7 +69,7 @@ public class MainWindowController implements Initializable {
         server = "Localhost";
         port = 1500;
         username = new User().getName();
-        client = new Client(server, port, username, taChat);
+        client = new Client(server, port, username, txaMessages);
     }
     
     public void btSend(Event event) {
@@ -74,6 +80,6 @@ public class MainWindowController implements Initializable {
      * To send a message to the console or the GUI
      */
     public void display(String input) {
-        taChat.appendText(input + "\n");
+        txaMessages.appendText(input + "\n");
     }
 }
