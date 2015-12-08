@@ -7,22 +7,22 @@ package Game;
 
 import org.newdawn.slick.Image;
 
-
 /**
  *
  * @author jeffrey
  */
 public interface IGameObject {
+
     public Game game = Game.getInstance();
-    
+
     public Image getSprite();
-    
+
     public Float getX();
-    
+
     public Float getY();
-    
-    
+
     public void Update();
-    
-    
+
+    public boolean intersects(IGameObject actor);
+
 }

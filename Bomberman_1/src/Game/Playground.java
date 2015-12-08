@@ -23,9 +23,9 @@ public class Playground {
 
     private TiledMap map;
     private final String path = "res" + File.separator + "map.tmx";
-    private List<Box> boxes;
+    //private List<Box> boxes;
     private List<IGameObject> mapobjects;
-    private List<PowerUp> powerups;
+    //private List<PowerUp> powerups;
     private List<Wall> walls;
 
     public Playground() {
@@ -34,9 +34,9 @@ public class Playground {
         } catch (SlickException ex) {
             Logger.getLogger(Playground.class.getName()).log(Level.SEVERE, null, ex);
         }
-        boxes = new CopyOnWriteArrayList<Box>();
+        //boxes = new CopyOnWriteArrayList<Box>();
         mapobjects = new CopyOnWriteArrayList<IGameObject>();
-        powerups = new CopyOnWriteArrayList<PowerUp>();
+        //powerups = new CopyOnWriteArrayList<PowerUp>();
         walls = new CopyOnWriteArrayList<Wall>();
     }
 
@@ -70,27 +70,27 @@ public class Playground {
         return map;
     }
 
-    public List<Box> getBoxes() {
-        return boxes;
-    }
-
-    public void addBox(Box b) {
-        boxes.add(b);
-    }
-
-    public void RemoveBox(Box b) {
-        boxes.remove(b);
-    }
-
-    public void addPowerup(PowerUp p) {
-        powerups.add(p);
-    }
-
-    public void removePowerup(PowerUp p) {
-        powerups.remove(p);
-    }
-
-    public List<PowerUp> getPowerups() {
-        return powerups;
-    }
+//    public List<Box> getBoxes() {
+//        return boxes;
+//    }
+//
+//    public void addBox(Box b) {
+//        boxes.add(b);
+//    }
+//
+//    public void RemoveBox(Box b) {
+//        boxes.remove(b);
+//    }
+//
+//    public void addPowerup(PowerUp p) {
+//        powerups.add(p);
+//    }
+//
+//    public void removePowerup(PowerUp p) {
+//        powerups.remove(p);
+//    }
+//
+//    public List<PowerUp> getPowerups() {
+//        return powerups;
+//    }
 }
