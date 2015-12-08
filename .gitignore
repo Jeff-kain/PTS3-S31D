@@ -15,3 +15,9 @@ Portal/.idea/
 Portal/out/
 /Portal/dist/
 /Portal/build/
+Chat_Server/build/classes/chat_server/ServerFXController$ClientHandler.class
+*.class
+Chat_Client/build.xml
+*.class
+Chat_Server/build/classes/chat_server/ServerFXController$ClientHandler.class
+*.class
