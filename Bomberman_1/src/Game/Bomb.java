@@ -245,7 +245,7 @@ public class Bomb implements IGameObject {
             case WEST:
                 for (int r = 0; r < range; r++) {
                     this.x -= (48 + 48 * r);
-                    if (!this.intersectWithBox()&& !this.intersectWithWall()) {
+                    if (!this.intersectWithBox() && !this.intersectWithWall()) {
                         Explosion flame = new Explosion(sprites, Direction.WEST);
                         flame.setPosition(oldX - 48 - 48 * r, oldY);
                         game.playground().addToLevel(flame);
@@ -298,17 +298,19 @@ public class Bomb implements IGameObject {
     }
 
     public void checkForBox(float x, float y, Direction d) {
-        for (Box o : game.playground().getBoxes()) {
-            if (o.getX() == x && o.getY() == y) {
-                Explosion flame = null;
-                try {
-                    flame = new Explosion(sprites, d);
-                } catch (SlickException ex) {
-                    Logger.getLogger(Bomb.class.getName()).log(Level.SEVERE, null, ex);
+        for (IGameObject o : game.playground().getMapobjects()) {
+            if (o instanceof Box) {
+                if (o.getX() == x && o.getY() == y) {
+                    Explosion flame = null;
+                    try {
+                        flame = new Explosion(sprites, d);
+                    } catch (SlickException ex) {
+                        Logger.getLogger(Bomb.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                    flame.setPosition(o.getX(), o.getY());
+                    game.playground().addToLevel(flame);
+                    game.playground().removeFromLevel(o);
                 }
-                flame.setPosition(o.getX(), o.getY());
-                game.playground().addToLevel(flame);
-                game.playground().RemoveBox(o);
             }
         }
 //        for (Player p : game.getTeam1().getPlayers()) {
@@ -347,10 +349,12 @@ public class Bomb implements IGameObject {
     }
 
     public boolean intersectWithBox() {
-        for (Box w : game.playground().getBoxes()) {
-            if (w.intersects(this)) {
-                //System.out.println(this.getX());
-                return true;
+        for (IGameObject w : game.playground().getMapobjects()) {
+            if (w instanceof Box) {
+                if (w.intersects(this)) {
+                    //System.out.println(this.getX());
+                    return true;
+                }
             }
         }
         return false;

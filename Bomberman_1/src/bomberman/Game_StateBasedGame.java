@@ -181,12 +181,12 @@ public class Game_StateBasedGame extends BasicGameState {
             g.drawImage(player2.getSprite(), player2.getX(), player2.getY());
         }
 
-        for (PowerUp powerUp : playground.getPowerups()) {
-            g.drawImage(powerUp.getSprite(), powerUp.getX(), powerUp.getY());
-        }
-        for (Box box : playground.getBoxes()) {
-            g.drawImage(box.getSprite(), box.getX(), box.getY());
-        }
+//        for (PowerUp powerUp : playground.getPowerups()) {
+//            g.drawImage(powerUp.getSprite(), powerUp.getX(), powerUp.getY());
+//        }
+//        for (Box box : playground.getBoxes()) {
+//            g.drawImage(box.getSprite(), box.getX(), box.getY());
+//        }
 
         for (IGameObject o : game.playground().getMapobjects()) {
             g.drawImage(o.getSprite(), o.getX(), o.getY());
@@ -454,7 +454,7 @@ public class Game_StateBasedGame extends BasicGameState {
                     X = map.getObjectX(0, i);
                     Y = map.getObjectY(0, i);
                     Box b = new Box(sprites, (float) X, (float) Y);
-                    playground.addBox(b);
+                    playground.addToLevel(b);
                     break;
                 case "Player":
                     break;
@@ -472,25 +472,25 @@ public class Game_StateBasedGame extends BasicGameState {
                     X = map.getObjectX(0, i);
                     Y = map.getObjectY(0, i);
                     PowerUp p = new Bomb_Up(sprites, "Bomb_Up", (float) X, (float) Y, false);
-                    playground.addPowerup(p);
+                    playground.addToLevel(p);
                     break;
                 case "Explosion_Up":
                     X = map.getObjectX(0, i);
                     Y = map.getObjectY(0, i);
                     PowerUp p1 = new Explosion_Up(sprites, "Explosion_Up", (float) X, (float) Y, false);
-                    playground.addPowerup(p1);
+                    playground.addToLevel(p1);
                     break;
                 case "Kick":
                     X = map.getObjectX(0, i);
                     Y = map.getObjectY(0, i);
                     PowerUp p2 = new Kick(sprites, "Kick", (float) X, (float) Y, false);
-                    playground.addPowerup(p2);
+                    playground.addToLevel(p2);
                     break;
                 case "Speed_Up":
                     X = map.getObjectX(0, i);
                     Y = map.getObjectY(0, i);
                     PowerUp p3 = new Speed_Up(sprites, "Speed_Up", (float) X, (float) Y, false);
-                    playground.addPowerup(p3);
+                    playground.addToLevel(p3);
                     break;
                 case "PowerUp":
                     X = map.getObjectX(0, i);

@@ -5,6 +5,7 @@
  */
 package Game;
 
+import java.awt.geom.Rectangle2D;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.SpriteSheet;
@@ -96,7 +97,7 @@ public class Player implements IGameObject {
             }
             this.visible = true;
         }
-        for (IGameObject o : game.playground().getPowerups()) {
+        for (IGameObject o : game.playground().getMapobjects()) {
             if (o instanceof Bomb_Up) {
                 Bomb_Up bu = (Bomb_Up) o;
 
@@ -104,7 +105,7 @@ public class Player implements IGameObject {
                     if (bombCount < 4) {
                         setBombCount(getBombCount() + 1);
                     }
-                    game.playground().removePowerup(bu);
+                    game.playground().removeFromLevel(bu);
                 }
             }
             if (o instanceof Explosion_Up) {
@@ -114,7 +115,7 @@ public class Player implements IGameObject {
                     if (getBombRange() < 2.5f) {
                         setBombRange(getBombRange() + 0.5f);
                     }
-                    game.playground().removePowerup(eu);
+                    game.playground().removeFromLevel(eu);
                 }
             }
             if (o instanceof Speed_Up) {
@@ -124,16 +125,16 @@ public class Player implements IGameObject {
                     if (getSpeed() > 100f) {
                         setSpeed(getSpeed() - 50f);
                     }
-                    game.playground().removePowerup(su);
+                    game.playground().removeFromLevel(su);
                 }
             }
 
-            if(o instanceof Kick) {
-                Kick k = (Kick)o;
+            if (o instanceof Kick) {
+                Kick k = (Kick) o;
 
-                if(k.intersects(this)) {
+                if (k.intersects(this)) {
                     this.setKick(true);
-                    game.playground().removePowerup(k);
+                    game.playground().removeFromLevel(k);
                 }
             }
         }
@@ -202,9 +203,13 @@ public class Player implements IGameObject {
         return bombCount;
     }
 
-    public Direction getKickDirection(){ return kickDirection; }
+    public Direction getKickDirection() {
+        return kickDirection;
+    }
 
-    public void setKickDirection(Direction direction) { kickDirection = direction; }
+    public void setKickDirection(Direction direction) {
+        kickDirection = direction;
+    }
 
     public void setPosition(Float x, Float y) {
         this.x = x;
@@ -223,7 +228,7 @@ public class Player implements IGameObject {
     public boolean upBomb() {
         if (bombCount <= 5) {
             if (bomb_Up.isVisible()) {
-                for (PowerUp b : playground.getPowerups()) {
+                for (IGameObject b : playground.getMapobjects()) {
                     if (b instanceof Bomb_Up) {
                         if (b.intersects(this)) {
                             ((Bomb_Up) b).setVisible(false);
@@ -273,9 +278,11 @@ public class Player implements IGameObject {
     }
 
     public boolean intersectWithBox() {
-        for (Box w : game.playground().getBoxes()) {
-            if (w.intersects(this)) {
-                return true;
+        for (IGameObject w : game.playground().getMapobjects()) {
+            if (w instanceof Box) {
+                if (w.intersects(this)) {
+                    return true;
+                }
             }
         }
         return false;
@@ -289,6 +296,7 @@ public class Player implements IGameObject {
         }
         return false;
     }
+
     public boolean intersectWithBomb() {
         return false;
     }
@@ -304,5 +312,12 @@ public class Player implements IGameObject {
 
     public void setVisible(Boolean visible) {
         this.visible = visible;
+    }
+
+    @Override
+    public boolean intersects(IGameObject actor) {
+        Rectangle2D predmet = new Rectangle2D.Float(actor.getX(), actor.getY(), 48f, 48f);
+        Rectangle2D objekt = new Rectangle2D.Float(this.getX(), this.getY(), 48f, 48f);
+        return objekt.intersects(predmet);
     }
 }
