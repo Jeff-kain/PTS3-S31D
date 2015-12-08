@@ -6,7 +6,7 @@
 <?import java.lang.*?>
 <?import javafx.scene.layout.*?>
 
-<GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8" fx:controller="portal.Portal">
+<GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="portal.Controllers.MainWindowController">
   <columnConstraints>
       <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" percentWidth="25.0" prefWidth="100.0" />
     <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -36,7 +36,7 @@
             <Insets left="5.0" right="5.0" top="5.0" />
          </GridPane.margin>
       </Label>
-      <ListView prefHeight="200.0" prefWidth="200.0" GridPane.hgrow="ALWAYS" GridPane.rowIndex="2" GridPane.rowSpan="2147483647">
+      <ListView fx:id="lvwGame" prefHeight="200.0" prefWidth="200.0" GridPane.hgrow="ALWAYS" GridPane.rowIndex="2" GridPane.rowSpan="2147483647">
          <GridPane.margin>
             <Insets bottom="5.0" left="5.0" top="5.0" />
          </GridPane.margin>
