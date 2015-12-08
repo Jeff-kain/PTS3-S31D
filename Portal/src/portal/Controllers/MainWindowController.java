@@ -22,6 +22,6 @@ public class MainWindowController {
         observableGames = FXCollections.observableArrayList();
         observableGames.add(bomberman);
 
-        lvwGame.setItems(observableGames);
+        //lvwGame.setItems(observableGames);
     }
 }
