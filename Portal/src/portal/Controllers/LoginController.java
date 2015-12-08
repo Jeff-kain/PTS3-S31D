@@ -50,8 +50,8 @@ public class LoginController implements Initializable {
 
     public void btnLogin(Event evt) {
         try {
-            Boolean result = uc.CheckLogin(tfdUsername.getText(),tfdPassword.getText());
-
+                Boolean result = dc.CheckLogin(tfdUsername.getText(),tfdPassword.getText());
+                
             if(result) {
                 loadMainWindow();
             } else {
@@ -105,7 +105,6 @@ public class LoginController implements Initializable {
         }
 
         if (root != null) {
-            System.out.println("Works");
             Scene scene = new Scene(root, 800, 480);
 
             stage.setTitle("Portal");
@@ -115,6 +114,5 @@ public class LoginController implements Initializable {
         } else {
             System.out.println("Failed");
         }
-
     }
 }
