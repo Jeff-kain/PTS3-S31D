@@ -1,6 +1,6 @@
 package portal.Controllers;
 
-import database.UserController;
+import database.DatabaseConnection;
 import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -23,7 +23,7 @@ public class LoginController implements Initializable {
     /**
      * Initializes the controller class.
      */
-    UserController uc;
+    DatabaseConnection dc;
     ExecutorService executor;
     boolean isOk;
 
@@ -34,7 +34,7 @@ public class LoginController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         try {
             // TODO
-            uc = new UserController();
+            dc = new DatabaseConnection();
         } catch (IOException ex) {
             ex.printStackTrace();
         }
@@ -53,7 +53,7 @@ public class LoginController implements Initializable {
 
             @Override
             public Object call() throws Exception {
-                boolean isConnected = uc.TestConnection();
+                boolean isConnected = dc.TestConnection();
                 return isConnected;
             }
         };

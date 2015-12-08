@@ -5,13 +5,17 @@
  */
 package database;
 
+import java.io.File;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.util.Properties;
 
 /**
@@ -20,6 +24,7 @@ import java.util.Properties;
  */
 public class DatabaseConnection {
     
+    //private DatabaseConnection db;
     private Properties props;
     private Connection conn;
     
@@ -27,47 +32,47 @@ public class DatabaseConnection {
     private String username;
     private String password;
     
-    public void DatabaseConnection() throws SQLException, FileNotFoundException, IOException  {
+    public DatabaseConnection() throws FileNotFoundException, IOException{
+        //db = new DatabaseConnection();
+        props = new Properties();
+	InputStream input = null;
+        File file = new File("./src/database/config.properties");
         
-//        props = new Properties();
-//	InputStream input = null;
-//	try {
-//		input = new FileInputStream("/config.properties");
-//
-//		// load a properties file
-//		props.load(input);
+	try {
+		input = new FileInputStream(file);
 
-//		// get the property value and print it out
-//		System.out.println(props.getProperty("url"));
-//		System.out.println(props.getProperty("username"));
-//                System.out.println(props.getProperty("password"));
+		// load a properties file
+		props.load(input);
+
+		// get the property value and print it out
+		System.out.println(props.getProperty("url"));
+		System.out.println(props.getProperty("username"));
+                System.out.println(props.getProperty("password"));
                 
-//                url = props.getProperty("url");
-//                username = props.getProperty("url");
-//                password = props.getProperty("password");
-//                
-        url="jdbc:mysql//192.168.15.50:1521/fhictora";
-        username="dbi323344";
-        password="R0l0azuZdy";
+                url = props.getProperty("url");
+                username = props.getProperty("username");
+                password = props.getProperty("password");
 
-//	} catch (IOException ex) {
-//		ex.printStackTrace();
-//	} finally {
-//            if (input != null) {
-//                try {
-//                    input.close();
-//                } catch (IOException e) {
-//                    e.printStackTrace();
-//                }
-//            }
-//        }
+	} catch (IOException ex) {
+		ex.printStackTrace();
+	} finally {
+            if (input != null) {
+                try {
+                    input.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
     }
+    
     
     public boolean open() {
         try {
+        Class.forName("com.mysql.jdbc.Driver").newInstance();
         conn = DriverManager.getConnection(url, username, password);
         return true;
-        } catch (SQLException ex) {
+        } catch (Exception ex) {
             System.err.println(ex.getMessage());
             return false;
         }
@@ -78,9 +83,36 @@ public class DatabaseConnection {
             conn.close();
             conn = null;
             return true;
-        } catch (SQLException ex) {
+        } catch (Exception ex) {
             System.err.println(ex.getMessage());
             return false;
+        }
+    }
+    
+    public boolean TestConnection(){
+        boolean isOpen = open();
+        System.out.println(isOpen);
+        close();
+        return isOpen;
+    }
+    
+    public boolean CheckLogin(String name, String password) throws SQLException {
+        
+        try {
+            boolean isOpen = open();
+            System.out.println(isOpen);
+            
+            ResultSet rs;
+            Statement stat = conn.createStatement();
+            
+            String query = "SELECT * FROM USERS WHERE NAME ='" + name + "' AND PASSWORD = '" + password + "';";
+            
+            stat = conn.prepareStatement(query);
+            rs = stat.executeQuery(query);
+            return rs.first();
+        }
+        finally{            
+            close();
         }
     }
 }

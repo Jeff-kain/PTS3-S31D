@@ -13,6 +13,9 @@ import portal.Models.Game;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
+import javafx.event.Event;
+import javafx.scene.control.TextArea;
+import javafx.scene.control.TextField;
 
 /**
  * Created by tverv on 08-Dec-15.
@@ -21,8 +24,9 @@ public class MainWindowController implements Initializable {
     //Observable lists
     ObservableList<Game> observableGames;
 
-    @FXML
-    private ListView<Game> lvwGame;
+    @FXML private ListView<Game> lvwGame;
+    @FXML private TextArea taChat;
+    @FXML private TextField tfMessage;
 
     public MainWindowController() {
 
@@ -36,5 +40,9 @@ public class MainWindowController implements Initializable {
         observableGames.add(bomberman);
 
         lvwGame.setItems(observableGames);
+    }
+    
+    public void btSend(Event event) {
+        
     }
 }
