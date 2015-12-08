@@ -5,7 +5,7 @@
  */
 package portal;
 
-import database.UserController;
+import database.DatabaseConnection;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -21,7 +21,7 @@ import java.util.concurrent.ExecutorService;
  */
 public class Portal extends Application {
 
-    UserController uc;
+    DatabaseConnection uc;
     ExecutorService executor;
     boolean isOk;
 
