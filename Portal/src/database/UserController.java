@@ -103,8 +103,9 @@ public class UserController {
             System.out.println(isOpen);
             
             ResultSet rs;
-            Statement stat = conn.createStatement();
-            
+            Statement stat;
+            stat = conn.createStatement();
+
             String query = "SELECT * FROM USERS WHERE NAME ='" + name + "' AND PASSWORD = '" + password + "';";
             
             stat = conn.prepareStatement(query);

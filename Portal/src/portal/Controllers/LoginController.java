@@ -5,14 +5,18 @@ import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.TextField;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 import portal.Portal;
 
 import java.io.IOException;
 import java.net.URL;
+import java.sql.SQLException;
 import java.util.ResourceBundle;
 import java.util.concurrent.*;
 
@@ -20,15 +24,17 @@ import java.util.concurrent.*;
  * Created by tverv on 08-Dec-15.
  */
 public class LoginController implements Initializable {
+    //Controls
+    @FXML private Button btnLogin;
+    @FXML private TextField tfdUsername;
+    @FXML private TextField tfdPassword;
+
     /**
      * Initializes the controller class.
      */
     UserController uc;
     ExecutorService executor;
     boolean isOk;
-
-    @FXML
-    private Button btnLogin;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -43,8 +49,21 @@ public class LoginController implements Initializable {
     }
 
     public void btnLogin(Event evt) {
-        System.out.println("Foo");
-        LoginAttempt();
+        try {
+            Boolean result = uc.CheckLogin(tfdUsername.getText(),tfdPassword.getText());
+
+            if(result) {
+                loadMainWindow();
+            } else {
+                System.out.println("login failed");
+            }
+        }
+
+        catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+
+
     }
 
     public void LoginAttempt() {
@@ -70,30 +89,32 @@ public class LoginController implements Initializable {
                 } catch (ExecutionException ex) {
                     ex.printStackTrace();
                 }
-
-                if(isOk) {
-                    loadMainWindow();
-                }
             }
         });
     }
 
     private void loadMainWindow() {
         //Loading the .fxml file.
-        Stage primaryStage = Portal.Stage;
-        System.out.println(primaryStage.getTitle());
+        Stage stage = Portal.Stage;
 
         Parent root = null;
         try {
-            root = FXMLLoader.load(getClass().getResource("MainWindow.fxml"));
+            root = FXMLLoader.load(getClass().getResource("../Views/MainWindow.fxml"));
         } catch (IOException e) {
             e.printStackTrace();
         }
 
-        Scene scene = new Scene(root, 800, 480);
+        if (root != null) {
+            System.out.println("Works");
+            Scene scene = new Scene(root, 800, 480);
 
-        primaryStage.setTitle("Portal");
-        primaryStage.setScene(scene);
-        primaryStage.show();
+            stage.setTitle("Portal");
+            stage.setScene(scene);
+            stage.show();
+
+        } else {
+            System.out.println("Failed");
+        }
+
     }
 }
