@@ -99,7 +99,8 @@ public class LoginController implements Initializable {
 
         Parent root = null;
         try {
-            root = FXMLLoader.load(getClass().getResource("../Views/MainWindow.fxml"));
+            System.out.println("Pad: " + getClass().getResource("MainWindow.fxml"));
+            root = FXMLLoader.load(getClass().getResource("MainWindow.fxml"));
         } catch (IOException e) {
             e.printStackTrace();
         }
