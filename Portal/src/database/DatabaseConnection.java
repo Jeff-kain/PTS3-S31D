@@ -103,8 +103,9 @@ public class DatabaseConnection {
 
             while (rs.next()) {
                 String name = rs.getString("NAME");
+                String description = rs.getString("DESCRIPTION");
 
-                Game game = new Game(name);
+                Game game = new Game(name, description);
                 games.add(game);
             }
 

@@ -5,10 +5,12 @@ package portal.Models;
  */
 public class Game {
     private String name;
+    private String description;
     private String path;
 
-    public Game(String name) {
+    public Game(String name, String description) {
         this.name = name;
+        this.description = description;
     }
 
     public String getPath() {
