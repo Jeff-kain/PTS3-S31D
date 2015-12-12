@@ -34,7 +34,7 @@ public class Portal extends Application {
         //Loading the .fxml file.
         Parent root = null;
         try {
-            root = FXMLLoader.load(getClass().getResource("Views/Login.fxml"));
+            root = FXMLLoader.load(getClass().getResource("Controllers/Login.fxml"));
         } catch (IOException e) {
             e.printStackTrace();
         }

@@ -102,8 +102,14 @@ public class LoginController implements Initializable {
 
         Parent root = null;
         try {
-            root = FXMLLoader.load(getClass().getResource("../Views/MainWindow.fxml"));
-        } catch (Exception e) {
+
+            //Commit Merge
+//            root = FXMLLoader.load(getClass().getResource("../Views/MainWindow.fxml"));
+//        } catch (Exception e) {
+
+            System.out.println("Pad: " + getClass().getResource("MainWindow.fxml"));
+            root = FXMLLoader.load(getClass().getResource("MainWindow.fxml"));
+        } catch (IOException e) {
             e.printStackTrace();
             System.out.println(e.getMessage());
         }
