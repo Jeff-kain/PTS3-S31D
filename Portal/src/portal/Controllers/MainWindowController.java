@@ -39,7 +39,8 @@ public class MainWindowController implements Initializable {
     @FXML Button btnSend;
     @FXML TextArea taChat;
 
-    String username, address = "84.26.129.94";
+    String address;
+    String username;
     ArrayList<String> users;
     Boolean isConnected;
     int port;
@@ -118,7 +119,8 @@ public class MainWindowController implements Initializable {
 
                 try {
 
-                    //addr = InetAddress.getByName("145.93.52.224");
+                    //84.26.129.94
+                    address = "192.168.178.105";
                     sock = new Socket(address, port);
                     InputStreamReader streamreader = new InputStreamReader(sock.getInputStream());
                     reader = new BufferedReader(streamreader);
@@ -130,6 +132,7 @@ public class MainWindowController implements Initializable {
 
                 } catch (IOException e) {
                     System.out.println(e.getMessage());
+                    e.printStackTrace();
                     Display("Cannot Connect! Try Again. \n");
                 }
 

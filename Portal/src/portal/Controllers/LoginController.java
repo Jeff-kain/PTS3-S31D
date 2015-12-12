@@ -22,6 +22,7 @@ import java.util.concurrent.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.fxml.JavaFXBuilderFactory;
+import portal.Models.User;
 
 /**
  * Created by tverv on 08-Dec-15.
@@ -57,6 +58,7 @@ public class LoginController implements Initializable {
             Boolean result = dc.CheckLogin(tfdUsername.getText(),pfdPassword.getText());
 
             if(result) {
+                new User().setName(tfdUsername.getText());
                 loadMainWindow();
             } else {
                 System.out.println("login failed");
