@@ -120,6 +120,16 @@ public class MainWindowController implements Initializable {
         
     }
     
+    public void playOffline(Event evt) {
+        Process p;
+        try {
+            p = Runtime.getRuntime().exec("\"C:/Program Files (x86)/Gyazo/Gyazowin.exe\"");
+        p.waitFor();
+        } catch (IOException | InterruptedException ex) {
+            Logger.getLogger(MainWindowController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
     public void onExit(Event evt) {
         userDisconnect();
         new User().setName("Null");
