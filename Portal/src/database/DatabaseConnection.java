@@ -55,8 +55,6 @@ public class DatabaseConnection {
 
             // get the property value and print it out
             System.out.println(props.getProperty("url"));
-            System.out.println(props.getProperty("username"));
-            System.out.println(props.getProperty("password"));
 
             url = props.getProperty("url");
             username = props.getProperty("username");
@@ -149,7 +147,7 @@ public class DatabaseConnection {
         
         try {
             boolean isOpen = open();
-            System.out.println(isOpen);
+            //System.out.println(isOpen);
             
             ResultSet rs;
             Statement stat = conn.createStatement();
