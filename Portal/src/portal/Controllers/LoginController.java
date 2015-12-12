@@ -36,7 +36,7 @@ public class LoginController implements Initializable {
     /**
      * Initializes the controller class.
      */
-    private Stage stage;
+    public static Stage stage;
     DatabaseConnection dc;
     ExecutorService executor;
     boolean isOk;
@@ -100,7 +100,7 @@ public class LoginController implements Initializable {
 
     private void loadMainWindow() throws Exception {
         //Loading the .fxml file.
-        Stage stage = Portal.Stage;
+        stage = Portal.Stage;
 
         Parent root = null;
         try {
