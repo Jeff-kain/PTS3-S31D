@@ -23,6 +23,7 @@ import java.util.Scanner;
 public class Chat_Server_Console {
 
     /**
+     * 
      * @param args the command line arguments
      */
     ArrayList clientOutputStreams;
