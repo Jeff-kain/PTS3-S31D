@@ -14,11 +14,11 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
 import portal.Models.Game;
 
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
+import java.io.*;
+import java.net.InetAddress;
 import java.net.Socket;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.ResourceBundle;
 import java.util.Scanner;
 import javafx.event.Event;
@@ -35,16 +35,22 @@ public class MainWindowController implements Initializable {
     ObservableList<Game> observableGames;
 
     @FXML private ListView<Game> lvwGame;
-    @FXML private TextArea txaMessages;
-    @FXML private TextField tfdMessage;
-    @FXML private Button btnSend;
+    @FXML TextField tfSend;
+    @FXML Button btnSend;
+    @FXML TextArea taChat;
+
+    String username, address = "84.26.129.94";
+    ArrayList<String> users;
+    Boolean isConnected;
+    int port;
+
+    Socket sock;
+    BufferedReader reader;
+    PrintWriter writer;
+    InetAddress addr;
 
     // the server, the port and the username
-    private String server, username;
-    private int port;
-    
-    private Client client;
-        
+
 
     public MainWindowController() {
 
@@ -52,34 +58,176 @@ public class MainWindowController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        users = new ArrayList();
+        isConnected = false;
+        port = 2222;
+        initChat();
+
         try {
             DatabaseConnection dc = DatabaseConnection.getInstance();
 
             observableGames = dc.getGames();
             lvwGame.setItems(observableGames);
-            
+
         } catch (IOException e) {
             e.printStackTrace();
         }
-        
-        initChat();
     }
-    
+
     public void initChat() {
-        server = "Localhost";
-        port = 1500;
+        taChat.setEditable(false);
         username = new User().getName();
-        client = new Client(server, port, username, txaMessages);
+        Connect();
     }
-    
-    public void btSend(Event event) {
-        
+
+    public void Display(String Input) {
+        try {
+            taChat.appendText(Input);
+        } catch(Exception e) {}
     }
-    
-    /*
-     * To send a message to the console or the GUI
-     */
-    public void display(String input) {
-        txaMessages.appendText(input + "\n");
+
+    public void EndChat() {
+        taChat.end();
+    }
+
+    public void btSend(Event evt) {
+        try {
+            if ((tfSend.getText()).equals("")) {
+                tfSend.setText("");
+                tfSend.requestFocus();
+            } else {
+                try {
+                    writer.println(username + ":" + tfSend.getText() + ":" + "Chat");
+                    writer.flush();
+
+                } catch (Exception e) {
+                    System.out.println(e.getMessage());
+                    Display("Message was not sent. \n");
+                }
+                tfSend.setText("");
+                tfSend.requestFocus();
+            }
+        } catch(Exception e) {}
+    }
+
+    public void Connect() {
+        try {
+            if (isConnected == false) {
+
+                username = new User().getName();
+
+                try {
+
+                    //addr = InetAddress.getByName("145.93.52.224");
+                    sock = new Socket(address, port);
+                    InputStreamReader streamreader = new InputStreamReader(sock.getInputStream());
+                    reader = new BufferedReader(streamreader);
+                    writer = new PrintWriter(sock.getOutputStream());
+                    writer.println(username + ":has connected.:Connect");
+                    writer.flush();
+
+                    isConnected = true;
+
+                } catch (IOException e) {
+                    System.out.println(e.getMessage());
+                    Display("Cannot Connect! Try Again. \n");
+                }
+
+                ListenThread();
+
+            } else if (isConnected == true) {
+                Display("You are already connected. \n");
+            }
+        } catch (Exception e) {
+        }
+    }
+
+
+
+    public void btDisconnect(Event evt) {
+        try {
+            sendDisconnect();
+            Disconnect();
+            taChat.setText("");
+        } catch(Exception e) {}
+    }
+
+    public void ListenThread() {
+        try {
+            Thread IncomingReader = new Thread(new IncomingReader());
+            IncomingReader.start();
+        } catch(Exception e) {}
+    }
+
+    public void userAddClient(String data) {
+        users.add(data);
+    }
+
+    public void userRemoveClient(String data) {
+        Display(data + " is now offline.\n");
+    }
+
+    public void writeUsers() {
+        try {
+            String[] tempList = new String[(users.size())];
+            users.toArray(tempList);
+            for (String token : tempList) {
+                Display(token + "\n");
+            }
+        } catch(Exception e) {}
+    }
+
+    public void sendDisconnect() {
+        try {
+            writer.println(username + ": :Disconnect");
+            writer.flush();
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            Display("Could not send Disconnect message.\n");
+        }
+    }
+
+    public void Disconnect() {
+        try {
+            Display("Disconnected.\n");
+            sock.close();
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            Display("Failed to disconnect. \n");
+        }
+        isConnected = false;
+    }
+
+    public class IncomingReader implements Runnable {
+
+        @Override
+        public void run() {
+            String[] data;
+            String stream, done = "Done", connect = "Connect", disconnect = "Disconnect", chat = "Chat";
+
+            try {
+                while ((stream = reader.readLine()) != null) {
+                    data = stream.split(":");
+
+                    if (data[2].equals(chat)) {
+                        Display(data[0] + ": " + data[1] + "\n");
+                        EndChat();
+
+                    } else if (data[2].equals(connect)) {
+
+                        userAddClient(data[0]);
+
+                    } else if (data[2].equals(disconnect)) {
+                        userRemoveClient(data[0]);
+
+                    } else if (data[2].equals(done)) {
+                        writeUsers();
+                        users.clear();
+                    }
+                }
+            } catch (Exception e) {
+                System.out.println(e.getMessage());
+            }
+        }
     }
 }

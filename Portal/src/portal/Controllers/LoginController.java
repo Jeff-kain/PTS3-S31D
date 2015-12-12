@@ -19,6 +19,9 @@ import java.net.URL;
 import java.sql.SQLException;
 import java.util.ResourceBundle;
 import java.util.concurrent.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javafx.fxml.JavaFXBuilderFactory;
 
 /**
  * Created by tverv on 08-Dec-15.
@@ -32,6 +35,7 @@ public class LoginController implements Initializable {
     /**
      * Initializes the controller class.
      */
+    private Stage stage;
     DatabaseConnection dc;
     ExecutorService executor;
     boolean isOk;
@@ -61,9 +65,9 @@ public class LoginController implements Initializable {
 
         catch (SQLException ex) {
             ex.printStackTrace();
+        } catch (Exception ex) {
+            Logger.getLogger(LoginController.class.getName()).log(Level.SEVERE, null, ex);
         }
-
-
     }
 
     public void LoginAttempt() {
@@ -72,7 +76,7 @@ public class LoginController implements Initializable {
 
             @Override
             public Object call() throws Exception {
-                boolean isConnected = dc.TestConnection();
+                boolean isConnected = dc.CheckLogin(tfdUsername.getText(),pfdPassword.getText());
                 return isConnected;
             }
         };
@@ -84,25 +88,30 @@ public class LoginController implements Initializable {
             public void run() {
                 try {
                     isOk = (boolean) future.get();
-                } catch (InterruptedException ex) {
-                    ex.printStackTrace();
-                } catch (ExecutionException ex) {
+                    
+                } catch (InterruptedException | ExecutionException ex) {
                     ex.printStackTrace();
                 }
             }
         });
     }
 
-    private void loadMainWindow() {
+    private void loadMainWindow() throws Exception {
         //Loading the .fxml file.
         Stage stage = Portal.Stage;
 
         Parent root = null;
         try {
+
+            //Commit Merge
+//            root = FXMLLoader.load(getClass().getResource("../Views/MainWindow.fxml"));
+//        } catch (Exception e) {
+
             System.out.println("Pad: " + getClass().getResource("MainWindow.fxml"));
             root = FXMLLoader.load(getClass().getResource("MainWindow.fxml"));
         } catch (IOException e) {
             e.printStackTrace();
+            System.out.println(e.getMessage());
         }
 
         if (root != null) {
