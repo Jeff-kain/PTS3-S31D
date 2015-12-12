@@ -12,6 +12,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import portal.Models.RMI.RMIClient;
 import portal.Portal;
 
 import java.io.IOException;
@@ -22,6 +23,8 @@ import java.util.concurrent.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.fxml.JavaFXBuilderFactory;
+import portalserver.interfaces.ILogin;
+import portalserver.interfaces.IPortal;
 
 /**
  * Created by tverv on 08-Dec-15.
@@ -40,11 +43,19 @@ public class LoginController implements Initializable {
     ExecutorService executor;
     boolean isOk;
 
+    //RMI Stuff
+    private RMIClient rmiClient;
+    private ILogin login;
+    private IPortal portal;
+
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         try {
             // TODO
             dc = DatabaseConnection.getInstance();
+            rmiClient = new RMIClient();
+            login = rmiClient.setUp();
+
         } catch (IOException ex) {
             ex.printStackTrace();
         }
@@ -54,17 +65,13 @@ public class LoginController implements Initializable {
 
     public void btnLogin(Event evt) {
         try {
-            Boolean result = dc.CheckLogin(tfdUsername.getText(),pfdPassword.getText());
+            portal = login.login(tfdUsername.getText(),pfdPassword.getText());
 
-            if(result) {
+            if(portal != null) {
                 loadMainWindow();
             } else {
-                System.out.println("login failed");
+                System.out.println("Login failed");
             }
-        }
-
-        catch (SQLException ex) {
-            ex.printStackTrace();
         } catch (Exception ex) {
             Logger.getLogger(LoginController.class.getName()).log(Level.SEVERE, null, ex);
         }
