@@ -21,11 +21,16 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
 import java.util.Scanner;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javafx.application.Platform;
 import javafx.event.Event;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.stage.Stage;
 import portal.*;
 import portal.Models.User;
+import static portal.Portal.Stage;
 
 /**
  * Created by tverv on 08-Dec-15.
@@ -33,13 +38,13 @@ import portal.Models.User;
 public class MainWindowController implements Initializable {
     //Observable lists
     ObservableList<Game> observableGames;
-
     @FXML private ListView<Game> lvwGame;
     @FXML TextField tfSend;
     @FXML Button btnSend;
     @FXML TextArea taChat;
 
-    String username, address = "84.26.129.94";
+    String address;
+    String username;
     ArrayList<String> users;
     Boolean isConnected;
     int port;
@@ -89,7 +94,51 @@ public class MainWindowController implements Initializable {
     public void EndChat() {
         taChat.end();
     }
+    
+    public void onChangeUser(Event evt) {
+        userDisconnect();
+        Stage stage = LoginController.stage;
+        Parent root = null;
+        try {       
+            root = FXMLLoader.load(getClass().getResource("Login.fxml"));
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
+        
+        if(root != null) {
+            Scene scene = new Scene(root, 300, 400);
+            Stage.setTitle("Login");
+            Stage.setScene(scene);
+            Stage.show();
+        }
+        else {
+            System.out.println("Failed");
+        }
+    }
 
+    public void onSettings(Event evt) {
+        
+    }
+    
+    public void playOffline(Event evt) {
+        Process p;
+        try {
+            p = Runtime.getRuntime().exec("\"C:/Program Files (x86)/Gyazo/Gyazowin.exe\"");
+        p.waitFor();
+        } catch (IOException | InterruptedException ex) {
+            Logger.getLogger(MainWindowController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    public void onExit(Event evt) {
+        userDisconnect();
+        new User().setName("Null");
+        Stage stage = LoginController.stage;
+        stage.setOnCloseRequest(e -> Platform.exit());
+        System.exit(0);
+        
+    }
+    
     public void btSend(Event evt) {
         try {
             if ((tfSend.getText()).equals("")) {
@@ -118,7 +167,8 @@ public class MainWindowController implements Initializable {
 
                 try {
 
-                    //addr = InetAddress.getByName("145.93.52.224");
+                    //84.26.129.94
+                    address = "192.168.178.105";
                     sock = new Socket(address, port);
                     InputStreamReader streamreader = new InputStreamReader(sock.getInputStream());
                     reader = new BufferedReader(streamreader);
@@ -130,6 +180,7 @@ public class MainWindowController implements Initializable {
 
                 } catch (IOException e) {
                     System.out.println(e.getMessage());
+                    e.printStackTrace();
                     Display("Cannot Connect! Try Again. \n");
                 }
 
@@ -142,9 +193,7 @@ public class MainWindowController implements Initializable {
         }
     }
 
-
-
-    public void btDisconnect(Event evt) {
+    public void userDisconnect() {
         try {
             sendDisconnect();
             Disconnect();
