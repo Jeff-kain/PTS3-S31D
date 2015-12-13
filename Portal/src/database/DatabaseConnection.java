@@ -23,8 +23,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.util.ArrayList;
-import java.util.Properties;
+import java.util.*;
+import java.util.List;
+
 import javafx.collections.FXCollections;
 
 /**
@@ -82,8 +83,8 @@ public class DatabaseConnection {
         }
     }
 
-    public ObservableList<Game> getGames() {
-        ObservableList<Game> games = FXCollections.observableArrayList();
+    public List<String> getGames() {
+        List<String> games = new ArrayList<>();
 
         boolean isOpen = open();
         System.out.println(isOpen);
@@ -92,19 +93,15 @@ public class DatabaseConnection {
             ResultSet rs;
             Statement stat = null;
 
-            stat = conn.createStatement();
-
-            String query = "select * from GAMES";
+            String query = "select NAME from GAMES";
 
             stat = conn.prepareStatement(query);
             rs = stat.executeQuery(query);
 
             while (rs.next()) {
                 String name = rs.getString("NAME");
-                String description = rs.getString("DESCRIPTION");
 
-                Game game = new Game(name, description);
-                games.add(game);
+                games.add(name);
             }
 
         } catch (SQLException e) {

@@ -12,6 +12,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import portal.Administration;
 import portal.Models.RMI.RMIClient;
 import portal.Portal;
 
@@ -43,11 +44,16 @@ public class LoginController implements Initializable {
     DatabaseConnection dc;
     ExecutorService executor;
     boolean isOk;
+    private Administration admin;
 
     //RMI Stuff
     private RMIClient rmiClient;
     private ILogin login;
     private IPortal portal;
+
+    public LoginController() {
+        admin = Administration.getInstance();
+    }
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -56,6 +62,7 @@ public class LoginController implements Initializable {
             dc = DatabaseConnection.getInstance();
             rmiClient = new RMIClient();
             login = rmiClient.setUp();
+            admin.setLogin(login);
 
         } catch (IOException ex) {
             ex.printStackTrace();
@@ -69,6 +76,10 @@ public class LoginController implements Initializable {
             portal = login.login(tfdUsername.getText(),pfdPassword.getText());
 
             if(portal != null) {
+                admin.setPortal(portal);
+                admin.setUsername(tfdUsername.getText());
+                admin.setPassword(pfdPassword.getText());
+
                 new User().setName(tfdUsername.getText());
                 loadMainWindow();
             } else {

@@ -37,8 +37,8 @@ import static portal.Portal.Stage;
  */
 public class MainWindowController implements Initializable {
     //Observable lists
-    ObservableList<Game> observableGames;
-    @FXML private ListView<Game> lvwGame;
+    ObservableList<String> observableGames;
+    @FXML private ListView<String> lvwGame;
     @FXML TextField tfSend;
     @FXML Button btnSend;
     @FXML TextArea taChat;
@@ -47,6 +47,7 @@ public class MainWindowController implements Initializable {
     String username;
     ArrayList<String> users;
     Boolean isConnected;
+    private Administration admin;
     int port;
 
     Socket sock;
@@ -58,7 +59,7 @@ public class MainWindowController implements Initializable {
 
 
     public MainWindowController() {
-
+        admin = Administration.getInstance();
     }
 
     @Override
@@ -69,9 +70,8 @@ public class MainWindowController implements Initializable {
         initChat();
 
         try {
-            DatabaseConnection dc = DatabaseConnection.getInstance();
-
-            observableGames = dc.getGames();
+            observableGames = FXCollections.observableArrayList();
+            observableGames.addAll(admin.getPortal().getGames(admin.getUsername(), admin.getPassword()));
             lvwGame.setItems(observableGames);
 
         } catch (IOException e) {
@@ -168,7 +168,7 @@ public class MainWindowController implements Initializable {
                 try {
 
                     //84.26.129.94
-                    address = "192.168.178.105";
+                    address = "127.0.0.1";
                     sock = new Socket(address, port);
                     InputStreamReader streamreader = new InputStreamReader(sock.getInputStream());
                     reader = new BufferedReader(streamreader);
