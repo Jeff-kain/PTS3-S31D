@@ -21,3 +21,4 @@ Chat_Client/build.xml
 *.class
 Chat_Server/build/classes/chat_server/ServerFXController$ClientHandler.class
 *.class
+Chat_Server_Console/build/
