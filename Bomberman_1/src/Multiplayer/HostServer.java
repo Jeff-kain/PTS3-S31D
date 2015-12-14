@@ -103,7 +103,8 @@ public class HostServer extends UnicastRemoteObject implements IRemoteHost {
     @Override
     public void movep2c(int direction, float x, float y) throws RemoteException {
         direction = translate(direction);
-        ((Player) (Game.getInstance().getAllPlayers().get(0))).moveremote(direction, x, y);
+        Game.getInstance().getPlayer1().get(0).moveremote(direction, x, y);
+        Game.getInstance().getPlayer2().get(0).moveremote(direction, x, y);
     }
 
     public int translate(int direction) {
