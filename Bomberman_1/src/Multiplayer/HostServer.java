@@ -66,6 +66,7 @@ public class HostServer extends UnicastRemoteObject implements IRemoteHost {
         }
     }
 
+
     public void retrieveClientService(String strService) {
         // System.out.println("fetch:    rmi://" + IRemoteClient.clientname +
         // ":"
