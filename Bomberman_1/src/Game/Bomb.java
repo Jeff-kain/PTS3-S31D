@@ -36,6 +36,10 @@ public class Bomb implements IGameObject, Serializable {
     private final int duration = 550;
     private Player player;
 
+    public void setExplodeTime(int explodeTime) {
+        this.explodeTime = explodeTime;
+    }
+
     public int getExplodeTime() {
         return explodeTime;
     }
@@ -246,6 +250,8 @@ public class Bomb implements IGameObject, Serializable {
                         flame.setPosition(oldX + 48 + 48 * r, oldY);
                         game.playground().addToLevel(flame);
                         checkForBase(this.getX(), this.getY());
+                        checkForBomb(this.getX(), this.getY());
+
                     } else {
                         checkForBox(this.getX(), this.getY(), Direction.EAST);
                         this.x -= (48 + 48 * r);
@@ -262,6 +268,7 @@ public class Bomb implements IGameObject, Serializable {
                         flame.setPosition(oldX - 48 - 48 * r, oldY);
                         game.playground().addToLevel(flame);
                         checkForBase(this.getX(), this.getY());
+                        checkForBomb(this.getX(), this.getY());
 
                     } else {
                         checkForBox(this.getX(), this.getY(), Direction.WEST);
@@ -279,6 +286,7 @@ public class Bomb implements IGameObject, Serializable {
                         flame.setPosition(oldX, oldY + 48 + 48 * r);
                         game.playground().addToLevel(flame);
                         checkForBase(this.getX(), this.getY());
+                        checkForBomb(this.getX(), this.getY());
 
                     } else {
                         checkForBox(this.getX(), this.getY(), Direction.SOUTH);
@@ -296,6 +304,7 @@ public class Bomb implements IGameObject, Serializable {
                         flame.setPosition(oldX, oldY - 48 - 48 * r);
                         game.playground().addToLevel(flame);
                         checkForBase(this.getX(), this.getY());
+                        checkForBomb(this.getX(), this.getY());
 
                     } else {
                         checkForBox(this.getX(), this.getY(), Direction.NORTH);
@@ -349,6 +358,17 @@ public class Bomb implements IGameObject, Serializable {
 //                game.playground().addToLevel(flame);
 //            }
 //        }
+    }
+
+    public void checkForBomb(float x, float y) {
+        for (IGameObject o : Game.getInstance().playground().getMapobjects()) {
+            if (o instanceof Bomb) {
+                if (o.getX() == x && o.getY() == y) {
+                    Bomb bomb = (Bomb) o;
+                    bomb.setExplodeTime(0);
+                }
+            }
+        }
     }
 
     public void checkForBase(float x, float y) {
