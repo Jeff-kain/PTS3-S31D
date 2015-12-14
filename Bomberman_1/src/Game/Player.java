@@ -285,7 +285,7 @@ public class Player implements IGameObject, Serializable {
 
                 } else {
 
-                    manager.getRemoteclient().movep2h(direction, this.x, this.x);
+                    manager.getRemoteclient().movep2h(direction, this.x, this.y);
                 }
             }
 
