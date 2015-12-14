@@ -62,12 +62,11 @@ public class Player implements IGameObject, Serializable {
     }
 
     public void addPlacedBombs() {
-        placedBombs +=1;
+        placedBombs += 1;
     }
-    
-    public void deletePlacedBombs()
-    {
-        placedBombs -=1;
+
+    public void deletePlacedBombs() {
+        placedBombs -= 1;
     }
 
     public Player(SpriteSheet sprites, Float x, Float y, int bombCount, float speed, Boolean kick) throws SlickException {
@@ -296,7 +295,6 @@ public class Player implements IGameObject, Serializable {
                 if (manager.isBoolClient()) {
 
                     manager.getRemotehost().movep2c(direction, this.x, this.y);
-
                 } else {
 
                     manager.getRemoteclient().movep2h(direction, this.x, this.y);
@@ -311,7 +309,6 @@ public class Player implements IGameObject, Serializable {
     public void moveremote(int direction, float x, float y) {
         System.out.println("moveremoteclient: " + direction);
         int row = 0;
-        kickDirection = direction;
         if (teamColor == teamColor.BLUE) {
             row = 16;
         } else {
@@ -319,6 +316,7 @@ public class Player implements IGameObject, Serializable {
         }
         float oldx = this.getX();
         float oldy = this.getY();
+        kickDirection = direction * -1;
         setPosition(x, y);
         if (direction == Keyset.REMUP) {
             this.sprite = this.sprites.getSubImage(8, row);
@@ -340,7 +338,7 @@ public class Player implements IGameObject, Serializable {
         } else if (direction == Keyset.REMBOMB) {
             Bomb b = new Bomb(sprites, x, y, this.getBombRange());
 
-            this.setKickDirection(0);
+            //this.setKickDirection(0);
             game.playground().addToLevel(b);
             System.out.println("bombermanClient added to level");
 

@@ -111,8 +111,7 @@ public class Bomb implements IGameObject, Serializable {
         }
         explodeTime--;
 
-        Game game = Game.getInstance();
-        ArrayList<Player> players = game.getAllPlayers();
+        ArrayList<Player> players = Game.getInstance().getAllPlayers();
         for (Player p : players) {
             if (intersects(p)) {
                 if (!moving) {
