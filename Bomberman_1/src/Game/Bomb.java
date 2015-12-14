@@ -13,6 +13,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import bomberman.Bomberman;
+import java.io.Serializable;
 import org.newdawn.slick.Animation;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
@@ -22,7 +23,7 @@ import org.newdawn.slick.SpriteSheet;
  *
  * @author tverv
  */
-public class Bomb implements IGameObject {
+public class Bomb implements IGameObject, Serializable {
 
     private Image sprite;
     private SpriteSheet sprites;
@@ -113,7 +114,7 @@ public class Bomb implements IGameObject {
 
     }
 
-    public void kickBomb(Direction direction) {
+    public void kickBomb(int direction) {
         Thread t = new Thread(new Runnable() {
             @Override
             public void run() {
@@ -126,36 +127,36 @@ public class Bomb implements IGameObject {
                 while (travelled < range) {
 
                     if (!intersectWithBox() && !intersectWithWall() && boxCollided == false) {
-                        switch (direction.name()) {
-                            case "NORTH":
+                        switch (direction) {
+                            case 1:
                                 tileid = game.playground().getMap().getTileId(Math.round(oldposX / 48), Math.round(oldposY / 48) - 1, 1);
                                 if (tileid <= 0) {
                                     y -= 0.5f;
                                 }
                                 break;
 
-                            case "EAST":
+                            case 4:
                                 tileid = game.playground().getMap().getTileId(Math.round(oldposX / 48) + 1, Math.round(oldposY / 48), 1);
                                 if (tileid <= 0) {
                                     x += 0.5f;
                                 }
                                 break;
 
-                            case "SOUTH":
+                            case 3:
                                 tileid = game.playground().getMap().getTileId(Math.round(oldposX / 48), Math.round(oldposY / 48) + 1, 1);
                                 if (tileid <= 0) {
                                     y += 0.5f;
                                 }
                                 break;
 
-                            case "WEST":
+                            case 2:
                                 tileid = game.playground().getMap().getTileId(Math.round(oldposX / 48) - 1, Math.round(oldposY / 48), 1);
                                 if (tileid <= 0) {
                                     x -= 0.5f;
                                 }
                                 break;
 
-                            case "NONE":
+                            case 0:
                                 break;
 
                             default:
@@ -167,20 +168,20 @@ public class Bomb implements IGameObject {
                     } else {
                         boxCollided = true;
 
-                        switch (direction.name()) {
-                            case "NORTH":
+                        switch (direction) {
+                            case 1:
                                 setPosition(x, y + 0.5f);
                                 break;
 
-                            case "EAST":
+                            case 4:
                                 setPosition(x - 0.5f, y);
                                 break;
 
-                            case "SOUTH":
+                            case 3:
                                 setPosition(x, y + 0.5f);
                                 break;
 
-                            case "WEST":
+                            case 2:
                                 setPosition(x + 0.5f, y);
                                 break;
                         }
