@@ -35,6 +35,7 @@ public class HostServer extends UnicastRemoteObject implements IRemoteHost {
     Registry registry;
     IRemoteClient service = null;
     private ArrayList<IGameObject> gameObjects = new ArrayList<>();
+    Manager manager = Manager.getManager();
 
     public HostServer(int registryPort, String servicename) throws RemoteException, UnknownHostException {
         publishHost(registryPort, servicename);
@@ -96,6 +97,7 @@ public class HostServer extends UnicastRemoteObject implements IRemoteHost {
     @Override
     public void joingame(String strService) throws RemoteException {
         retrieveClientService(strService);
+        manager.setRemoteclient(service);
     }
 
     @Override
