@@ -34,6 +34,7 @@ public class Bomb implements IGameObject, Serializable {
     private boolean exploded;
     private Float range;
     private final int duration = 550;
+    private Player player;
 
     public int getExplodeTime() {
         return explodeTime;
@@ -64,6 +65,7 @@ public class Bomb implements IGameObject, Serializable {
         this.exploded = false;
         this.range = range;
         this.kickRange = 15f;
+        this.player = player;
     }
 
     public Animation getAnimation() {
@@ -91,6 +93,7 @@ public class Bomb implements IGameObject, Serializable {
     public void Update() {
         if (explodeTime < 0) {
             exploded = true;
+            
             try {
                 createFlames();
             } catch (SlickException ex) {

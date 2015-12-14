@@ -75,7 +75,7 @@ public class HostServer extends UnicastRemoteObject implements IRemoteHost {
             // besser ist folgendes:
             // service = (IRemoteClient) LocateRegistry
             // .getRegistry("hostip", 1099).lookup(strService);
-            service = (IRemoteClient) Naming.lookup(strService);
+            service = (IRemoteClient) Naming.lookup("rmi://145.93.52.35:1090/client");
         } catch (MalformedURLException e) {
             e.printStackTrace();
         } catch (NotBoundException e) {

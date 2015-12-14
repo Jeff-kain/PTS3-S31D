@@ -139,35 +139,35 @@ public class Game_StateBasedGame extends BasicGameState {
 //            g.setColor(Color.blue);
 //            g.fill(mouseBall);    
 
-        for (Bomb bomb : bombs) {
-            //g.drawImage(bomb.getSprite(), bomb.getX(), bomb.getY());
-            Animation animation;
-            if (bombAnimations.get(bomb) == null) {
-                animation = bomb.getAnimation();
-                animation.setLooping(false);
-                animation.setAutoUpdate(true);
-                bombAnimations.put(bomb, animation);
-            } else {
-                animation = bombAnimations.get(bomb);
-            }
-
-            animation.draw(bomb.getX(), bomb.getY());
-        }
-
-        for (Bomb bomb : bombs2) {
-            //g.drawImage(bomb.getSprite(), bomb.getX(), bomb.getY());
-            Animation animation;
-            if (bombAnimations.get(bomb) == null) {
-                animation = bomb.getAnimation();
-                animation.setLooping(false);
-                animation.setAutoUpdate(true);
-                bombAnimations.put(bomb, animation);
-            } else {
-                animation = bombAnimations.get(bomb);
-            }
-
-            animation.draw(bomb.getX(), bomb.getY());
-        }
+//        for (Bomb bomb : bombs) {
+//            //g.drawImage(bomb.getSprite(), bomb.getX(), bomb.getY());
+//            Animation animation;
+//            if (bombAnimations.get(bomb) == null) {
+//                animation = bomb.getAnimation();
+//                animation.setLooping(false);
+//                animation.setAutoUpdate(true);
+//                bombAnimations.put(bomb, animation);
+//            } else {
+//                animation = bombAnimations.get(bomb);
+//            }
+//
+//            animation.draw(bomb.getX(), bomb.getY());
+//        }
+//
+//        for (Bomb bomb : bombs2) {
+//            //g.drawImage(bomb.getSprite(), bomb.getX(), bomb.getY());
+//            Animation animation;
+//            if (bombAnimations.get(bomb) == null) {
+//                animation = bomb.getAnimation();
+//                animation.setLooping(false);
+//                animation.setAutoUpdate(true);
+//                bombAnimations.put(bomb, animation);
+//            } else {
+//                animation = bombAnimations.get(bomb);
+//            }
+//
+//            animation.draw(bomb.getX(), bomb.getY());
+//        }
 //        for (Player p : game.getTeam1().getPlayers()) {
 //            g.drawImage(p.getSprite(), p.getX(), p.getY());
 //        }
@@ -321,6 +321,7 @@ public class Game_StateBasedGame extends BasicGameState {
             if (bombs.size() < player.getBombCount()) {
                 player.setKickDirection(0);
                 playground.addToLevel(b);
+                playground.addBombs1(b);
                 player.move(5); // place remote bomb
             }
         }
@@ -373,9 +374,8 @@ public class Game_StateBasedGame extends BasicGameState {
                 if (bombs2.size() < player2.getBombCount()) {
                     player2.setKickDirection(0);
                     playground.addToLevel(b);
+                    playground.addBombs2(b);
                     player2.move(5); // place remote bomb
-
-                    // bombs2.add(b);
                 }
             }
 
@@ -431,27 +431,23 @@ public class Game_StateBasedGame extends BasicGameState {
 //                // TODO KICK A BOMB
 //            }
 //        }
-//        if (bombs
-//                != null) {
-//            for (Bomb b : bombs) {
-//                if (b.isExploded()) {
-//                    bombs.remove(b);
-//                } else {
-//                    b.Update();
-//                }
-//            }
-//        }
-//
-//        if (bombs2
-//                != null) {
-//            for (Bomb b : bombs2) {
-//                if (b.isExploded()) {
-//                    bombs2.remove(b);
-//                } else {
-//                    b.Update();
-//                }
-//            }
-//        }
+        if (bombs
+                != null) {
+            for (Bomb b : playground.getBombs()) {
+                if (b.isExploded()) {
+                    bombs.remove(b);
+                } 
+            }
+        }
+
+        if (bombs2
+                != null) {
+            for (Bomb b : playground.getBombs2()) {
+                if (b.isExploded()) {
+                    bombs2.remove(b);
+                }
+            }
+        }
         for (IGameObject o : game.playground().getMapobjects()) {
             if (o instanceof Bomb) {
                 Bomb b = (Bomb) o;

@@ -27,6 +27,7 @@ public class Player implements IGameObject, Serializable {
     private float speed;
     private Boolean kick;
     private int bombCount;
+    private int placedBombs;
     private SpriteSheet sprites;
     private Float x;
     private Float y;
@@ -54,6 +55,19 @@ public class Player implements IGameObject, Serializable {
 
     public TeamColor getTeamColor() {
         return teamColor;
+    }
+
+    public int getPlacedBombs() {
+        return placedBombs;
+    }
+
+    public void addPlacedBombs() {
+        placedBombs +=1;
+    }
+    
+    public void deletePlacedBombs()
+    {
+        placedBombs -=1;
     }
 
     public Player(SpriteSheet sprites, Float x, Float y, int bombCount, float speed, Boolean kick) throws SlickException {
