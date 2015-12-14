@@ -27,6 +27,7 @@ import java.util.*;
 import java.util.List;
 
 import javafx.collections.FXCollections;
+import portal.Models.Score;
 import portalserver.User;
 
 /**
@@ -84,7 +85,82 @@ public class DatabaseConnection {
         }
     }
 
-    public List<Game> getGames() {
+    public boolean open() {
+        try {
+        Class.forName("com.mysql.jdbc.Driver").newInstance();
+        conn = DriverManager.getConnection(url, username, password);
+        return true;
+        } catch (Exception ex) {
+            System.err.println(ex.getMessage());
+            return false;
+        }
+    }
+    
+    public boolean close() {
+        try {
+            conn.close();
+            conn = null;
+            return true;
+        } catch (Exception ex) {
+            System.err.println(ex.getMessage());
+            return false;
+        }
+    }
+    
+    public boolean TestConnection(){
+        boolean isOpen = open();
+        close();
+        return isOpen;
+    }
+    
+    public boolean CheckLogin(String username, String password) throws SQLException {
+        
+        try {
+            boolean isOpen = open();
+            
+            ResultSet rs;
+            Statement stat = conn.createStatement();
+            
+            String query = "SELECT * FROM USERS WHERE NAME ='" + username + "' AND PASSWORD = '" + password + "';";
+            
+            stat = conn.prepareStatement(query);
+            rs = stat.executeQuery(query);
+
+            return rs.first();
+        }
+        finally{            
+            close();
+        }
+    }
+
+    public User getUser(String username, String password) throws SQLException {
+        System.out.println("getUser()");
+        boolean isOpen = open();
+
+        System.out.println(username);
+        System.out.println(password);
+
+        ResultSet rs;
+        Statement stat;
+        String query = "SELECT * FROM USERS WHERE NAME ='" + username + "' AND PASSWORD = '" + password + "';";
+
+        stat = conn.prepareStatement(query);
+        rs = stat.executeQuery(query);
+
+        while (rs.next()) {
+            int id = rs.getInt("ID");
+            String name = rs.getString("NAME");
+            System.out.println("User" + id + " - " + name);
+
+            return new User(id, name);
+        }
+
+        System.out.println("Beetje jammer dit.");
+        System.out.println("inderdaad");
+        return null;
+    }
+    
+        public List<Game> getGames() {
         List<Game> games = new ArrayList<>();
 
         boolean isOpen = open();
@@ -116,101 +192,24 @@ public class DatabaseConnection {
         return games;
     }
     
-    public boolean open() {
-        try {
-        Class.forName("com.mysql.jdbc.Driver").newInstance();
-        conn = DriverManager.getConnection(url, username, password);
-        return true;
-        } catch (Exception ex) {
-            System.err.println(ex.getMessage());
-            return false;
-        }
-    }
-    
-    public boolean close() {
-        try {
-            conn.close();
-            conn = null;
-            return true;
-        } catch (Exception ex) {
-            System.err.println(ex.getMessage());
-            return false;
-        }
-    }
-    
-    public boolean TestConnection(){
+    public List<Score> getLeaderboard(String username, String password, String enteredName, String Game) throws SQLException {
         boolean isOpen = open();
-        System.out.println(isOpen);
-        close();
-        return isOpen;
-    }
-    
-    public boolean CheckLogin(String username, String password) throws SQLException {
-        
-        try {
-            boolean isOpen = open();
-            //System.out.println(isOpen);
-            
-            ResultSet rs;
-            Statement stat = conn.createStatement();
-            
-            String query = "SELECT * FROM USERS WHERE NAME ='" + username + "' AND PASSWORD = '" + password + "';";
-            
-            stat = conn.prepareStatement(query);
-            rs = stat.executeQuery(query);
 
-            return rs.first();
-        }
-        finally{            
-            close();
-        }
-    }
-
-    public User getUser(String username, String password) throws SQLException {
-        System.out.println("getUser()");
-        boolean isOpen = open();
-        //System.out.println(isOpen);
-
-        System.out.println(username);
-        System.out.println(password);
-
-        ResultSet rs;
-        Statement stat;
-        String query = "SELECT * FROM USERS WHERE NAME ='" + username + "' AND PASSWORD = '" + password + "';";
-
-        stat = conn.prepareStatement(query);
-        rs = stat.executeQuery(query);
-
-        while (rs.next()) {
-            int id = rs.getInt("ID");
-            String name = rs.getString("NAME");
-            System.out.println("User" + id + " - " + name);
-
-            return new User(id, name);
-        }
-
-        System.out.println("Beetje jammer dit.");
-        return null;
-    }
-    
-    public User getLeaderboard(String username) throws SQLException {
-        boolean isOpen = open();
-        //System.out.println(isOpen);
-
+        List<Score> leaderboard = new ArrayList<>();
         ResultSet rs;
         Statement stat;
 
         if(isOpen) {
-            String query = "SELECT * FROM USERS WHERE NAME ='" + username + "';";
+            String query = "SELECT lb.Wins, lb.loses, u.Name FROM users u, leaderboard lb, games g WHERE u.id = lb.id_user AND g.id = lb.id_Game  AND g.Name = ? AND u.Name = ?";
 
             stat = conn.prepareStatement(query);
             rs = stat.executeQuery(query);
 
             while (rs.next()) {
-                int id = rs.getInt("ID");
-                String name = rs.getString("NAME");
+                int Wins = rs.getInt("Wins");
+                int Loses = rs.getInt("Loses");
 
-                return new User(id, name);
+                return null;
             }
         }
 

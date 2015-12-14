@@ -171,6 +171,14 @@ public class MainWindowController implements Initializable {
         
     }
     
+    public void onStart(Event evt) {
+        
+    }
+    
+    public void onRefresh(Event evt) {
+        
+    }
+        
     public void onLeaderboard(Event evt) {
         showLeaderboardWindow();
     }

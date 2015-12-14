@@ -135,6 +135,7 @@ public class LoginController implements Initializable {
 
             stage.setTitle("Portal");
             stage.setScene(scene);
+            stage.setResizable(false);
             stage.show();
 
         } else {
