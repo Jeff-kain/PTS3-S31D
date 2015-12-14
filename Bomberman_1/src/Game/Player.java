@@ -454,9 +454,11 @@ public class Player implements IGameObject, Serializable {
 
     public boolean intersectWithPlayer() {
         for (Player p : Game.getInstance().getAllPlayers()) {
-            if (this.intersects(p)) {
-                System.out.println("Player collision detected");
-                return true;
+            if (this != p) {
+                if (this.intersects(p)) {
+                    System.out.println("Player collision detected");
+                    return true;
+                }
             }
         }
         return false;
