@@ -7,20 +7,24 @@ package Game;
 
 import Multiplayer.IRemoteClient;
 import Multiplayer.Manager;
-import java.awt.geom.Rectangle2D;
-import java.io.Serializable;
-import java.rmi.RemoteException;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.SpriteSheet;
-import powerup.*;
+import powerup.Bomb_Up;
+import powerup.Explosion_Up;
+import powerup.Kick;
+import powerup.Speed_Up;
+
+import java.awt.geom.Rectangle2D;
+import java.io.Serializable;
+import java.rmi.RemoteException;
 
 /**
- *
  * @author jeffrey
  */
 public class Player implements IGameObject, Serializable {
 
+    boolean pleft, pright, pup, pdown, plant;
     private Image sprite;
     private String name;
     private float blockSize;
@@ -37,38 +41,10 @@ public class Player implements IGameObject, Serializable {
     private Game game = Game.getInstance();
     private TeamColor teamColor;
     private int kickDirection;
-
     private Playground playground = new Playground();
     private int respawn;
-
     private Manager manager = Manager.getManager();
-    boolean pleft, pright, pup, pdown, plant;
     private Keyset Keys;
-
-    public Float getBombRange() {
-        return bombRange;
-    }
-
-    public void setBombRange(Float bombRange) {
-        this.bombRange = bombRange;
-    }
-
-    public TeamColor getTeamColor() {
-        return teamColor;
-    }
-
-    public int getPlacedBombs() {
-        return placedBombs;
-    }
-
-    public void addPlacedBombs() {
-        placedBombs +=1;
-    }
-    
-    public void deletePlacedBombs()
-    {
-        placedBombs -=1;
-    }
 
     public Player(SpriteSheet sprites, Float x, Float y, int bombCount, float speed, Boolean kick) throws SlickException {
         this.sprites = sprites;
@@ -85,6 +61,39 @@ public class Player implements IGameObject, Serializable {
         this.kickDirection = 0;
         visible = true;
         respawn = 0;
+    }
+
+    public Float getBombRange() {
+        return bombRange;
+    }
+
+    public void setBombRange(Float bombRange) {
+        this.bombRange = bombRange;
+    }
+
+    public TeamColor getTeamColor() {
+        return teamColor;
+    }
+
+    public void setTeamColor(TeamColor teamColor) {
+        this.teamColor = teamColor;
+        if (teamColor == TeamColor.BLUE) {
+            sprite = sprites.getSubImage(2, 16);
+        } else {
+            sprite = sprites.getSubImage(2, 17);
+        }
+    }
+
+    public int getPlacedBombs() {
+        return placedBombs;
+    }
+
+    public void addPlacedBombs() {
+        placedBombs += 1;
+    }
+
+    public void deletePlacedBombs() {
+        placedBombs -= 1;
     }
 
     @Override
@@ -242,6 +251,10 @@ public class Player implements IGameObject, Serializable {
         return bombCount;
     }
 
+    public void setBombCount(int bombCount) {
+        this.bombCount++;
+    }
+
     public int getKickDirection() {
         return kickDirection;
     }
@@ -253,15 +266,6 @@ public class Player implements IGameObject, Serializable {
     public void setPosition(Float x, Float y) {
         this.x = x;
         this.y = y;
-    }
-
-    public void setTeamColor(TeamColor teamColor) {
-        this.teamColor = teamColor;
-        if (teamColor == TeamColor.BLUE) {
-            sprite = sprites.getSubImage(2, 16);
-        } else {
-            sprite = sprites.getSubImage(2, 17);
-        }
     }
 
     public boolean upBomb() {
@@ -281,10 +285,6 @@ public class Player implements IGameObject, Serializable {
         return false;
     }
 
-    public void setBombCount(int bombCount) {
-        this.bombCount++;
-    }
-
     public void moveifremote(int direction) {
 
 //        System.out.println("moveifremote: " + direction);
@@ -296,7 +296,6 @@ public class Player implements IGameObject, Serializable {
                 if (manager.isBoolClient()) {
 
                     manager.getRemotehost().movep2c(direction, this.x, this.y);
-
                 } else {
 
                     manager.getRemoteclient().movep2h(direction, this.x, this.y);
@@ -311,7 +310,6 @@ public class Player implements IGameObject, Serializable {
     public void moveremote(int direction, float x, float y) {
         System.out.println("moveremoteclient: " + direction);
         int row = 0;
-        kickDirection = direction;
         if (teamColor == teamColor.BLUE) {
             row = 16;
         } else {
@@ -319,6 +317,7 @@ public class Player implements IGameObject, Serializable {
         }
         float oldx = this.getX();
         float oldy = this.getY();
+        kickDirection = direction * -1;
         setPosition(x, y);
         if (direction == Keyset.REMUP) {
             this.sprite = this.sprites.getSubImage(8, row);
@@ -340,18 +339,17 @@ public class Player implements IGameObject, Serializable {
         } else if (direction == Keyset.REMBOMB) {
             Bomb b = new Bomb(sprites, x, y, this.getBombRange());
 
-            this.setKickDirection(0);
+            //this.setKickDirection(0);
             game.playground().addToLevel(b);
             System.out.println("bombermanClient added to level");
 
         }
-        if (this.intersectWithBox() || this.intersectWithWall()) {
+        if (this.intersectWithBox() || this.intersectWithWall() || this.intersectWithPlayer()) {
             setPosition(oldx, oldy);
         }
     }
 
     /**
-     *
      * @param keycode
      * @param pressed
      */
@@ -449,6 +447,18 @@ public class Player implements IGameObject, Serializable {
         for (Wall w : game.playground().getWalls()) {
             if (w.intersects(this)) {
                 return true;
+            }
+        }
+        return false;
+    }
+
+    public boolean intersectWithPlayer() {
+        for (Player p : Game.getInstance().getAllPlayers()) {
+            if (this != p) {
+                if (this.intersects(p)) {
+                    System.out.println("Player collision detected");
+                    return true;
+                }
             }
         }
         return false;

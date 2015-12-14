@@ -59,6 +59,13 @@
                   <KeyCodeCombination alt="DOWN" code="P" control="UP" meta="UP" shift="UP" shortcut="UP" />
                </accelerator>
           </Menu>
+          <Menu mnemonicParsing="false" onAction="#onTournament" text="Tournament">
+            <items>
+            </items>
+               <accelerator>
+                  <KeyCodeCombination alt="DOWN" code="P" control="UP" meta="UP" shift="UP" shortcut="UP" />
+               </accelerator>
+          </Menu>
         </menus>
       </MenuBar>
       <Button fx:id="btnSend" mnemonicParsing="false" onAction="#btSend" text="Send" GridPane.columnIndex="2" GridPane.rowIndex="5">
