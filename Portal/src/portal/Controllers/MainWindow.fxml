@@ -91,7 +91,7 @@
             <Insets left="5.0" />
          </GridPane.margin>
       </Button>
-      <ListView prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="4">
+      <ListView fx:id="lvwPlayers" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="4">
          <GridPane.margin>
             <Insets left="5.0" top="5.0" />
          </GridPane.margin>

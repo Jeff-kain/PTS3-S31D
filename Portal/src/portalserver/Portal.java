@@ -56,7 +56,7 @@ public class Portal extends UnicastRemoteObject implements ILogin, IPortal {
     public IHost createLobby(String username, String password, Game game, String lobbyName, String lobbyPassword) throws RemoteException  {
         if(correctLogin(username, password)) {
             try {
-                GameLobby lobby = new GameLobby(game, lobbyName, lobbyPassword);
+                GameLobby lobby = new GameLobby(username, password, game, lobbyName, lobbyPassword);
                 lobbies.add(lobby);
                 System.out.println("Added lobby for the game " + game.getName() + " with the name " + lobbyName);
                 return lobby;

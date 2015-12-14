@@ -9,4 +9,6 @@ import java.rmi.RemoteException;
 public interface ILobby extends Remote{
 
     IPlayer joinGame(String username, String password) throws RemoteException;
+
+    String getName() throws RemoteException;
 }

@@ -1,5 +1,6 @@
 package portal.Controllers;
 
+import com.sun.deploy.util.BlackList;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -20,6 +21,7 @@ import java.net.Socket;
 import java.net.URL;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
@@ -40,9 +42,12 @@ import static portal.Portal.Stage;
 public class MainWindowController implements Initializable {
     //Observable lists
     ObservableList<Game> observableGames;
-    ObservableList<ILobby> observableLobbies;
+    ObservableList<String> observableLobbies;
+    ObservableList<String> observablePlayers;
+    HashMap<String,ILobby> lobbiesHashMap;
     @FXML private ListView<Game> lvwGames;
-    @FXML private ListView<ILobby> lvwLobbies;
+    @FXML private ListView<String> lvwLobbies;
+    @FXML private ListView<String> lvwPlayers;
     @FXML TextField tfSend;
     @FXML Button btnSend;
     @FXML Button btnAddLobby;
@@ -70,10 +75,14 @@ public class MainWindowController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        lobbiesHashMap = new HashMap<>();
+
         observableLobbies = FXCollections.observableArrayList();
         lvwLobbies.setItems(observableLobbies);
         observableGames = FXCollections.observableArrayList();
         lvwGames.setItems(observableGames);
+        observablePlayers = FXCollections.observableArrayList();
+        lvwPlayers.setItems(observablePlayers);
 
         users = new ArrayList();
         isConnected = false;
@@ -102,10 +111,11 @@ public class MainWindowController implements Initializable {
             try {
                 observableLobbies.clear();
                 List<ILobby> lobbies = admin.getPortal().getLobbies(admin.getUsername(), admin.getPassword(), newValue);
-                observableLobbies.addAll(lobbies);
 
                 for(ILobby lobby: lobbies) {
-                    System.out.println(lobby);
+                    System.out.println(lobby.getName());
+                    observableLobbies.add(lobby.getName());
+                    lobbiesHashMap.put(lobby.getName(), lobby);
                 }
 
             } catch (RemoteException e) {
@@ -170,9 +180,18 @@ public class MainWindowController implements Initializable {
     }
 
     public void joinLobby(Event evt) {
-        ILobby lobby = lvwLobbies.getSelectionModel().getSelectedItem();
+        ILobby lobby = lobbiesHashMap.get(lvwLobbies.getSelectionModel().getSelectedItem());
         try {
             IPlayer player = lobby.joinGame(admin.getUsername(), admin.getPassword());
+
+            List<String> bla = player.getPlayers();
+
+            for (String b: bla) {
+                System.out.println(b);
+            }
+
+            lvwPlayers.setItems(observablePlayers);
+            observablePlayers.addAll(player.getPlayers());
         } catch (RemoteException e) {
             e.printStackTrace();
         }

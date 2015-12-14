@@ -8,6 +8,7 @@ import portalserver.interfaces.IPlayer;
 
 import java.io.IOException;
 import java.io.Serializable;
+import java.lang.management.PlatformLoggingMXBean;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.sql.SQLException;
@@ -19,30 +20,48 @@ import java.util.List;
  */
 public class GameLobby extends UnicastRemoteObject implements IHost, IPlayer, ILobby, Serializable {
 
+    private User host;
     private List<User> players;
     private Game game;
     private String name;
-    private String password;
+    private String lobbypassword;
     private DatabaseConnection databaseConnection;
 
-    public GameLobby(Game game, String name, String password) throws RemoteException {
+    public GameLobby(String username, String password, Game game, String lobbyname, String lobbypassword) throws RemoteException {
+        try {
+            databaseConnection = DatabaseConnection.getInstance();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
         this.game = game;
-        this.name = name;
-        this.password = password;
+        this.name = lobbyname;
+        this.lobbypassword = lobbypassword;
+        try {
+            System.out.println(username);
+            System.out.println(password);
+            User user = databaseConnection.getUser(username, password);
+            System.out.println(user.getName());
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
 
         players = new ArrayList<>();
+
+        joinGame(username, password);
     }
 
     public Game getGame() {
         return game;
     }
 
-    public String getName() {
+    @Override
+    public String getName() throws RemoteException {
         return name;
     }
 
-    public String getPassword() {
-        return password;
+    public String getLobbypassword() {
+        return lobbypassword;
     }
 
     @Override
@@ -51,12 +70,9 @@ public class GameLobby extends UnicastRemoteObject implements IHost, IPlayer, IL
 
         try {
             databaseConnection = DatabaseConnection.getInstance();
-            if(players.size() < 2) {
-                players.add(databaseConnection.getUser(username, password));
-                return this;
-            }
-
-            return null;
+            players.add(databaseConnection.getUser(username, password));
+            System.out.println(players.size());
+            return this;
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -65,5 +81,19 @@ public class GameLobby extends UnicastRemoteObject implements IHost, IPlayer, IL
             e.printStackTrace();
             return null;
         }
+    }
+
+    @Override
+    public List<String> getPlayers() throws RemoteException {
+        System.out.println("Host: " + host.getName());
+        System.out.println("getPlayers() " + players.size());
+        List<String> playerNames = new ArrayList<>();
+
+        for (User player: players) {
+            System.out.println("Player " + player.getName());
+            playerNames.add(player.getName());
+        }
+
+        return playerNames;
     }
 }

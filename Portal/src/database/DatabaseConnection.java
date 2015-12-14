@@ -167,26 +167,29 @@ public class DatabaseConnection {
     }
 
     public User getUser(String username, String password) throws SQLException {
+        System.out.println("getUser()");
         boolean isOpen = open();
         //System.out.println(isOpen);
 
+        System.out.println(username);
+        System.out.println(password);
+
         ResultSet rs;
         Statement stat;
+        String query = "SELECT * FROM USERS WHERE NAME ='" + username + "' AND PASSWORD = '" + password + "';";
 
-        if(isOpen) {
-            String query = "SELECT * FROM USERS WHERE NAME ='" + username + "' AND PASSWORD = '" + password + "';";
+        stat = conn.prepareStatement(query);
+        rs = stat.executeQuery(query);
 
-            stat = conn.prepareStatement(query);
-            rs = stat.executeQuery(query);
+        while (rs.next()) {
+            int id = rs.getInt("ID");
+            String name = rs.getString("NAME");
+            System.out.println("User" + id + " - " + name);
 
-            while (rs.next()) {
-                int id = rs.getInt("ID");
-                String name = rs.getString("NAME");
-
-                return new User(id, name);
-            }
+            return new User(id, name);
         }
 
+        System.out.println("Beetje jammer dit.");
         return null;
     }
 }
