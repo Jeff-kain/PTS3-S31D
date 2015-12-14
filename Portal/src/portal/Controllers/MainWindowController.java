@@ -1,7 +1,5 @@
 package portal.Controllers;
 
-import chat.ChatMessage;
-import chat.Client;
 import database.DatabaseConnection;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -12,7 +10,6 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
-import portal.Models.Game;
 
 import java.io.*;
 import java.net.InetAddress;
@@ -20,7 +17,6 @@ import java.net.Socket;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
-import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.application.Platform;
