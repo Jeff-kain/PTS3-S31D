@@ -70,6 +70,7 @@ public class Menu_StateBasedGame extends BasicGameState {
             case Input.KEY_1:
                 manager.setBoolLAN(true);
                 manager.setAmplayer(2);
+                manager.setPlayer1(1);
                  {
                     try {
                         HostServer host = new HostServer(1100, "host");
@@ -86,6 +87,7 @@ public class Menu_StateBasedGame extends BasicGameState {
                 manager.setBoolClient(true);
                 manager.setBoolLAN(true);
                 manager.setAmplayer(2);
+                manager.setPlayer2(2);
                 String hostIP = null;
                 //hostIP = "145.93.64.173"; //tim IP
                 hostIP = "145.93.249.22";

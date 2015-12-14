@@ -15,6 +15,7 @@ import Game.TeamColor;
 import Game.Direction;
 import Game.IGameObject;
 import Game.Wall;
+import Multiplayer.Manager;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -76,6 +77,8 @@ public class Game_StateBasedGame extends BasicGameState {
     private static String[] arguments;
     private static AppGameContainer appgc;
     private String WinningTeam;
+
+    Manager manager = Manager.getManager();
 
     @Override
     public int getID() {
@@ -280,50 +283,52 @@ public class Game_StateBasedGame extends BasicGameState {
                 }
             }
         }
+        if (manager.getPlayer1() == 1) {
+            // Player 1 controls
+            if (player.getVisible() == true) {
+                posX = Math.round(player.getX()) / 48;
+                posY = Math.round(player.getY()) / 48;
 
-        // Player 1 controls
-        if (player.getVisible() == true) {
-            posX = Math.round(player.getX()) / 48;
-            posY = Math.round(player.getY()) / 48;
+                if (timeOutP1 <= 0) {
+                    if (gc.getInput().isKeyDown(Input.KEY_LEFT)) {
+                        player.move(2);
 
-            if (timeOutP1 <= 0) {
-                if (gc.getInput().isKeyDown(Input.KEY_LEFT)) {
-                    player.move(2);
+                        timeOutP1 = player.getSpeed();
 
-                    timeOutP1 = player.getSpeed();
+                    } else if (gc.getInput().isKeyDown(Input.KEY_RIGHT)) {
+                        player.move(4);
 
-                } else if (gc.getInput().isKeyDown(Input.KEY_RIGHT)) {
-                    player.move(4);
+                        timeOutP1 = player.getSpeed();
 
-                    timeOutP1 = player.getSpeed();
+                    } else if (gc.getInput().isKeyDown(Input.KEY_UP)) {
+                        player.move(1);
 
-                } else if (gc.getInput().isKeyDown(Input.KEY_UP)) {
-                    player.move(1);
+                        timeOutP1 = player.getSpeed();
 
-                    timeOutP1 = player.getSpeed();
+                    } else if (gc.getInput().isKeyDown(Input.KEY_DOWN)) {
+                        player.move(3);
+                        timeOutP1 = player.getSpeed();
+                    }
+                }
+            }
 
-                } else if (gc.getInput().isKeyDown(Input.KEY_DOWN)) {
-                    player.move(3);
-                    timeOutP1 = player.getSpeed();
+            if (gc.getInput().isKeyPressed(Input.KEY_ENTER)) {
+                Bomb b = new Bomb(sprites, player.getX(), player.getY(), player.getBombRange());
+
+                if (playground.getBombs().size() < player.getBombCount()) {
+                    player.setKickDirection(0);
+                    playground.addToLevel(b);
+                    playground.addBombs1(b);
+                    player.move(5); // place remote bomb
                 }
             }
         }
+        //end player controls
 
         if (timeOutP1 > 0) {
             timeOutP1 -= delta;
         } else {
             timeOutP1 = 0;
-        }
-
-        if (gc.getInput().isKeyPressed(Input.KEY_ENTER)) {
-            Bomb b = new Bomb(sprites, player.getX(), player.getY(), player.getBombRange());
-
-            if (playground.getBombs().size() < player.getBombCount()) {
-                player.setKickDirection(0);
-                playground.addToLevel(b);
-                playground.addBombs1(b);
-                player.move(5); // place remote bomb
-            }
         }
 
         if (player.intersectWithBox() || player.intersectWithWall()) {
@@ -333,50 +338,51 @@ public class Game_StateBasedGame extends BasicGameState {
         if (player.upBomb()) {
             player.setBombCount(player.getBombCount() + 1);
         }
+        if (manager.getPlayer2() == 2) {
+            //player 2 controls
+            if (player2.getVisible() == true) {
+                pos2X = Math.round(player2.getX()) / 48;
+                pos2Y = Math.round(player2.getY()) / 48;
 
-        //player 2 controls
-        if (player2.getVisible() == true) {
-            pos2X = Math.round(player2.getX()) / 48;
-            pos2Y = Math.round(player2.getY()) / 48;
+                if (timeOutP2 <= 0) {
+                    if (gc.getInput().isKeyDown(Input.KEY_A)) {
+                        player2.move(2);
 
-            if (timeOutP2 <= 0) {
-                if (gc.getInput().isKeyDown(Input.KEY_A)) {
-                    player2.move(2);
+                        timeOutP2 = player2.getSpeed();
 
-                    timeOutP2 = player2.getSpeed();
+                    } else if (gc.getInput().isKeyDown(Input.KEY_D)) {
+                        player2.move(4);
 
-                } else if (gc.getInput().isKeyDown(Input.KEY_D)) {
-                    player2.move(4);
+                        timeOutP2 = player2.getSpeed();
 
-                    timeOutP2 = player2.getSpeed();
+                    } else if (gc.getInput().isKeyDown(Input.KEY_W)) {
+                        player2.move(1);
 
-                } else if (gc.getInput().isKeyDown(Input.KEY_W)) {
-                    player2.move(1);
+                        timeOutP2 = player2.getSpeed();
 
-                    timeOutP2 = player2.getSpeed();
+                    } else if (gc.getInput().isKeyDown(Input.KEY_S)) {
+                        player2.move(3);
 
-                } else if (gc.getInput().isKeyDown(Input.KEY_S)) {
-                    player2.move(3);
+                        timeOutP2 = player2.getSpeed();
+                    }
+                }
 
-                    timeOutP2 = player2.getSpeed();
+                if (gc.getInput().isKeyPressed(Input.KEY_SPACE)) {
+                    Bomb b = new Bomb(sprites, player2.getX(), player2.getY(), player2.getBombRange());
+
+                    if (playground.getBombs2().size() < player2.getBombCount()) {
+                        player2.setKickDirection(0);
+                        playground.addToLevel(b);
+                        playground.addBombs2(b);
+                        player2.move(5); // place remote bomb
+                    }
                 }
             }
-
+            //end player controls
             if (timeOutP2 > 0) {
                 timeOutP2 -= delta;
             } else {
                 timeOutP2 = 0;
-            }
-
-            if (gc.getInput().isKeyPressed(Input.KEY_SPACE)) {
-                Bomb b = new Bomb(sprites, player2.getX(), player2.getY(), player2.getBombRange());
-
-                if (playground.getBombs2().size() < player2.getBombCount()) {
-                    player2.setKickDirection(0);
-                    playground.addToLevel(b);
-                    playground.addBombs2(b);
-                    player2.move(5); // place remote bomb
-                }
             }
 
             if (player2.intersectWithBox() || player2.intersectWithWall()) {
