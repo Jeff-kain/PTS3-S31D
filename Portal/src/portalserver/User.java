@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package portal.Models;
+package portalserver;
 
 /**
  *
@@ -14,7 +14,9 @@ public final class User {
     private static int id;
     private static String name;
     
-    public User(){
+    public User(int id, String name){
+        this.id = id;
+        this.name = name;
     }
     
     public int getId() {

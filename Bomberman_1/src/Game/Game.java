@@ -63,6 +63,18 @@ public class Game {
         return players;
     }
 
+    public ArrayList<Player> getPlayer1() {
+        ArrayList<Player> players = new ArrayList<>();
+        players.addAll(team1.getPlayers());
+        return players;
+    }
+
+    public ArrayList<Player> getPlayer2() {
+        ArrayList<Player> players = new ArrayList<>();
+        players.addAll(team1.getPlayers());
+        return players;
+    }
+
     public static Game getInstance() {
         if(instance == null) {
             instance = new Game();

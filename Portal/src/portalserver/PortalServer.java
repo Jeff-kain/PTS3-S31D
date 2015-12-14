@@ -40,7 +40,7 @@ public class PortalServer {
             // Binding the portal
             registry.rebind(bindingName, portal);
         } catch (RemoteException e) {
-            System.out.println("Server: Cannot bind MockEffectenbeurs");
+            System.out.println("Server: Cannot bind Portal");
             System.out.println("Server: RemoteException: " + e.getMessage());
         }
     }

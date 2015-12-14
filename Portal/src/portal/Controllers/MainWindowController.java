@@ -1,6 +1,8 @@
 package portal.Controllers;
 
 import database.DatabaseConnection;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -10,22 +12,29 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
+import javafx.scene.control.*;
+import javafx.stage.Modality;
+import javafx.util.Callback;
+import portal.Models.Game;
 
 import java.io.*;
 import java.net.InetAddress;
 import java.net.Socket;
 import java.net.URL;
+import java.rmi.RemoteException;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.application.Platform;
 import javafx.event.Event;
-import javafx.scene.control.TextArea;
-import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import portal.*;
-import portal.Models.User;
+import portalserver.User;
+import portalserver.interfaces.ILobby;
+import portalserver.interfaces.IPlayer;
+
 import static portal.Portal.Stage;
 
 /**
@@ -33,10 +42,14 @@ import static portal.Portal.Stage;
  */
 public class MainWindowController implements Initializable {
     //Observable lists
-    ObservableList<String> observableGames;
-    @FXML private ListView<String> lvwGame;
+    ObservableList<Game> observableGames;
+    ObservableList<ILobby> observableLobbies;
+    @FXML private ListView<Game> lvwGames;
+    @FXML private ListView<ILobby> lvwLobbies;
     @FXML TextField tfSend;
     @FXML Button btnSend;
+    @FXML Button btnAddLobby;
+    @FXML Button btnJoinLobby;
     @FXML TextArea taChat;
 
     String address;
@@ -60,24 +73,57 @@ public class MainWindowController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        observableLobbies = FXCollections.observableArrayList();
+        lvwLobbies.setItems(observableLobbies);
+        observableGames = FXCollections.observableArrayList();
+        lvwGames.setItems(observableGames);
+
         users = new ArrayList();
         isConnected = false;
         port = 2222;
         initChat();
 
         try {
-            observableGames = FXCollections.observableArrayList();
             observableGames.addAll(admin.getPortal().getGames(admin.getUsername(), admin.getPassword()));
-            lvwGame.setItems(observableGames);
-
         } catch (IOException e) {
             e.printStackTrace();
         }
+
+
+        lvwLobbies.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue == null) {
+                btnJoinLobby.setDisable(true);
+            } else {
+                btnJoinLobby.setDisable(false);
+            }
+        });
+
+        lvwGames.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+            btnAddLobby.setDisable(false);
+            admin.setSelectedGameID(newValue);
+
+            try {
+                observableLobbies.clear();
+                List<ILobby> lobbies = admin.getPortal().getLobbies(admin.getUsername(), admin.getPassword(), newValue);
+                observableLobbies.addAll(lobbies);
+
+                for(ILobby lobby: lobbies) {
+                    System.out.println(lobby);
+                }
+
+            } catch (RemoteException e) {
+                e.printStackTrace();
+            }
+        });
+    }
+
+    public void addLobby(Event evt) {
+        showAddLobbyWindow();
     }
 
     public void initChat() {
         taChat.setEditable(false);
-        username = new User().getName();
+        username = Administration.getInstance().getUsername();
         Connect();
     }
 
@@ -125,10 +171,19 @@ public class MainWindowController implements Initializable {
             Logger.getLogger(MainWindowController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
+
+    public void joinLobby(Event evt) {
+        ILobby lobby = lvwLobbies.getSelectionModel().getSelectedItem();
+        try {
+            IPlayer player = lobby.joinGame(admin.getUsername(), admin.getPassword());
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        }
+    }
     
     public void onExit(Event evt) {
         userDisconnect();
-        new User().setName("Null");
+        admin.setUsername("Null");
         Stage stage = LoginController.stage;
         stage.setOnCloseRequest(e -> Platform.exit());
         System.exit(0);
@@ -159,7 +214,7 @@ public class MainWindowController implements Initializable {
         try {
             if (isConnected == false) {
 
-                username = new User().getName();
+                username = admin.getUsername();
 
                 try {
 
@@ -273,6 +328,35 @@ public class MainWindowController implements Initializable {
             } catch (Exception e) {
                 System.out.println(e.getMessage());
             }
+        }
+    }
+
+    private void showAddLobbyWindow() {
+        //Loading the .fxml file.
+        Stage stage = new Stage();
+
+        Parent root = null;
+        try {
+
+            System.out.println("Pad: " + getClass().getResource("AddLobby.fxml"));
+            root = FXMLLoader.load(getClass().getResource("AddLobby.fxml"));
+        } catch (IOException e) {
+            e.printStackTrace();
+            System.out.println(e.getMessage());
+        }
+
+        if (root != null) {
+            Scene scene = new Scene(root, 300, 400);
+
+            stage.initModality(Modality.WINDOW_MODAL);
+            stage.initOwner(Portal.Stage);
+            stage.setTitle("Add lobby");
+            stage.setScene(scene);
+            stage.show();
+            System.out.println("Foo");
+
+        } else {
+            System.out.println("Failed");
         }
     }
 }

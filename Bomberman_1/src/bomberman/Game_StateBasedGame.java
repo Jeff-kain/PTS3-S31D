@@ -15,6 +15,7 @@ import Game.TeamColor;
 import Game.Direction;
 import Game.IGameObject;
 import Game.Wall;
+import Multiplayer.Manager;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -77,6 +78,8 @@ public class Game_StateBasedGame extends BasicGameState {
     private static AppGameContainer appgc;
     private String WinningTeam;
 
+    Manager manager = Manager.getManager();
+
     @Override
     public int getID() {
         return 2;
@@ -110,6 +113,7 @@ public class Game_StateBasedGame extends BasicGameState {
         loadMap();
         game.getTeam1().addPlayer(player);
         game.getTeam2().addPlayer(player2);
+
     }
 
     @Override
@@ -138,35 +142,35 @@ public class Game_StateBasedGame extends BasicGameState {
 //            g.setColor(Color.blue);
 //            g.fill(mouseBall);    
 
-        for (Bomb bomb : bombs) {
-            //g.drawImage(bomb.getSprite(), bomb.getX(), bomb.getY());
-            Animation animation;
-            if (bombAnimations.get(bomb) == null) {
-                animation = bomb.getAnimation();
-                animation.setLooping(false);
-                animation.setAutoUpdate(true);
-                bombAnimations.put(bomb, animation);
-            } else {
-                animation = bombAnimations.get(bomb);
-            }
-
-            animation.draw(bomb.getX(), bomb.getY());
-        }
-
-        for (Bomb bomb : bombs2) {
-            //g.drawImage(bomb.getSprite(), bomb.getX(), bomb.getY());
-            Animation animation;
-            if (bombAnimations.get(bomb) == null) {
-                animation = bomb.getAnimation();
-                animation.setLooping(false);
-                animation.setAutoUpdate(true);
-                bombAnimations.put(bomb, animation);
-            } else {
-                animation = bombAnimations.get(bomb);
-            }
-
-            animation.draw(bomb.getX(), bomb.getY());
-        }
+//        for (Bomb bomb : bombs) {
+//            //g.drawImage(bomb.getSprite(), bomb.getX(), bomb.getY());
+//            Animation animation;
+//            if (bombAnimations.get(bomb) == null) {
+//                animation = bomb.getAnimation();
+//                animation.setLooping(false);
+//                animation.setAutoUpdate(true);
+//                bombAnimations.put(bomb, animation);
+//            } else {
+//                animation = bombAnimations.get(bomb);
+//            }
+//
+//            animation.draw(bomb.getX(), bomb.getY());
+//        }
+//
+//        for (Bomb bomb : bombs2) {
+//            //g.drawImage(bomb.getSprite(), bomb.getX(), bomb.getY());
+//            Animation animation;
+//            if (bombAnimations.get(bomb) == null) {
+//                animation = bomb.getAnimation();
+//                animation.setLooping(false);
+//                animation.setAutoUpdate(true);
+//                bombAnimations.put(bomb, animation);
+//            } else {
+//                animation = bombAnimations.get(bomb);
+//            }
+//
+//            animation.draw(bomb.getX(), bomb.getY());
+//        }
 //        for (Player p : game.getTeam1().getPlayers()) {
 //            g.drawImage(p.getSprite(), p.getX(), p.getY());
 //        }
@@ -200,10 +204,8 @@ public class Game_StateBasedGame extends BasicGameState {
                     animation = bombAnimations.get(o);
                 }
                 animation.draw(bomb.getX(), bomb.getY());
-            }
-            else
-            {
-            g.drawImage(o.getSprite(), o.getX(), o.getY());
+            } else {
+                g.drawImage(o.getSprite(), o.getX(), o.getY());
             }
         }
 
@@ -281,50 +283,52 @@ public class Game_StateBasedGame extends BasicGameState {
                 }
             }
         }
+        if (manager.getPlayer1() == 1) {
+            // Player 1 controls
+            if (player.getVisible() == true) {
+                posX = Math.round(player.getX()) / 48;
+                posY = Math.round(player.getY()) / 48;
 
-        // Player 1 controls
-        if (player.getVisible() == true) {
-            posX = Math.round(player.getX()) / 48;
-            posY = Math.round(player.getY()) / 48;
+                if (timeOutP1 <= 0) {
+                    if (gc.getInput().isKeyDown(Input.KEY_LEFT)) {
+                        player.move(2);
 
-            System.out.println(timeOutP1);
+                        timeOutP1 = player.getSpeed();
 
-            if (timeOutP1 <= 0) {
-                if (gc.getInput().isKeyDown(Input.KEY_LEFT)) {
-                    player.move(Direction.WEST);
+                    } else if (gc.getInput().isKeyDown(Input.KEY_RIGHT)) {
+                        player.move(4);
 
-                    timeOutP1 = player.getSpeed();
+                        timeOutP1 = player.getSpeed();
 
-                } else if (gc.getInput().isKeyDown(Input.KEY_RIGHT)) {
-                    player.move(Direction.EAST);
+                    } else if (gc.getInput().isKeyDown(Input.KEY_UP)) {
+                        player.move(1);
 
-                    timeOutP1 = player.getSpeed();
+                        timeOutP1 = player.getSpeed();
 
-                } else if (gc.getInput().isKeyDown(Input.KEY_UP)) {
-                    player.move(Direction.NORTH);
+                    } else if (gc.getInput().isKeyDown(Input.KEY_DOWN)) {
+                        player.move(3);
+                        timeOutP1 = player.getSpeed();
+                    }
+                }
+            }
 
-                    timeOutP1 = player.getSpeed();
+            if (gc.getInput().isKeyPressed(Input.KEY_ENTER)) {
+                Bomb b = new Bomb(sprites, player.getX(), player.getY(), player.getBombRange());
 
-                } else if (gc.getInput().isKeyDown(Input.KEY_DOWN)) {
-                    player.move(Direction.SOUTH);
-                    timeOutP1 = player.getSpeed();
+                if (playground.getBombs().size() < player.getBombCount()) {
+                    player.setKickDirection(0);
+                    playground.addToLevel(b);
+                    playground.addBombs1(b);
+                    player.move(5); // place remote bomb
                 }
             }
         }
+        //end player controls
 
         if (timeOutP1 > 0) {
             timeOutP1 -= delta;
         } else {
             timeOutP1 = 0;
-        }
-
-        if (gc.getInput().isKeyPressed(Input.KEY_ENTER)) {
-            Bomb b = new Bomb(sprites, player.getX(), player.getY(), player.getBombRange());
-
-            if (bombs.size() < player.getBombCount()) {
-                player.setKickDirection(Direction.NONE);
-                playground.addToLevel(b);
-            }
         }
 
         if (player.intersectWithBox() || player.intersectWithWall()) {
@@ -334,49 +338,51 @@ public class Game_StateBasedGame extends BasicGameState {
         if (player.upBomb()) {
             player.setBombCount(player.getBombCount() + 1);
         }
+        if (manager.getPlayer2() == 2) {
+            //player 2 controls
+            if (player2.getVisible() == true) {
+                pos2X = Math.round(player2.getX()) / 48;
+                pos2Y = Math.round(player2.getY()) / 48;
 
-        //player 2 controls
-        if (player2.getVisible() == true) {
-            pos2X = Math.round(player2.getX()) / 48;
-            pos2Y = Math.round(player2.getY()) / 48;
+                if (timeOutP2 <= 0) {
+                    if (gc.getInput().isKeyDown(Input.KEY_A)) {
+                        player2.move(2);
 
-            if (timeOutP2 <= 0) {
-                if (gc.getInput().isKeyDown(Input.KEY_A)) {
-                    player2.move(Direction.WEST);
+                        timeOutP2 = player2.getSpeed();
 
-                    timeOutP2 = player2.getSpeed();
+                    } else if (gc.getInput().isKeyDown(Input.KEY_D)) {
+                        player2.move(4);
 
-                } else if (gc.getInput().isKeyDown(Input.KEY_D)) {
-                    player2.move(Direction.EAST);
+                        timeOutP2 = player2.getSpeed();
 
-                    timeOutP2 = player2.getSpeed();
+                    } else if (gc.getInput().isKeyDown(Input.KEY_W)) {
+                        player2.move(1);
 
-                } else if (gc.getInput().isKeyDown(Input.KEY_W)) {
-                    player2.move(Direction.NORTH);
+                        timeOutP2 = player2.getSpeed();
 
-                    timeOutP2 = player2.getSpeed();
+                    } else if (gc.getInput().isKeyDown(Input.KEY_S)) {
+                        player2.move(3);
 
-                } else if (gc.getInput().isKeyDown(Input.KEY_S)) {
-                    player2.move(Direction.SOUTH);
+                        timeOutP2 = player2.getSpeed();
+                    }
+                }
 
-                    timeOutP2 = player2.getSpeed();
+                if (gc.getInput().isKeyPressed(Input.KEY_SPACE)) {
+                    Bomb b = new Bomb(sprites, player2.getX(), player2.getY(), player2.getBombRange());
+
+                    if (playground.getBombs2().size() < player2.getBombCount()) {
+                        player2.setKickDirection(0);
+                        playground.addToLevel(b);
+                        playground.addBombs2(b);
+                        player2.move(5); // place remote bomb
+                    }
                 }
             }
-
+            //end player controls
             if (timeOutP2 > 0) {
                 timeOutP2 -= delta;
             } else {
                 timeOutP2 = 0;
-            }
-
-            if (gc.getInput().isKeyPressed(Input.KEY_SPACE)) {
-                Bomb b = new Bomb(sprites, player2.getX(), player2.getY(), player2.getBombRange());
-
-                if (bombs2.size() < player2.getBombCount()) {
-                    player2.setKickDirection(Direction.NONE);
-                    playground.addToLevel(b);
-                    // bombs2.add(b);
-                }
             }
 
             if (player2.intersectWithBox() || player2.intersectWithWall()) {
@@ -433,22 +439,18 @@ public class Game_StateBasedGame extends BasicGameState {
 //        }
 //        if (bombs
 //                != null) {
-//            for (Bomb b : bombs) {
+//            for (Bomb b : playground.getBombs()) {
 //                if (b.isExploded()) {
 //                    bombs.remove(b);
-//                } else {
-//                    b.Update();
-//                }
+//                } 
 //            }
 //        }
 //
 //        if (bombs2
 //                != null) {
-//            for (Bomb b : bombs2) {
+//            for (Bomb b : playground.getBombs2()) {
 //                if (b.isExploded()) {
 //                    bombs2.remove(b);
-//                } else {
-//                    b.Update();
 //                }
 //            }
 //        }

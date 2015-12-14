@@ -5,26 +5,23 @@ import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
-import javafx.stage.StageStyle;
 import portal.Administration;
 import portal.Models.RMI.RMIClient;
 import portal.Portal;
 
 import java.io.IOException;
 import java.net.URL;
-import java.sql.SQLException;
 import java.util.ResourceBundle;
 import java.util.concurrent.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javafx.fxml.JavaFXBuilderFactory;
-import portal.Models.User;
+
+import portalserver.User;
 import portalserver.interfaces.ILogin;
 import portalserver.interfaces.IPortal;
 
@@ -80,7 +77,6 @@ public class LoginController implements Initializable {
                 admin.setUsername(tfdUsername.getText());
                 admin.setPassword(pfdPassword.getText());
 
-                new User().setName(tfdUsername.getText());
                 loadMainWindow();
             } else {
                 System.out.println("Login failed");

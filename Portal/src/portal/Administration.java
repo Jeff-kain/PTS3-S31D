@@ -1,5 +1,6 @@
 package portal;
 
+import portal.Models.Game;
 import portalserver.interfaces.ILogin;
 import portalserver.interfaces.IPortal;
 
@@ -13,6 +14,7 @@ public class Administration {
     private String password;
     private ILogin login;
     private IPortal portal;
+    private Game selectedGame;
 
     private Administration() {
 
@@ -52,5 +54,13 @@ public class Administration {
 
     public void setPortal(IPortal portal) {
         this.portal = portal;
+    }
+
+    public Game getSelectedGame() {
+        return selectedGame;
+    }
+
+    public void setSelectedGameID(Game selectedGame) {
+        this.selectedGame = selectedGame;
     }
 }

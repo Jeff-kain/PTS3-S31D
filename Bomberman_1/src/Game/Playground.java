@@ -27,6 +27,8 @@ public class Playground {
     private List<IGameObject> mapobjects;
     //private List<PowerUp> powerups;
     private List<Wall> walls;
+    private List<Bomb> bombs;
+    private List<Bomb> bombs2;
 
     public Playground() {
         try {
@@ -38,6 +40,8 @@ public class Playground {
         mapobjects = new CopyOnWriteArrayList<IGameObject>();
         //powerups = new CopyOnWriteArrayList<PowerUp>();
         walls = new CopyOnWriteArrayList<Wall>();
+        bombs = new CopyOnWriteArrayList<>();
+        bombs2 = new CopyOnWriteArrayList<>();
     }
 
     public List<IGameObject> getMapobjects() {
@@ -60,9 +64,8 @@ public class Playground {
     public List<Wall> getWalls() {
         return walls;
     }
-    
-    public void addWall(Wall w)
-    {
+
+    public void addWall(Wall w) {
         walls.add(w);
     }
 
@@ -93,4 +96,27 @@ public class Playground {
 //    public List<PowerUp> getPowerups() {
 //        return powerups;
 //    }
+    public List<Bomb> getBombs() {
+        return bombs;
+    }
+
+    public List<Bomb> getBombs2() {
+        return bombs2;
+    }
+
+    public void addBombs1(Bomb b) {
+        bombs.add(b);
+    }
+
+    public void addBombs2(Bomb b) {
+        bombs2.add(b);
+    }
+
+    public void removeBombs1(Bomb b) {
+        bombs.remove(b);
+    }
+
+    public void removeBombs2(Bomb b) {
+        bombs2.remove(b);
+    }
 }

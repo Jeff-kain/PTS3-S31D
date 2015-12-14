@@ -5,7 +5,11 @@
  */
 package Multiplayer;
 
+import Game.Direction;
+import Game.Game;
 import Game.IGameObject;
+import Game.Keyset;
+import Game.Player;
 import java.net.InetAddress;
 import java.net.MalformedURLException;
 import java.net.UnknownHostException;
@@ -31,19 +35,10 @@ public class HostServer extends UnicastRemoteObject implements IRemoteHost {
     Registry registry;
     IRemoteClient service = null;
     private ArrayList<IGameObject> gameObjects = new ArrayList<>();
-    private BasicPublisher publisher;
+    Manager manager = Manager.getManager();
 
     public HostServer(int registryPort, String servicename) throws RemoteException, UnknownHostException {
-        publisher = new BasicPublisher(new String[]{servicename});
         publishHost(registryPort, servicename);
-        Thread serverThread = new Thread(new Runnable() {
-
-            @Override
-            public void run() {
-                System.out.println(hostservice);
-            }
-        });
-        serverThread.start();
     }
 
     public void publishHost(int registryPort, String servicename)
@@ -80,7 +75,7 @@ public class HostServer extends UnicastRemoteObject implements IRemoteHost {
             // besser ist folgendes:
             // service = (IRemoteClient) LocateRegistry
             // .getRegistry("hostip", 1099).lookup(strService);
-            service = (IRemoteClient) Naming.lookup(strService);
+            service = (IRemoteClient) Naming.lookup("rmi://145.93.52.35:1090/client");
         } catch (MalformedURLException e) {
             e.printStackTrace();
         } catch (NotBoundException e) {
@@ -102,21 +97,33 @@ public class HostServer extends UnicastRemoteObject implements IRemoteHost {
     @Override
     public void joingame(String strService) throws RemoteException {
         retrieveClientService(strService);
+        manager.setRemoteclient(service);
     }
 
     @Override
-    public void movep2c(int direction) throws RemoteException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public void movep2c(int direction, float x, float y) throws RemoteException {
+        direction = translate(direction);
+       ((Player) (Game.getInstance().getAllPlayers().get(1))).moveremote(direction,x ,y);    
+
+//        Game.getInstance().getPlayer1().get(0).moveremote(direction, x, y);
+//        Game.getInstance().getPlayer2().get(0).moveremote(direction, x, y);
     }
 
-    @Override
-    public void addListener(RemotePropertyListener listener, String property) throws RemoteException {
-        publisher.addListener(listener, property);
-    }
+    public int translate(int direction) {
+        System.out.println("host: translate: " + direction);
 
-    @Override
-    public void removeListener(RemotePropertyListener listener, String property) throws RemoteException {
-        publisher.removeListener(listener, property);
+        if (direction == IRemoteClient.UP) {
+            return Keyset.REMUP;
+        } else if (direction == IRemoteClient.LEFT) {
+            return Keyset.REMLEFT;
+        } else if (direction == IRemoteClient.DOWN) {
+            return Keyset.REMDOWN;
+        } else if (direction == IRemoteClient.RIGHT) {
+            return Keyset.REMRIGHT;
+        } else if (direction == IRemoteClient.BOMB) {
+            return Keyset.REMBOMB;
+        }
+        System.out.println("false translate");
+        return 0;
     }
-
 }

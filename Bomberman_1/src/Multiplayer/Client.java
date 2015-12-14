@@ -5,6 +5,10 @@
  */
 package Multiplayer;
 
+import Game.Direction;
+import Game.Game;
+import Game.Keyset;
+import Game.Player;
 import java.net.InetAddress;
 import java.net.MalformedURLException;
 import java.net.UnknownHostException;
@@ -28,10 +32,11 @@ public class Client extends UnicastRemoteObject implements IRemoteClient {
     public Client(int regport, String servicename, String hostservice) throws RemoteException {
         String strService = publishClient(regport, servicename);
         service = retrieveService(hostservice);
+       // service = retrieveService("rmi://" + "145.93.64.173" + ":" + 1090 + "/host");
         System.out.println(hostservice);
         manager.setRemotehost(service);
         service.joingame(strService);
-        
+
     }
 
     public String publishClient(int registryPort, String servicename)
@@ -79,6 +84,35 @@ public class Client extends UnicastRemoteObject implements IRemoteClient {
     @Override
     public void hostKeyUpdate(int playerindex, int keycode, boolean pressed) throws RemoteException {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void tick() throws RemoteException {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void movep2h(int direction, float x, float y) throws RemoteException {
+        direction = translate(direction);
+        ((Player) (Game.getInstance().getAllPlayers().get(0))).moveremote(direction,x ,y);    }
+    
+    
+    public int translate(int direction) {
+        System.out.println("client: translate: " + direction);
+
+        if (direction == IRemoteClient.UP) {
+            return Keyset.REMUP;
+        } else if (direction == IRemoteClient.LEFT) {
+            return Keyset.REMLEFT;
+        } else if (direction == IRemoteClient.DOWN) {
+            return Keyset.REMDOWN;
+        } else if (direction == IRemoteClient.RIGHT) {
+            return Keyset.REMRIGHT;
+        } else if (direction == IRemoteClient.BOMB) {
+            return Keyset.REMBOMB;
+        }
+        System.out.println("false translate");
+        return 0;
     }
 
 }
