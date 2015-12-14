@@ -1,5 +1,6 @@
 package portal.Models.RMI;
 
+import portal.Administration;
 import portalserver.interfaces.ILogin;
 import java.rmi.NotBoundException;
 import java.rmi.Remote;

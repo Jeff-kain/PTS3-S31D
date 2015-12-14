@@ -1,9 +1,11 @@
 package portal.Models;
 
+import java.io.Serializable;
+
 /**
  * Created by tverv on 08-Dec-15.
  */
-public class Game {
+public class Game implements Serializable{
     private String name;
     private String description;
     private String path;
