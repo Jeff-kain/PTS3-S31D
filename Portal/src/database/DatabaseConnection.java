@@ -83,8 +83,8 @@ public class DatabaseConnection {
         }
     }
 
-    public List<String> getGames() {
-        List<String> games = new ArrayList<>();
+    public List<Game> getGames() {
+        List<Game> games = new ArrayList<>();
 
         boolean isOpen = open();
         System.out.println(isOpen);
@@ -93,15 +93,19 @@ public class DatabaseConnection {
             ResultSet rs;
             Statement stat = null;
 
-            String query = "select NAME from GAMES";
+            String query = "select * from GAMES";
 
             stat = conn.prepareStatement(query);
             rs = stat.executeQuery(query);
 
             while (rs.next()) {
+                int id = rs.getInt("ID");
                 String name = rs.getString("NAME");
+                String description = rs.getString("DESCRIPTION");
 
-                games.add(name);
+                Game game = new Game(id, name, description);
+
+                games.add(game);
             }
 
         } catch (SQLException e) {

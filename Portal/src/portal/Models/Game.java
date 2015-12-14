@@ -6,11 +6,13 @@ import java.io.Serializable;
  * Created by tverv on 08-Dec-15.
  */
 public class Game implements Serializable{
+    private int id;
     private String name;
     private String description;
     private String path;
 
-    public Game(String name, String description) {
+    public Game(int id, String name, String description) {
+        this.id = id;
         this.name = name;
         this.description = description;
     }
@@ -24,12 +26,15 @@ public class Game implements Serializable{
     }
 
     public String getName() {
-
         return name;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public int getId() {
+        return id;
+    }
+
+    public String getDescription() {
+        return description;
     }
 
     @Override

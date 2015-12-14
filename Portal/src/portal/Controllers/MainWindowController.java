@@ -1,8 +1,5 @@
 package portal.Controllers;
 
-import chat.ChatMessage;
-import chat.Client;
-import database.DatabaseConnection;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -12,15 +9,17 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
+import javafx.stage.Modality;
 import portal.Models.Game;
 
 import java.io.*;
 import java.net.InetAddress;
 import java.net.Socket;
 import java.net.URL;
+import java.rmi.RemoteException;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.ResourceBundle;
-import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.application.Platform;
@@ -30,6 +29,8 @@ import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import portal.*;
 import portal.Models.User;
+import portalserver.GameLobby;
+
 import static portal.Portal.Stage;
 
 /**
@@ -37,10 +38,13 @@ import static portal.Portal.Stage;
  */
 public class MainWindowController implements Initializable {
     //Observable lists
-    ObservableList<String> observableGames;
-    @FXML private ListView<String> lvwGame;
+    ObservableList<Game> observableGames;
+    ObservableList<String> observableLobbies;
+    @FXML private ListView<Game> lvwGames;
+    @FXML private ListView<String> lvwLobbies;
     @FXML TextField tfSend;
     @FXML Button btnSend;
+    @FXML Button btnAddLobby;
     @FXML TextArea taChat;
 
     String address;
@@ -64,19 +68,42 @@ public class MainWindowController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        observableLobbies = FXCollections.observableArrayList();
+        lvwLobbies.setItems(observableLobbies);
+        observableGames = FXCollections.observableArrayList();
+        lvwGames.setItems(observableGames);
+
         users = new ArrayList();
         isConnected = false;
         port = 2222;
         initChat();
 
         try {
-            observableGames = FXCollections.observableArrayList();
             observableGames.addAll(admin.getPortal().getGames(admin.getUsername(), admin.getPassword()));
-            lvwGame.setItems(observableGames);
-
         } catch (IOException e) {
             e.printStackTrace();
         }
+
+        lvwGames.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+            btnAddLobby.setDisable(false);
+            admin.setSelectedGameID(newValue);
+
+            try {
+                observableLobbies.clear();
+                List<String> lobbies = admin.getPortal().getLobbies(admin.getUsername(), admin.getPassword(), newValue);
+                for(String lobby: lobbies) {
+                    System.out.println(lobby);
+                    observableLobbies.add(lobby);
+                }
+
+            } catch (RemoteException e) {
+                e.printStackTrace();
+            }
+        });
+    }
+
+    public void addLobby(Event evt) {
+        showAddLobbyWindow();
     }
 
     public void initChat() {
@@ -277,6 +304,35 @@ public class MainWindowController implements Initializable {
             } catch (Exception e) {
                 System.out.println(e.getMessage());
             }
+        }
+    }
+
+    private void showAddLobbyWindow() {
+        //Loading the .fxml file.
+        Stage stage = new Stage();
+
+        Parent root = null;
+        try {
+
+            System.out.println("Pad: " + getClass().getResource("AddLobby.fxml"));
+            root = FXMLLoader.load(getClass().getResource("AddLobby.fxml"));
+        } catch (IOException e) {
+            e.printStackTrace();
+            System.out.println(e.getMessage());
+        }
+
+        if (root != null) {
+            Scene scene = new Scene(root, 300, 400);
+
+            stage.initModality(Modality.WINDOW_MODAL);
+            stage.initOwner(Portal.Stage);
+            stage.setTitle("Add lobby");
+            stage.setScene(scene);
+            stage.show();
+            System.out.println("Foo");
+
+        } else {
+            System.out.println("Failed");
         }
     }
 }

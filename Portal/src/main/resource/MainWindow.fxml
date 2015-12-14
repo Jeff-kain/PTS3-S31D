@@ -36,7 +36,7 @@
             <Insets left="5.0" right="5.0" top="5.0" />
          </GridPane.margin>
       </Label>
-      <ListView fx:id="lvwGame" prefHeight="200.0" prefWidth="200.0" GridPane.hgrow="ALWAYS" GridPane.rowIndex="2" GridPane.rowSpan="2147483647">
+      <ListView fx:id="lvwGames" prefHeight="200.0" prefWidth="200.0" GridPane.hgrow="ALWAYS" GridPane.rowIndex="2" GridPane.rowSpan="2147483647">
          <GridPane.margin>
             <Insets bottom="5.0" left="5.0" top="5.0" />
          </GridPane.margin>
