@@ -171,6 +171,10 @@ public class MainWindowController implements Initializable {
         
     }
     
+    public void onLeaderboard(Event evt) {
+        showLeaderboardWindow();
+    }
+    
     public void playOffline(Event evt) {
         Process p;
         try {
@@ -369,6 +373,34 @@ public class MainWindowController implements Initializable {
             stage.initModality(Modality.WINDOW_MODAL);
             stage.initOwner(Portal.Stage);
             stage.setTitle("Add lobby");
+            stage.setScene(scene);
+            stage.show();
+            System.out.println("Foo");
+
+        } else {
+            System.out.println("Failed");
+        }
+    }
+    
+    private void showLeaderboardWindow() {
+        //Loading the .fxml file.
+        Stage stage = new Stage();
+        Parent root = null;
+        try {
+
+            System.out.println("Pad: " + getClass().getResource("Leaderboard.fxml"));
+            root = FXMLLoader.load(getClass().getResource("Leaderboard.fxml"));
+        } catch (IOException e) {
+            e.printStackTrace();
+            System.out.println(e.getMessage());
+        }
+
+        if (root != null) {
+            Scene scene = new Scene(root, 300, 400);
+
+            stage.initModality(Modality.WINDOW_MODAL);
+            stage.initOwner(Portal.Stage);
+            stage.setTitle("Leaderboard");
             stage.setScene(scene);
             stage.show();
             System.out.println("Foo");

@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.text.*?>
+<?import javafx.scene.input.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+
+<GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="392.0" prefWidth="472.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="portal.Controllers.LeaderboardController">
+  <columnConstraints>
+      <ColumnConstraints hgrow="SOMETIMES" maxWidth="200.0" minWidth="10.0" percentWidth="35.0" prefWidth="180.0" />
+    <ColumnConstraints hgrow="SOMETIMES" maxWidth="349.0" minWidth="10.0" prefWidth="307.0" />
+  </columnConstraints>
+  <rowConstraints>
+      <RowConstraints maxHeight="-Infinity" minHeight="22.0" prefHeight="22.0" vgrow="SOMETIMES" />
+    <RowConstraints minHeight="10.0" prefHeight="323.0" vgrow="SOMETIMES" />
+      <RowConstraints maxHeight="61.0" minHeight="20.0" prefHeight="20.0" vgrow="SOMETIMES" />
+      <RowConstraints maxHeight="78.0" minHeight="23.0" prefHeight="76.0" vgrow="SOMETIMES" />
+      <RowConstraints maxHeight="78.0" minHeight="32.0" prefHeight="32.0" vgrow="SOMETIMES" />
+      <RowConstraints minHeight="85.0" prefHeight="85.0" vgrow="SOMETIMES" />
+      <RowConstraints maxHeight="-Infinity" minHeight="35.0" prefHeight="35.0" vgrow="SOMETIMES" />
+  </rowConstraints>
+   <children>
+      <Label text="Games">
+         <GridPane.margin>
+            <Insets left="9.0" top="5.0" />
+         </GridPane.margin>
+      </Label>
+      <Label text="Leaderboard" GridPane.columnIndex="1">
+         <GridPane.margin>
+            <Insets left="5.0" right="5.0" top="5.0" />
+         </GridPane.margin>
+      </Label>
+      <ListView fx:id="lvwGames" prefHeight="93.0" prefWidth="158.0" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1">
+         <GridPane.margin>
+            <Insets left="9.0" right="6.0" top="5.0" />
+         </GridPane.margin>
+      </ListView>
+      <ListView fx:id="lvwScores" prefHeight="328.0" prefWidth="326.0" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" GridPane.rowSpan="6">
+         <GridPane.margin>
+            <Insets bottom="12.0" left="5.0" right="12.0" top="5.0" />
+         </GridPane.margin>
+      </ListView>
+      <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Player" GridPane.rowIndex="2">
+         <GridPane.margin>
+            <Insets bottom="5.0" left="9.0" top="6.0" />
+         </GridPane.margin>
+      </Text>
+      <TextField fx:id="tfPlayer" GridPane.rowIndex="3">
+         <GridPane.margin>
+            <Insets left="9.0" right="6.0" />
+         </GridPane.margin>
+      </TextField>
+      <Button fx:id="btnSearch" mnemonicParsing="false" onAction="#onSearch" prefHeight="25.0" prefWidth="162.0" text="Search" GridPane.rowIndex="4">
+         <GridPane.margin>
+            <Insets left="9.0" right="6.0" />
+         </GridPane.margin>
+      </Button>
+   </children>
+</GridPane>

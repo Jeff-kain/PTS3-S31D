@@ -59,8 +59,9 @@
                   <KeyCodeCombination alt="DOWN" code="P" control="UP" meta="UP" shift="UP" shortcut="UP" />
                </accelerator>
           </Menu>
-          <Menu mnemonicParsing="false" onAction="#onTournament" text="Tournament">
+          <Menu mnemonicParsing="false" text="Leaderboard">
             <items>
+              <MenuItem mnemonicParsing="false" onAction="#onLeaderboard" text="Show leaderboard" />
             </items>
                <accelerator>
                   <KeyCodeCombination alt="DOWN" code="P" control="UP" meta="UP" shift="UP" shortcut="UP" />
