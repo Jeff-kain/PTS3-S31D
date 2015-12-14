@@ -431,23 +431,23 @@ public class Game_StateBasedGame extends BasicGameState {
 //                // TODO KICK A BOMB
 //            }
 //        }
-        if (bombs
-                != null) {
-            for (Bomb b : playground.getBombs()) {
-                if (b.isExploded()) {
-                    bombs.remove(b);
-                } 
-            }
-        }
-
-        if (bombs2
-                != null) {
-            for (Bomb b : playground.getBombs2()) {
-                if (b.isExploded()) {
-                    bombs2.remove(b);
-                }
-            }
-        }
+//        if (bombs
+//                != null) {
+//            for (Bomb b : playground.getBombs()) {
+//                if (b.isExploded()) {
+//                    bombs.remove(b);
+//                } 
+//            }
+//        }
+//
+//        if (bombs2
+//                != null) {
+//            for (Bomb b : playground.getBombs2()) {
+//                if (b.isExploded()) {
+//                    bombs2.remove(b);
+//                }
+//            }
+//        }
         for (IGameObject o : game.playground().getMapobjects()) {
             if (o instanceof Bomb) {
                 Bomb b = (Bomb) o;

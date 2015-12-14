@@ -93,7 +93,16 @@ public class Bomb implements IGameObject, Serializable {
     public void Update() {
         if (explodeTime < 0) {
             exploded = true;
-            
+            for (Bomb b : Game.getInstance().playground().getBombs()) {
+                if (b == this) {
+                    Game.getInstance().playground().removeBombs1(b);
+                }
+            }
+            for (Bomb b : Game.getInstance().playground().getBombs2()) {
+                if (b == this) {
+                    Game.getInstance().playground().removeBombs2(b);
+                }
+            }
             try {
                 createFlames();
             } catch (SlickException ex) {
