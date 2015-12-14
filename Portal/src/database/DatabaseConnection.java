@@ -192,4 +192,28 @@ public class DatabaseConnection {
         System.out.println("Beetje jammer dit.");
         return null;
     }
+    
+    public User getLeaderboard(String username) throws SQLException {
+        boolean isOpen = open();
+        //System.out.println(isOpen);
+
+        ResultSet rs;
+        Statement stat;
+
+        if(isOpen) {
+            String query = "SELECT * FROM USERS WHERE NAME ='" + username + "';";
+
+            stat = conn.prepareStatement(query);
+            rs = stat.executeQuery(query);
+
+            while (rs.next()) {
+                int id = rs.getInt("ID");
+                String name = rs.getString("NAME");
+
+                return new User(id, name);
+            }
+        }
+
+        return null;
+    }
 }
