@@ -3,6 +3,7 @@ package portalserver;
 import portal.Models.Game;
 import portalserver.interfaces.IHost;
 import portalserver.interfaces.ILobby;
+import portalserver.interfaces.IPlayer;
 
 import java.io.Serializable;
 import java.rmi.RemoteException;
@@ -11,7 +12,7 @@ import java.rmi.server.UnicastRemoteObject;
 /**
  * Created by tverv on 12-Dec-15.
  */
-public class GameLobby extends UnicastRemoteObject implements IHost, ILobby, Serializable {
+public class GameLobby extends UnicastRemoteObject implements IHost, IPlayer, ILobby, Serializable {
 
     private Game game;
     private String name;
