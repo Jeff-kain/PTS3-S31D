@@ -87,11 +87,8 @@ public class Menu_StateBasedGame extends BasicGameState {
                 manager.setBoolLAN(true);
                 manager.setAmplayer(2);
                 String hostIP = null;
-                try {
-                    hostIP = InetAddress.getLocalHost().getHostAddress();
-                } catch (UnknownHostException ex) {
-                    Logger.getLogger(Menu_StateBasedGame.class.getName()).log(Level.SEVERE, null, ex);
-                }
+                //hostIP = "145.93.64.173"; //tim IP
+                hostIP = "145.93.249.22";
                 String hostservice = ("rmi://" + hostIP + ":" + 1100 + "/host");
                  {
                     try {

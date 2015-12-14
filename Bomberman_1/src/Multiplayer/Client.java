@@ -32,6 +32,7 @@ public class Client extends UnicastRemoteObject implements IRemoteClient {
     public Client(int regport, String servicename, String hostservice) throws RemoteException {
         String strService = publishClient(regport, servicename);
         service = retrieveService(hostservice);
+       // service = retrieveService("rmi://" + "145.93.64.173" + ":" + 1090 + "/host");
         System.out.println(hostservice);
         manager.setRemotehost(service);
         service.joingame(strService);
