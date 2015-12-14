@@ -12,9 +12,14 @@ import java.rmi.RemoteException;
  *
  * @author jeffrey
  */
-public interface IRemoteClient extends Remote{
-    	public static final int UP = 1, LEFT = 2, DOWN = 3, RIGHT = 4, BOMB = 5;
+public interface IRemoteClient extends Remote {
 
-	public void hostKeyUpdate(int playerindex, int keycode, boolean pressed)
-			throws RemoteException;
+    public static final int UP = 1, LEFT = 2, DOWN = 3, RIGHT = 4, BOMB = 5;
+
+    public void hostKeyUpdate(int playerindex, int keycode, boolean pressed)
+            throws RemoteException;
+
+    public void tick() throws RemoteException;
+
+    public void movep2h(int direction, float x, float y) throws RemoteException;
 }

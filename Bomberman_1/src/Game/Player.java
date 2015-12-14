@@ -5,7 +5,11 @@
  */
 package Game;
 
+import Multiplayer.IRemoteClient;
+import Multiplayer.Manager;
 import java.awt.geom.Rectangle2D;
+import java.io.Serializable;
+import java.rmi.RemoteException;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.SpriteSheet;
@@ -15,7 +19,7 @@ import powerup.*;
  *
  * @author jeffrey
  */
-public class Player implements IGameObject {
+public class Player implements IGameObject, Serializable {
 
     private Image sprite;
     private String name;
@@ -31,10 +35,14 @@ public class Player implements IGameObject {
     private Bomb_Up bomb_Up;
     private Game game = Game.getInstance();
     private TeamColor teamColor;
-    private Direction kickDirection;
+    private int kickDirection;
 
     private Playground playground = new Playground();
     private int respawn;
+
+    private Manager manager = Manager.getManager();
+    boolean pleft, pright, pup, pdown, plant;
+    private Keyset Keys;
 
     public Float getBombRange() {
         return bombRange;
@@ -60,13 +68,30 @@ public class Player implements IGameObject {
         this.bombRange = 0.5f;
         this.bombCount = bombCount;
         this.kick = kick;
-        this.kickDirection = Direction.NONE;
+        this.kickDirection = 0;
         visible = true;
         respawn = 0;
     }
 
     @Override
     public void Update() {
+        if (respawn <= 0) {
+//            if (keycode == Keys.KeyUp) {
+//                pup = pressed;
+//            }
+//            if (keycode == Keys.KeyLeft) {
+//                pleft = pressed;
+//            }
+//            if (keycode == Keys.KeyDown) {
+//                pdown = pressed;
+//            }
+//            if (keycode == Keys.KeyRight) {
+//                pright = pressed;
+//            }
+//            if (keycode == Keys.KeyBomb) {
+//                plant = pressed;
+//            }
+        }
         for (IGameObject o : game.playground().getMapobjects()) {
             if (o instanceof Explosion) {
                 Explosion exp = (Explosion) o;
@@ -140,7 +165,7 @@ public class Player implements IGameObject {
         }
     }
 
-    public void reloadSprite(Direction direction) {
+    public void reloadSprite(int direction) {
         int row = 0;
         kickDirection = direction;
 
@@ -150,17 +175,17 @@ public class Player implements IGameObject {
             row = 17;
         }
 
-        switch (direction.name()) {
-            case "NORTH":
+        switch (direction) {
+            case 1:
                 this.sprite = this.sprites.getSubImage(8, row);
                 break;
-            case "EAST":
+            case 4:
                 this.sprite = this.sprites.getSubImage(6, row);
                 break;
-            case "SOUTH":
+            case 3:
                 this.sprite = this.sprites.getSubImage(2, row);
                 break;
-            case "WEST":
+            case 2:
                 this.sprite = this.sprites.getSubImage(6, row);
                 this.sprite = this.sprite.getFlippedCopy(true, false);
                 break;
@@ -203,11 +228,11 @@ public class Player implements IGameObject {
         return bombCount;
     }
 
-    public Direction getKickDirection() {
+    public int getKickDirection() {
         return kickDirection;
     }
 
-    public void setKickDirection(Direction direction) {
+    public void setKickDirection(int direction) {
         kickDirection = direction;
     }
 
@@ -246,34 +271,152 @@ public class Player implements IGameObject {
         this.bombCount++;
     }
 
-    public void move(Direction direction) {
+    public void moveifremote(int direction) {
+
+//        System.out.println("moveifremote: " + direction);
+//        System.out.println("manager: " + manager.isBoolClient());
+//        System.out.println("manager boolLAN: " + manager.isBoolLAN());
+        try {
+            if (manager.isBoolLAN()) {
+
+                if (manager.isBoolClient()) {
+
+                    manager.getRemotehost().movep2c(direction, this.x, this.y);
+
+                } else {
+
+                    manager.getRemoteclient().movep2h(direction, this.x, this.x);
+                }
+            }
+
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void moveremote(int direction, float x, float y) {
+        System.out.println("moveremoteclient: " + direction);
         int row = 0;
         kickDirection = direction;
+        if (teamColor == teamColor.BLUE) {
+            row = 16;
+        } else {
+            row = 17;
+        }
+        float oldx = this.getX();
+        float oldy = this.getY();
+        setPosition(x, y);
+        if (direction == Keyset.REMUP) {
+            this.sprite = this.sprites.getSubImage(8, row);
+            //this.y -= blockSize;
 
+        } else if (direction == Keyset.REMLEFT) {
+            this.sprite = this.sprites.getSubImage(6, row);
+            this.sprite = this.sprite.getFlippedCopy(true, false);
+            //this.x -= blockSize;
+
+        } else if (direction == Keyset.REMDOWN) {
+            this.sprite = this.sprites.getSubImage(2, row);
+
+            //this.y += blockSize;
+        } else if (direction == Keyset.REMRIGHT) {
+            this.sprite = this.sprites.getSubImage(6, row);
+
+            //  this.x += blockSize;
+        } else if (direction == Keyset.REMBOMB) {
+            Bomb b = new Bomb(sprites, x, y, this.getBombRange());
+
+            this.setKickDirection(0);
+            game.playground().addToLevel(b);
+            System.out.println("bombermanClient added to level");
+
+        }
+        if (this.intersectWithBox() || this.intersectWithWall()) {
+            setPosition(oldx, oldy);
+        }
+    }
+
+    /**
+     *
+     * @param keycode
+     * @param pressed
+     */
+    public void update(int keycode, boolean pressed) {
+        // System.out.println("lanplayerupdate");
+        if (respawn <= 0) {
+            if (keycode == Keys.KeyUp) {
+                pup = pressed;
+            }
+            if (keycode == Keys.KeyLeft) {
+                pleft = pressed;
+            }
+            if (keycode == Keys.KeyDown) {
+                pdown = pressed;
+            }
+            if (keycode == Keys.KeyRight) {
+                pright = pressed;
+            }
+            if (keycode == Keys.KeyBomb) {
+                plant = pressed;
+            }
+        }
+    }
+
+    public void move() {
+        if (pup) {
+            move(IRemoteClient.UP);
+        } else if (pleft) {
+            move(IRemoteClient.LEFT);
+        } else if (pdown) {
+            move(IRemoteClient.DOWN);
+        } else if (pright) {
+            move(IRemoteClient.RIGHT);
+        } else if (plant) {
+            move(IRemoteClient.BOMB);
+        }
+    }
+
+    public void move(int direction) {
+        int row = 0;
+        kickDirection = direction;
         if (teamColor == teamColor.BLUE) {
             row = 16;
         } else {
             row = 17;
         }
 
-        switch (direction.name()) {
-            case "NORTH":
+        switch (direction) {
+            case 1:
                 this.sprite = this.sprites.getSubImage(8, row);
                 this.y -= blockSize;
+                moveifremote(direction);
                 break;
-            case "EAST":
+            case 4:
                 this.sprite = this.sprites.getSubImage(6, row);
                 this.x += blockSize;
+                moveifremote(direction);
+
                 break;
-            case "SOUTH":
+            case 3:
                 this.sprite = this.sprites.getSubImage(2, row);
                 this.y += blockSize;
+                moveifremote(direction);
+
                 break;
-            case "WEST":
+            case 2:
                 this.x -= blockSize;
                 this.sprite = this.sprites.getSubImage(6, row);
                 this.sprite = this.sprite.getFlippedCopy(true, false);
+                moveifremote(direction);
+
                 break;
+            case 5:
+                // TODO Bomb stuff
+                moveifremote(direction);
+                System.out.println("Bomb added???");
+
+                break;
+
         }
     }
 

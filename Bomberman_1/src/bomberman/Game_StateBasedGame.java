@@ -110,6 +110,7 @@ public class Game_StateBasedGame extends BasicGameState {
         loadMap();
         game.getTeam1().addPlayer(player);
         game.getTeam2().addPlayer(player2);
+
     }
 
     @Override
@@ -200,10 +201,8 @@ public class Game_StateBasedGame extends BasicGameState {
                     animation = bombAnimations.get(o);
                 }
                 animation.draw(bomb.getX(), bomb.getY());
-            }
-            else
-            {
-            g.drawImage(o.getSprite(), o.getX(), o.getY());
+            } else {
+                g.drawImage(o.getSprite(), o.getX(), o.getY());
             }
         }
 
@@ -287,26 +286,24 @@ public class Game_StateBasedGame extends BasicGameState {
             posX = Math.round(player.getX()) / 48;
             posY = Math.round(player.getY()) / 48;
 
-            System.out.println(timeOutP1);
-
             if (timeOutP1 <= 0) {
                 if (gc.getInput().isKeyDown(Input.KEY_LEFT)) {
-                    player.move(Direction.WEST);
+                    player.move(2);
 
                     timeOutP1 = player.getSpeed();
 
                 } else if (gc.getInput().isKeyDown(Input.KEY_RIGHT)) {
-                    player.move(Direction.EAST);
+                    player.move(4);
 
                     timeOutP1 = player.getSpeed();
 
                 } else if (gc.getInput().isKeyDown(Input.KEY_UP)) {
-                    player.move(Direction.NORTH);
+                    player.move(1);
 
                     timeOutP1 = player.getSpeed();
 
                 } else if (gc.getInput().isKeyDown(Input.KEY_DOWN)) {
-                    player.move(Direction.SOUTH);
+                    player.move(3);
                     timeOutP1 = player.getSpeed();
                 }
             }
@@ -322,8 +319,9 @@ public class Game_StateBasedGame extends BasicGameState {
             Bomb b = new Bomb(sprites, player.getX(), player.getY(), player.getBombRange());
 
             if (bombs.size() < player.getBombCount()) {
-                player.setKickDirection(Direction.NONE);
+                player.setKickDirection(0);
                 playground.addToLevel(b);
+                player.move(5); // place remote bomb
             }
         }
 
@@ -342,22 +340,22 @@ public class Game_StateBasedGame extends BasicGameState {
 
             if (timeOutP2 <= 0) {
                 if (gc.getInput().isKeyDown(Input.KEY_A)) {
-                    player2.move(Direction.WEST);
+                    player2.move(2);
 
                     timeOutP2 = player2.getSpeed();
 
                 } else if (gc.getInput().isKeyDown(Input.KEY_D)) {
-                    player2.move(Direction.EAST);
+                    player2.move(4);
 
                     timeOutP2 = player2.getSpeed();
 
                 } else if (gc.getInput().isKeyDown(Input.KEY_W)) {
-                    player2.move(Direction.NORTH);
+                    player2.move(1);
 
                     timeOutP2 = player2.getSpeed();
 
                 } else if (gc.getInput().isKeyDown(Input.KEY_S)) {
-                    player2.move(Direction.SOUTH);
+                    player2.move(3);
 
                     timeOutP2 = player2.getSpeed();
                 }
@@ -373,8 +371,10 @@ public class Game_StateBasedGame extends BasicGameState {
                 Bomb b = new Bomb(sprites, player2.getX(), player2.getY(), player2.getBombRange());
 
                 if (bombs2.size() < player2.getBombCount()) {
-                    player2.setKickDirection(Direction.NONE);
+                    player2.setKickDirection(0);
                     playground.addToLevel(b);
+                    player2.move(5); // place remote bomb
+
                     // bombs2.add(b);
                 }
             }
