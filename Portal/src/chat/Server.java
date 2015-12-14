@@ -20,7 +20,7 @@ import java.util.Scanner;
  *
  * @author Rob
  */
-public class Server1 {
+public class Server {
 
     /**
      * 
@@ -36,7 +36,7 @@ public class Server1 {
     
     public static void main(String[] args) {
         // TODO code application logic here
-        Server1 Chat = new Server1();
+        Server Chat = new Server();
         Chat.Start();
     }
 
