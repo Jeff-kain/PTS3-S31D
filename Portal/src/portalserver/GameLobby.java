@@ -45,13 +45,10 @@ public class GameLobby extends UnicastRemoteObject implements IHost, IPlayer, IL
         return password;
     }
 
-    //@Override
-    public String toString() {
-        return name;
-    }
-
     @Override
     public IPlayer joinGame(String username, String password) {
+        System.out.println("Player " + username + " joined lobby " + name);
+
         try {
             databaseConnection = DatabaseConnection.getInstance();
             if(players.size() < 2) {

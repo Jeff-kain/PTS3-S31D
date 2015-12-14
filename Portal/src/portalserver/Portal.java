@@ -3,6 +3,7 @@ package portalserver;
 import database.DatabaseConnection;
 import portal.Models.Game;
 import portalserver.interfaces.IHost;
+import portalserver.interfaces.ILobby;
 import portalserver.interfaces.ILogin;
 import portalserver.interfaces.IPortal;
 
@@ -32,7 +33,7 @@ public class Portal extends UnicastRemoteObject implements ILogin, IPortal {
     }
 
     @Override
-    public IPortal login(String username, String password) {
+    public IPortal login(String username, String password) throws RemoteException  {
 
         if(correctLogin(username,password)) {
             return this;
@@ -42,7 +43,7 @@ public class Portal extends UnicastRemoteObject implements ILogin, IPortal {
     }
 
     @Override
-    public List<Game> getGames(String username, String password) {
+    public List<Game> getGames(String username, String password) throws RemoteException  {
 
         if(correctLogin(username, password)) {
             return databaseConnection.getGames();
@@ -52,7 +53,7 @@ public class Portal extends UnicastRemoteObject implements ILogin, IPortal {
     }
 
     @Override
-    public IHost createLobby(String username, String password, Game game, String lobbyName, String lobbyPassword) {
+    public IHost createLobby(String username, String password, Game game, String lobbyName, String lobbyPassword) throws RemoteException  {
         if(correctLogin(username, password)) {
             try {
                 GameLobby lobby = new GameLobby(game, lobbyName, lobbyPassword);
@@ -69,16 +70,16 @@ public class Portal extends UnicastRemoteObject implements ILogin, IPortal {
     }
 
     @Override
-    public List<String> getLobbies(String username, String password, Game game) {
+    public List<ILobby> getLobbies(String username, String password, Game game) throws RemoteException {
         System.out.println("Foo");
 
         if(correctLogin(username, password)) {
-            List<String> gameLobbies = new ArrayList<>();
+            List<ILobby> gameLobbies = new ArrayList<>();
 
             for(GameLobby lobby: lobbies) {
                 if(lobby.getGame().getId() == game.getId()) {
                     System.out.println(lobby.toString());
-                    gameLobbies.add(lobby.getName());
+                    gameLobbies.add(lobby);
                 }
             }
 
@@ -88,7 +89,7 @@ public class Portal extends UnicastRemoteObject implements ILogin, IPortal {
         return null;
     }
 
-    private Boolean correctLogin(String username, String password) {
+    private Boolean correctLogin(String username, String password) throws RemoteException  {
         try {
             if(databaseConnection.CheckLogin(username,password)) {
                 return true;

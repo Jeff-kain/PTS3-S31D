@@ -1,5 +1,7 @@
 package portal.Controllers;
 
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -7,9 +9,9 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.ListView;
+import javafx.scene.control.*;
 import javafx.stage.Modality;
+import javafx.util.Callback;
 import portal.Models.Game;
 
 import java.io.*;
@@ -24,11 +26,11 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.application.Platform;
 import javafx.event.Event;
-import javafx.scene.control.TextArea;
-import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import portal.*;
 import portalserver.User;
+import portalserver.interfaces.ILobby;
+import portalserver.interfaces.IPlayer;
 
 import static portal.Portal.Stage;
 
@@ -38,12 +40,13 @@ import static portal.Portal.Stage;
 public class MainWindowController implements Initializable {
     //Observable lists
     ObservableList<Game> observableGames;
-    ObservableList<String> observableLobbies;
+    ObservableList<ILobby> observableLobbies;
     @FXML private ListView<Game> lvwGames;
-    @FXML private ListView<String> lvwLobbies;
+    @FXML private ListView<ILobby> lvwLobbies;
     @FXML TextField tfSend;
     @FXML Button btnSend;
     @FXML Button btnAddLobby;
+    @FXML Button btnJoinLobby;
     @FXML TextArea taChat;
 
     String address;
@@ -83,16 +86,26 @@ public class MainWindowController implements Initializable {
             e.printStackTrace();
         }
 
+
+        lvwLobbies.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue == null) {
+                btnJoinLobby.setDisable(true);
+            } else {
+                btnJoinLobby.setDisable(false);
+            }
+        });
+
         lvwGames.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
             btnAddLobby.setDisable(false);
             admin.setSelectedGameID(newValue);
 
             try {
                 observableLobbies.clear();
-                List<String> lobbies = admin.getPortal().getLobbies(admin.getUsername(), admin.getPassword(), newValue);
-                for(String lobby: lobbies) {
+                List<ILobby> lobbies = admin.getPortal().getLobbies(admin.getUsername(), admin.getPassword(), newValue);
+                observableLobbies.addAll(lobbies);
+
+                for(ILobby lobby: lobbies) {
                     System.out.println(lobby);
-                    observableLobbies.add(lobby);
                 }
 
             } catch (RemoteException e) {
@@ -153,6 +166,15 @@ public class MainWindowController implements Initializable {
         p.waitFor();
         } catch (IOException | InterruptedException ex) {
             Logger.getLogger(MainWindowController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    public void joinLobby(Event evt) {
+        ILobby lobby = lvwLobbies.getSelectionModel().getSelectedItem();
+        try {
+            IPlayer player = lobby.joinGame(admin.getUsername(), admin.getPassword());
+        } catch (RemoteException e) {
+            e.printStackTrace();
         }
     }
     
