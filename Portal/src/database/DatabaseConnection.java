@@ -27,6 +27,7 @@ import java.util.*;
 import java.util.List;
 
 import javafx.collections.FXCollections;
+import portalserver.User;
 
 /**
  *
@@ -144,7 +145,7 @@ public class DatabaseConnection {
         return isOpen;
     }
     
-    public boolean CheckLogin(String name, String password) throws SQLException {
+    public boolean CheckLogin(String username, String password) throws SQLException {
         
         try {
             boolean isOpen = open();
@@ -153,14 +154,39 @@ public class DatabaseConnection {
             ResultSet rs;
             Statement stat = conn.createStatement();
             
-            String query = "SELECT * FROM USERS WHERE NAME ='" + name + "' AND PASSWORD = '" + password + "';";
+            String query = "SELECT * FROM USERS WHERE NAME ='" + username + "' AND PASSWORD = '" + password + "';";
             
             stat = conn.prepareStatement(query);
             rs = stat.executeQuery(query);
+
             return rs.first();
         }
         finally{            
             close();
         }
+    }
+
+    public User getUser(String username, String password) throws SQLException {
+        boolean isOpen = open();
+        //System.out.println(isOpen);
+
+        ResultSet rs;
+        Statement stat;
+
+        if(isOpen) {
+            String query = "SELECT * FROM USERS WHERE NAME ='" + username + "' AND PASSWORD = '" + password + "';";
+
+            stat = conn.prepareStatement(query);
+            rs = stat.executeQuery(query);
+
+            while (rs.next()) {
+                int id = rs.getInt("ID");
+                String name = rs.getString("NAME");
+
+                return new User(id, name);
+            }
+        }
+
+        return null;
     }
 }

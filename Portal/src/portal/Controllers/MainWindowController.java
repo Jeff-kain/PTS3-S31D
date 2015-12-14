@@ -28,8 +28,7 @@ import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import portal.*;
-import portal.Models.User;
-import portalserver.GameLobby;
+import portalserver.User;
 
 import static portal.Portal.Stage;
 
@@ -108,7 +107,7 @@ public class MainWindowController implements Initializable {
 
     public void initChat() {
         taChat.setEditable(false);
-        username = new User().getName();
+        username = Administration.getInstance().getUsername();
         Connect();
     }
 
@@ -159,7 +158,7 @@ public class MainWindowController implements Initializable {
     
     public void onExit(Event evt) {
         userDisconnect();
-        new User().setName("Null");
+        admin.setUsername("Null");
         Stage stage = LoginController.stage;
         stage.setOnCloseRequest(e -> Platform.exit());
         System.exit(0);
@@ -190,7 +189,7 @@ public class MainWindowController implements Initializable {
         try {
             if (isConnected == false) {
 
-                username = new User().getName();
+                username = admin.getUsername();
 
                 try {
 
