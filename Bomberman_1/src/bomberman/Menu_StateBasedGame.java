@@ -103,8 +103,12 @@ public class Menu_StateBasedGame extends BasicGameState {
                 break;
             case Input.KEY_3:
                 // TODO: Implement later
+                manager.setBoolClient(false);
+                manager.setBoolLAN(false);
+                manager.setAmplayer(2);
+                manager.setPlayer2(2);
+                manager.setPlayer1(1);
                 game.enterState(2, new FadeOutTransition(Color.black), new FadeInTransition(Color.black));
-
                 break;
 
             case Input.KEY_4:
