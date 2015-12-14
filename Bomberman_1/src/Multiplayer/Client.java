@@ -94,7 +94,7 @@ public class Client extends UnicastRemoteObject implements IRemoteClient {
     @Override
     public void movep2h(int direction, float x, float y) throws RemoteException {
         direction = translate(direction);
-        Game.getInstance().getAllPlayers().get(0).moveremote(direction,x ,y);    }
+        ((Player) (Game.getInstance().getAllPlayers().get(0))).moveremote(direction,x ,y);    }
     
     
     public int translate(int direction) {
