@@ -7,10 +7,10 @@
 <?import java.lang.*?>
 <?import javafx.scene.layout.*?>
 
-<GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="392.0" prefWidth="472.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="portal.Controllers.LeaderboardController">
+<GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="381.0" prefWidth="516.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="portal.Controllers.LeaderboardController">
   <columnConstraints>
-      <ColumnConstraints hgrow="SOMETIMES" maxWidth="200.0" minWidth="10.0" percentWidth="35.0" prefWidth="180.0" />
-    <ColumnConstraints hgrow="SOMETIMES" maxWidth="349.0" minWidth="10.0" prefWidth="307.0" />
+      <ColumnConstraints hgrow="SOMETIMES" maxWidth="217.6" minWidth="10.0" percentWidth="35.0" prefWidth="213.6" />
+    <ColumnConstraints hgrow="SOMETIMES" maxWidth="349.0" minWidth="10.0" prefWidth="302.0" />
   </columnConstraints>
   <rowConstraints>
       <RowConstraints maxHeight="-Infinity" minHeight="22.0" prefHeight="22.0" vgrow="SOMETIMES" />

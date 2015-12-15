@@ -192,7 +192,7 @@ public class DatabaseConnection {
         return games;
     }
     
-    public List<Score> getLeaderboard(String username, String password, String enteredName, String Game) throws SQLException {
+    public List<Score> getLeaderboard(String game) throws SQLException {
         boolean isOpen = open();
 
         List<Score> leaderboard = new ArrayList<>();
@@ -200,17 +200,55 @@ public class DatabaseConnection {
         Statement stat;
 
         if(isOpen) {
-            String query = "SELECT lb.Wins, lb.loses, u.Name FROM users u, leaderboard lb, games g WHERE u.id = lb.id_user AND g.id = lb.id_Game  AND g.Name = ? AND u.Name = ?";
+            
+            String query = "SELECT lb.Wins, lb.losses, u.Name FROM users u, leaderboard lb, games g WHERE u.id = lb.id_user AND g.id = lb.id_Game  AND g.Name = '" + game + "'";
 
             stat = conn.prepareStatement(query);
             rs = stat.executeQuery(query);
 
             while (rs.next()) {
-                int Wins = rs.getInt("Wins");
-                int Loses = rs.getInt("Loses");
-
-                return null;
+                int wins = rs.getInt("Wins");
+                int losses = rs.getInt("Losses");
+                String name = rs.getString("Name");
+                        
+                double totalGames = (double) wins + losses;
+                double winratio = (wins / totalGames) * 100;
+                winratio = Math.round(winratio);
+        
+                leaderboard.add(new Score(winratio, wins, losses, name));
             }
+            
+            return leaderboard;
+        }
+
+        return null;
+    }
+    
+    public Score getScoresPlayer(String enteredName, String game) throws SQLException {
+        boolean isOpen = open();
+
+        Score s = null;
+        ResultSet rs;
+        Statement stat;
+
+        if(isOpen) {
+            
+            String query = "SELECT lb.Wins, lb.losses FROM users u, leaderboard lb, games g WHERE u.id = lb.id_user AND g.id = lb.id_Game AND u.Name = '" + enteredName + "'  AND g.Name = '" + game + "'";;
+
+            stat = conn.prepareStatement(query);
+            rs = stat.executeQuery(query);
+
+            while (rs.next()) {
+                int wins = rs.getInt("Wins");
+                int losses = rs.getInt("Losses");
+                String name = enteredName;
+                double totalGames = (double) wins + losses;
+                double winratio = (wins / totalGames) * 100;
+        
+                s = new Score(winratio, wins, losses, name);
+            }
+            
+            return s;
         }
 
         return null;

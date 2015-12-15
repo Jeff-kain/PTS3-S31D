@@ -1,7 +1,7 @@
 package portalserver.interfaces;
 
 import javafx.collections.ObservableList;
-import portal.Models.Game;
+import portal.Models.*;
 import portalserver.GameLobby;
 
 import java.rmi.Remote;
@@ -18,5 +18,8 @@ public interface IPortal extends Remote {
     IHost createLobby(String username, String password, Game game, String lobbyName, String lobbyPassword) throws RemoteException;
 
     List<ILobby> getLobbies(String username, String password, Game game) throws RemoteException;
-
+    
+    List<Score> getLeaderboard(String username, String password, String game) throws RemoteException;
+    
+    Score getScoresPlayer(String username, String password, String enteredName, String game) throws RemoteException;
 }

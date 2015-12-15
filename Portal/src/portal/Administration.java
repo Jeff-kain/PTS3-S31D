@@ -15,6 +15,7 @@ public class Administration {
     private ILogin login;
     private IPortal portal;
     private Game selectedGame;
+    private Game selectedGameLeaderboard;
 
     private Administration() {
 
@@ -62,5 +63,13 @@ public class Administration {
 
     public void setSelectedGameID(Game selectedGame) {
         this.selectedGame = selectedGame;
+    }
+    
+    public Game getSelectedGameLeaderboard() {
+        return selectedGameLeaderboard;
+    }
+
+    public void setSelectedGameLeaderboardID(Game selectedGame) {
+        this.selectedGameLeaderboard = selectedGame;
     }
 }

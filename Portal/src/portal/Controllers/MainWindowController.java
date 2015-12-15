@@ -56,17 +56,17 @@ public class MainWindowController implements Initializable {
     @FXML Button btnJoinLobby;
     @FXML TextArea taChat;
 
-    String address;
-    String username;
-    ArrayList<String> users;
-    Boolean isConnected;
+    private String address, username;
+    private ArrayList<String> users;
+    private Boolean isConnected;
     private Administration admin;
-    int port;
-
-    Socket sock;
-    BufferedReader reader;
-    PrintWriter writer;
-    InetAddress addr;
+    private Game selectedGame;
+    
+    private int port;
+    private Socket sock;
+    private BufferedReader reader;
+    private PrintWriter writer;
+    private InetAddress addr;
 
     // the server, the port and the username
 
@@ -107,22 +107,8 @@ public class MainWindowController implements Initializable {
         });
 
         lvwGames.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
-            btnAddLobby.setDisable(false);
-            admin.setSelectedGameID(newValue);
-
-            try {
-                observableLobbies.clear();
-                List<ILobby> lobbies = admin.getPortal().getLobbies(admin.getUsername(), admin.getPassword(), newValue);
-
-                for(ILobby lobby: lobbies) {
-                    System.out.println(lobby.getName());
-                    observableLobbies.add(lobby.getName());
-                    lobbiesHashMap.put(lobby.getName(), lobby);
-                }
-
-            } catch (RemoteException e) {
-                e.printStackTrace();
-            }
+            selectedGame = newValue;
+            LoadLobbies(newValue);
         });
     }
 
@@ -176,7 +162,28 @@ public class MainWindowController implements Initializable {
     }
     
     public void onRefresh(Event evt) {
-        
+        if(selectedGame != null) {
+            LoadLobbies(selectedGame);
+        }
+    }
+    
+    public void LoadLobbies(Game newValue) {
+        btnAddLobby.setDisable(false);
+        admin.setSelectedGameID(newValue);
+
+        try {
+            observableLobbies.clear();
+            List<ILobby> lobbies = admin.getPortal().getLobbies(admin.getUsername(), admin.getPassword(), newValue);
+
+            for(ILobby lobby: lobbies) {
+                System.out.println(lobby.getName());
+                observableLobbies.add(lobby.getName());
+                lobbiesHashMap.put(lobby.getName(), lobby);
+            }
+
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        }
     }
         
     public void onLeaderboard(Event evt) {
@@ -404,7 +411,7 @@ public class MainWindowController implements Initializable {
         }
 
         if (root != null) {
-            Scene scene = new Scene(root, 300, 400);
+            Scene scene = new Scene(root, 500, 400);
 
             stage.initModality(Modality.WINDOW_MODAL);
             stage.initOwner(Portal.Stage);

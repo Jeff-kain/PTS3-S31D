@@ -12,8 +12,10 @@ import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
+import portal.Models.Score;
 
 /**
  * Created by tverv on 12-Dec-15.
@@ -102,6 +104,40 @@ public class Portal extends UnicastRemoteObject implements ILogin, IPortal {
         } catch (SQLException e) {
             e.printStackTrace();
             return false;
+        }
+    }
+
+    @Override
+    public List<Score> getLeaderboard(String username, String password, String game) throws RemoteException {
+        try {
+            if(databaseConnection.CheckLogin(username,password)) {
+                List<Score> leaderboard = databaseConnection.getLeaderboard(game);
+                Collections.sort(leaderboard, Score.ScoreComparator);
+                return leaderboard;
+            }
+
+            System.out.println("Username or password incorrect");
+            return null;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+    
+    @Override
+    public Score getScoresPlayer(String username, String password, String enteredName, String game) throws RemoteException {
+        try {
+            if(databaseConnection.CheckLogin(username,password)) {
+                return databaseConnection.getScoresPlayer(enteredName, game);
+            }
+
+            System.out.println("Username or password incorrect");
+            return null;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
         }
     }
 }
