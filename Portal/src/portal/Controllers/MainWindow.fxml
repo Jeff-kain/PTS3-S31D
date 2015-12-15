@@ -44,7 +44,7 @@
             <Insets left="5.0" right="6.0" top="5.0" />
          </GridPane.margin>
       </ListView>
-      <ListView fx:id="lvwLobbies" prefHeight="200.0" prefWidth="295.0" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.hgrow="ALWAYS" GridPane.rowIndex="2">
+      <ListView fx:id="lvwLobbies" prefHeight="200.0" prefWidth="295.0" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.hgrow="ALWAYS" GridPane.rowIndex="2" GridPane.rowSpan="3">
          <GridPane.margin>
             <Insets left="5.0" top="5.0" />
          </GridPane.margin>
@@ -101,16 +101,6 @@
             <Insets left="5.0" />
          </GridPane.margin>
       </Button>
-      <ListView fx:id="lvwPlayers" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="4">
-         <GridPane.margin>
-            <Insets left="5.0" top="5.0" />
-         </GridPane.margin>
-      </ListView>
-      <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Lobby" GridPane.columnIndex="1" GridPane.rowIndex="3">
-         <GridPane.margin>
-            <Insets left="5.0" top="7.0" />
-         </GridPane.margin>
-      </Text>
       <Button mnemonicParsing="false" onAction="#playOffline" prefHeight="25.0" prefWidth="200.0" text="Play Offline" GridPane.hgrow="ALWAYS" GridPane.rowIndex="5">
          <GridPane.margin>
             <Insets left="7.0" right="6.0" />

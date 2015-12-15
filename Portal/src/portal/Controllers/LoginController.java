@@ -98,31 +98,6 @@ public class LoginController implements Initializable {
         }
     }
 
-    public void LoginAttempt() {
-
-        Callable dbQuery = new Callable() {
-
-            @Override
-            public Object call() throws Exception {
-                boolean isConnected = dc.CheckLogin(tfdUsername.getText(),pfdPassword.getText());
-                return isConnected;
-            }
-        };
-
-        Future future = executor.submit(dbQuery);
-        executor.submit(new Runnable(){
-            @Override
-            public void run() {
-                try {
-                    isOk = (boolean) future.get();
-                    
-                } catch (InterruptedException | ExecutionException ex) {
-                    ex.printStackTrace();
-                }
-            }
-        });
-    }
-
     private void loadMainWindow() throws Exception {
         //Loading the .fxml file.
         stage = Portal.Stage;

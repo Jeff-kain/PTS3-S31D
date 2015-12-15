@@ -152,7 +152,7 @@ public class DatabaseConnection {
             boolean isOpen = open();
             if (isOpen) {
                 Statement stat = conn.createStatement();
-                String query = "INSERT users (Name, Password) VALUES ('" + username + "', '" + password + "');";
+                String query = "INSERT users (Id, Name, Password) VALUES (NULL, '" + username + "', '" + password + "');";
                 stat = conn.prepareStatement(query);
 
                 return true;
