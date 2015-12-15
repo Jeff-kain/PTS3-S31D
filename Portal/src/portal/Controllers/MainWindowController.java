@@ -391,7 +391,7 @@ public class MainWindowController implements Initializable {
             stage.setScene(scene);
             stage.showAndWait();
             loadLobbies(selectedGame);
-            System.out.println("Foo");
+            showLobbiesWindow();
 
         } else {
             System.out.println("Failed");

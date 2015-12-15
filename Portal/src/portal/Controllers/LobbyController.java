@@ -1,5 +1,6 @@
 package portal.Controllers;
 
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -12,6 +13,8 @@ import portal.Administration;
 import java.net.URL;
 import java.rmi.RemoteException;
 import java.util.ResourceBundle;
+import java.util.Timer;
+import java.util.TimerTask;
 
 /**
  * Created by tverv on 15-Dec-15.
@@ -45,5 +48,31 @@ public class LobbyController implements Initializable{
         } catch (RemoteException e) {
             e.printStackTrace();
         }
+
+        updatePlayers();
+    }
+
+    private void updatePlayers() {
+        Timer timer = new Timer();
+
+        timer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                Platform.runLater(() -> {
+                    try {
+                        System.out.println("Timer");
+                        observablePlayers.clear();
+                        observablePlayers.addAll(admin.getSelectedLobby().getPlayers());
+
+                        if(observablePlayers.size() == 2) {
+                            btnStartGame.setDisable(false);
+                        }
+                    }
+                    catch (RemoteException e) {
+                        e.printStackTrace();
+                    }
+                });
+            }
+        }, 0, 1000);
     }
 }
