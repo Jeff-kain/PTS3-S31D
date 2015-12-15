@@ -13,6 +13,8 @@ import javafx.stage.Stage;
 import portal.Administration;
 import portal.Models.RMI.RMIClient;
 import portal.Portal;
+import portalserver.interfaces.ILogin;
+import portalserver.interfaces.IPortal;
 
 import java.io.IOException;
 import java.net.URL;
@@ -21,16 +23,11 @@ import java.util.concurrent.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import portalserver.User;
-import portalserver.interfaces.ILogin;
-import portalserver.interfaces.IPortal;
-
 /**
  * Created by tverv on 08-Dec-15.
  */
 public class LoginController implements Initializable {
     //Controls
-    @FXML private Button btnLogin;
     @FXML private TextField tfdUsername;
     @FXML private TextField pfdPassword;
 
@@ -118,12 +115,6 @@ public class LoginController implements Initializable {
 
         Parent root = null;
         try {
-
-            //Commit Merge
-//            root = FXMLLoader.load(getClass().getResource("../Views/MainWindow.fxml"));
-//        } catch (Exception e) {
-
-            System.out.println("Pad: " + getClass().getResource("MainWindow.fxml"));
             root = FXMLLoader.load(getClass().getResource("MainWindow.fxml"));
         } catch (IOException e) {
             e.printStackTrace();
@@ -139,7 +130,7 @@ public class LoginController implements Initializable {
             stage.show();
 
         } else {
-            System.out.println("Failed");
+            System.out.println("Failed load MainWindow");
         }
     }
 }

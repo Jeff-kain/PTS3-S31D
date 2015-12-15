@@ -5,30 +5,15 @@
  */
 package database;
 
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableArray;
-import javafx.collections.ObservableList;
 import portal.Models.Game;
-
-import javax.xml.crypto.Data;
-import java.awt.*;
-import java.io.File;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
-import java.sql.Statement;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStream;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.util.*;
-import java.util.List;
-
-import javafx.collections.FXCollections;
 import portal.Models.Score;
 import portalserver.User;
+
+import java.io.*;
+import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Properties;
 
 /**
  *
@@ -156,7 +141,6 @@ public class DatabaseConnection {
         }
 
         System.out.println("Beetje jammer dit.");
-        System.out.println("inderdaad");
         return null;
     }
     
@@ -184,7 +168,6 @@ public class DatabaseConnection {
 
                 games.add(game);
             }
-
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -217,10 +200,8 @@ public class DatabaseConnection {
         
                 leaderboard.add(new Score(winratio, wins, losses, name));
             }
-            
             return leaderboard;
         }
-
         return null;
     }
     
@@ -248,10 +229,8 @@ public class DatabaseConnection {
                                 
                 s = new Score(winratio, wins, losses, name);
             }
-            
             return s;
         }
-
         return null;
     }
 }

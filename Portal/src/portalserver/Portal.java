@@ -14,7 +14,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Locale;
+import java.util.Locale;    
 import portal.Models.Score;
 
 /**
@@ -112,7 +112,7 @@ public class Portal extends UnicastRemoteObject implements ILogin, IPortal {
         try {
             if(databaseConnection.CheckLogin(username,password)) {
                 List<Score> leaderboard = databaseConnection.getLeaderboard(game);
-                Collections.sort(leaderboard, Score.ScoreComparator);
+                Collections.sort(leaderboard, Score.ScoreComparator.reversed());
                 return leaderboard;
             }
 
