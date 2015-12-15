@@ -244,7 +244,8 @@ public class DatabaseConnection {
                 String name = enteredName;
                 double totalGames = (double) wins + losses;
                 double winratio = (wins / totalGames) * 100;
-        
+                winratio = Math.round(winratio);
+                                
                 s = new Score(winratio, wins, losses, name);
             }
             
