@@ -145,6 +145,27 @@ public class DatabaseConnection {
         }
         return false;
     }
+    
+    public boolean CreateUser(String username, String password) {
+
+        try {
+            boolean isOpen = open();
+            if (isOpen) {
+                Statement stat = conn.createStatement();
+                String query = "INSERT users (Name, Password) VALUES ('" + username + "', '" + password + "');";
+                stat = conn.prepareStatement(query);
+
+                return true;
+            }
+        }
+        catch(SQLException e) {
+            e.printStackTrace();
+        }
+        finally{            
+            close();
+        }
+        return false;
+    }
 
     public User getUser(String username, String password) {
 
@@ -179,7 +200,7 @@ public class DatabaseConnection {
         return null;
     }
     
-        public List<Game> getGames() {
+    public List<Game> getGames() {
         List<Game> games = new ArrayList<>();
 
         try {

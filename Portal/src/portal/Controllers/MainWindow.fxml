@@ -116,11 +116,6 @@
             <Insets left="7.0" right="6.0" />
          </GridPane.margin>
       </Button>
-      <Button fx:id="btnStart" disable="true" mnemonicParsing="false" onAction="#onStart" text="Start Game" GridPane.columnIndex="1" GridPane.rowIndex="5">
-         <GridPane.margin>
-            <Insets left="174.0" />
-         </GridPane.margin>
-      </Button>
       <ImageView fitHeight="18.0" fitWidth="18.0" onMouseClicked="#onRefresh" GridPane.columnIndex="2" GridPane.halignment="RIGHT" GridPane.rowIndex="1">
          <image>
             <Image url="@icon_refresh.png" />

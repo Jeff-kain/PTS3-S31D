@@ -35,8 +35,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.ResourceBundle;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import static portal.Portal.Stage;
 
@@ -106,7 +104,6 @@ public class MainWindowController implements Initializable {
                 btnJoinLobby.setDisable(true);
             } else {
                 admin.setSelectedLobby(lobbiesHashMap.get(newValue));
-                System.out.println("hvjavjahjkh");
                 selectedLobbyName = newValue;
                 btnJoinLobby.setDisable(false);
             }
@@ -163,10 +160,6 @@ public class MainWindowController implements Initializable {
         
     }
     
-    public void onStart(Event evt) {
-        
-    }
-    
     public void onRefresh(Event evt) {
         if(selectedGame != null) {
             loadLobbies(selectedGame);
@@ -202,7 +195,7 @@ public class MainWindowController implements Initializable {
             p = Runtime.getRuntime().exec("\"C:/Program Files (x86)/Gyazo/Gyazowin.exe\"");
         p.waitFor();
         } catch (IOException | InterruptedException ex) {
-            Logger.getLogger(MainWindowController.class.getName()).log(Level.SEVERE, null, ex);
+            ex.printStackTrace();
         }
     }
 
@@ -259,8 +252,6 @@ public class MainWindowController implements Initializable {
                 username = admin.getUsername();
 
                 try {
-
-                    //84.26.129.94
                     address = "127.0.0.1";
                     sock = new Socket(address, port);
                     InputStreamReader streamreader = new InputStreamReader(sock.getInputStream());
@@ -424,7 +415,6 @@ public class MainWindowController implements Initializable {
             stage.setTitle("Leaderboard");
             stage.setScene(scene);
             stage.show();
-            System.out.println("Foo");
 
         } else {
             System.out.println("Failed");

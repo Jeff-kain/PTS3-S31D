@@ -19,11 +19,9 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 import java.util.concurrent.*;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
- * Created by tverv on 08-Dec-15.
+ * Created by tverv on 08-Dec-15.ó
  */
 public class LoginController implements Initializable {
     //Controls
@@ -76,6 +74,24 @@ public class LoginController implements Initializable {
                 loadMainWindow();
             } else {
                 System.out.println("Login failed");
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }
+    
+    public void onRegister(Event evt) {
+        try {
+            portal = login.Register(tfdUsername.getText(),pfdPassword.getText());
+
+            if(portal != null) {
+                admin.setPortal(portal);
+                admin.setUsername(tfdUsername.getText());
+                admin.setPassword(pfdPassword.getText());
+
+                loadMainWindow();
+            } else {
+                System.out.println("Register failed");
             }
         } catch (Exception ex) {
             ex.printStackTrace();

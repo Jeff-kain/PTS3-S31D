@@ -28,7 +28,6 @@ import java.util.ResourceBundle;
  */
 public class LeaderboardController implements Initializable {
 
-    @FXML private Button btnSearch;
     @FXML private ListView<Game> lvwGames;
     @FXML private ListView<Score> lvwScores;
     @FXML private TextField tfPlayer;

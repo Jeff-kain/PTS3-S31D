@@ -38,7 +38,6 @@ public class Portal extends UnicastRemoteObject implements ILogin, IPortal {
         if(correctLogin(username,password)) {
             return this;
         }
-
         return null;
     }
 
@@ -116,6 +115,18 @@ public class Portal extends UnicastRemoteObject implements ILogin, IPortal {
             return databaseConnection.getScoresPlayer(enteredName, game);
         }
 
+        System.out.println("Username or password incorrect");
+        return null;
+    }
+
+    @Override
+    public IPortal Register(String username, String password) throws RemoteException {
+        if (databaseConnection.CheckUsername(username)) {
+            if(databaseConnection.CreateUser(username, password))
+            {
+                return this;
+            }
+        }
         System.out.println("Username or password incorrect");
         return null;
     }
