@@ -29,8 +29,7 @@ public class DatabaseConnection {
     private String username;
     private String password;
     
-    private DatabaseConnection() throws FileNotFoundException, IOException {
-        //db = new DatabaseConnection();
+    private DatabaseConnection() throws IOException {
         props = new Properties();
 	    InputStream input = null;
         File file = new File("./src/database/config.properties");
@@ -40,9 +39,6 @@ public class DatabaseConnection {
 
             // load a properties file
             props.load(input);
-
-            // get the property value and print it out
-            System.out.println(props.getProperty("url"));
 
             url = props.getProperty("url");
             username = props.getProperty("username");
@@ -98,138 +94,199 @@ public class DatabaseConnection {
         return isOpen;
     }
     
-    public boolean CheckLogin(String username, String password) throws SQLException {
-        
+    public boolean CheckLogin(String username, String password) {
+
         try {
             boolean isOpen = open();
-            
-            ResultSet rs;
-            Statement stat = conn.createStatement();
-            
-            String query = "SELECT * FROM USERS WHERE NAME ='" + username + "' AND PASSWORD = '" + password + "';";
-            
-            stat = conn.prepareStatement(query);
-            rs = stat.executeQuery(query);
+            if (isOpen) {
 
-            return rs.first();
+                ResultSet rs;
+                Statement stat = conn.createStatement();
+
+                String query = "SELECT * FROM USERS WHERE NAME ='" + username + "' AND PASSWORD = '" + password + "';";
+
+                stat = conn.prepareStatement(query);
+                rs = stat.executeQuery(query);
+
+                return rs.first();
+            }
+        }
+        catch(SQLException e) {
+            e.printStackTrace();
         }
         finally{            
             close();
         }
+        return false;
     }
 
-    public User getUser(String username, String password) throws SQLException {
-        System.out.println("getUser()");
-        boolean isOpen = open();
+    public boolean CheckUsername(String username) {
 
-        System.out.println(username);
-        System.out.println(password);
+        try {
+            boolean isOpen = open();
 
-        ResultSet rs;
-        Statement stat;
-        String query = "SELECT * FROM USERS WHERE NAME ='" + username + "' AND PASSWORD = '" + password + "';";
+            if(isOpen) {
+            ResultSet rs;
+            Statement stat = conn.createStatement();
 
-        stat = conn.prepareStatement(query);
-        rs = stat.executeQuery(query);
+            String query = "SELECT * FROM USERS WHERE NAME ='" + username + "';";
 
-        while (rs.next()) {
-            int id = rs.getInt("ID");
-            String name = rs.getString("NAME");
-            System.out.println("User" + id + " - " + name);
+            stat = conn.prepareStatement(query);
+            rs = stat.executeQuery(query);
 
-            return new User(id, name);
+            return rs.first();
+            }
         }
+        catch(SQLException e) {
+            e.printStackTrace();
+        }
+        finally{
+            close();
+        }
+        return false;
+    }
 
-        System.out.println("Beetje jammer dit.");
+    public User getUser(String username, String password) {
+
+        try {
+            boolean isOpen = open();
+            if (isOpen) {
+                System.out.println(username);
+                System.out.println(password);
+
+                ResultSet rs;
+                Statement stat;
+                String query = "SELECT * FROM USERS WHERE NAME ='" + username + "' AND PASSWORD = '" + password + "';";
+
+                stat = conn.prepareStatement(query);
+                rs = stat.executeQuery(query);
+
+                while (rs.next()) {
+                    int id = rs.getInt("ID");
+                    String name = rs.getString("NAME");
+                    System.out.println("User" + id + " - " + name);
+
+                    return new User(id, name);
+                }
+            }
+        }
+        catch(SQLException e) {
+            e.printStackTrace();
+        }
+        finally{
+            close();
+        }
         return null;
     }
     
         public List<Game> getGames() {
         List<Game> games = new ArrayList<>();
 
-        boolean isOpen = open();
-        System.out.println(isOpen);
-
         try {
-            ResultSet rs;
-            Statement stat = null;
+            boolean isOpen = open();
+            if (isOpen) {
+                ResultSet rs;
+                Statement stat = null;
 
-            String query = "select * from GAMES";
+                String query = "select * from GAMES";
 
-            stat = conn.prepareStatement(query);
-            rs = stat.executeQuery(query);
+                stat = conn.prepareStatement(query);
+                rs = stat.executeQuery(query);
 
-            while (rs.next()) {
-                int id = rs.getInt("ID");
-                String name = rs.getString("NAME");
-                String description = rs.getString("DESCRIPTION");
+                while (rs.next()) {
+                    int id = rs.getInt("ID");
+                    String name = rs.getString("NAME");
+                    String description = rs.getString("DESCRIPTION");
 
-                Game game = new Game(id, name, description);
+                    Game game = new Game(id, name, description);
 
-                games.add(game);
+                    games.add(game);
+                }
             }
-        } catch (SQLException e) {
+        }
+        catch(SQLException e) {
             e.printStackTrace();
+        }
+        finally{
+            close();
         }
 
         return games;
     }
     
-    public List<Score> getLeaderboard(String game) throws SQLException {
-        boolean isOpen = open();
+    public List<Score> getLeaderboard(String game) {
 
         List<Score> leaderboard = new ArrayList<>();
         ResultSet rs;
         Statement stat;
 
-        if(isOpen) {
-            
-            String query = "SELECT lb.Wins, lb.losses, u.Name FROM users u, leaderboard lb, games g WHERE u.id = lb.id_user AND g.id = lb.id_Game  AND g.Name = '" + game + "'";
+        try {
+            boolean isOpen = open();
+            if (isOpen) {
 
-            stat = conn.prepareStatement(query);
-            rs = stat.executeQuery(query);
+                String query = "SELECT lb.Wins, lb.losses, u.Name FROM users u, leaderboard lb, games g WHERE u.id = lb.id_user AND g.id = lb.id_Game  AND g.Name = '" + game + "'";
 
-            while (rs.next()) {
-                int wins = rs.getInt("Wins");
-                int losses = rs.getInt("Losses");
-                String name = rs.getString("Name");
-                        
-                double totalGames = (double) wins + losses;
-                double winratio = (wins / totalGames) * 100;
-                winratio = Math.round(winratio);
-        
-                leaderboard.add(new Score(winratio, wins, losses, name));
+                stat = conn.prepareStatement(query);
+                rs = stat.executeQuery(query);
+
+                while (rs.next()) {
+                    int wins = rs.getInt("Wins");
+                    int losses = rs.getInt("Losses");
+                    String name = rs.getString("Name");
+
+                    double totalGames = (double) wins + losses;
+                    double winratio = (wins / totalGames) * 100;
+                    winratio = Math.round(winratio);
+
+                    leaderboard.add(new Score(winratio, wins, losses, name));
+                }
+                return leaderboard;
             }
-            return leaderboard;
+        }
+        catch(SQLException e) {
+            e.printStackTrace();
+        }
+        finally{
+            close();
         }
         return null;
     }
     
-    public Score getScoresPlayer(String enteredName, String game) throws SQLException {
-        boolean isOpen = open();
+    public Score getScoresPlayer(String enteredName, String game) {
 
         Score s = null;
         ResultSet rs;
         Statement stat;
 
-        if(isOpen) {
-            
-            String query = "SELECT lb.Wins, lb.losses FROM users u, leaderboard lb, games g WHERE u.id = lb.id_user AND g.id = lb.id_Game AND u.Name = '" + enteredName + "'  AND g.Name = '" + game + "'";;
+        try {
+            boolean isOpen = open();
+            if (isOpen) {
 
-            stat = conn.prepareStatement(query);
-            rs = stat.executeQuery(query);
+                String query = "SELECT lb.Wins, lb.losses FROM users u, leaderboard lb, games g WHERE u.id = lb.id_user AND g.id = lb.id_Game AND u.Name = '" + enteredName + "'  AND g.Name = '" + game + "'";
+                ;
 
-            while (rs.next()) {
-                int wins = rs.getInt("Wins");
-                int losses = rs.getInt("Losses");
-                String name = enteredName;
-                double totalGames = (double) wins + losses;
-                double winratio = (wins / totalGames) * 100;
-                winratio = Math.round(winratio);
-                                
-                s = new Score(winratio, wins, losses, name);
+                stat = conn.prepareStatement(query);
+                rs = stat.executeQuery(query);
+
+                while (rs.next()) {
+                    int wins = rs.getInt("Wins");
+                    int losses = rs.getInt("Losses");
+                    String name = enteredName;
+
+                    double totalGames = (double) wins + losses;
+                    double winratio = (wins / totalGames) * 100;
+                    winratio = Math.round(winratio);
+
+                    s = new Score(winratio, wins, losses, name);
+                }
+                return s;
             }
-            return s;
+        }
+        catch(SQLException e) {
+            e.printStackTrace();
+        }
+        finally{
+            close();
         }
         return null;
     }

@@ -75,7 +75,6 @@ public class LeaderboardController implements Initializable {
             else {
                 System.out.println("No player or record found"); 
             }
-
         } catch (RemoteException e) {
             e.printStackTrace();
         }

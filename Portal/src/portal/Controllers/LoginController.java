@@ -7,7 +7,6 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import portal.Administration;
@@ -79,7 +78,7 @@ public class LoginController implements Initializable {
                 System.out.println("Login failed");
             }
         } catch (Exception ex) {
-            Logger.getLogger(LoginController.class.getName()).log(Level.SEVERE, null, ex);
+            ex.printStackTrace();
         }
     }
 
@@ -96,7 +95,6 @@ public class LoginController implements Initializable {
 
         Future future = executor.submit(dbQuery);
         executor.submit(new Runnable(){
-
             @Override
             public void run() {
                 try {

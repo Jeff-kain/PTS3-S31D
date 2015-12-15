@@ -2,6 +2,7 @@ package portalserver;
 
 import database.DatabaseConnection;
 import portal.Models.Game;
+import portal.Models.Score;
 import portalserver.interfaces.IHost;
 import portalserver.interfaces.ILobby;
 import portalserver.interfaces.ILogin;
@@ -10,12 +11,9 @@ import portalserver.interfaces.IPortal;
 import java.io.IOException;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Locale;    
-import portal.Models.Score;
 
 /**
  * Created by tverv on 12-Dec-15.
@@ -92,52 +90,33 @@ public class Portal extends UnicastRemoteObject implements ILogin, IPortal {
     }
 
     private Boolean correctLogin(String username, String password) throws RemoteException  {
-        try {
-            if(databaseConnection.CheckLogin(username,password)) {
-                return true;
-            }
-
-            System.out.println("Username or password incorrect");
-
-            return false;
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return false;
+        if (databaseConnection.CheckLogin(username, password)) {
+            return true;
         }
+
+        System.out.println("Username or password incorrect");
+        return false;
     }
 
     @Override
     public List<Score> getLeaderboard(String username, String password, String game) throws RemoteException {
-        try {
-            if(databaseConnection.CheckLogin(username,password)) {
-                List<Score> leaderboard = databaseConnection.getLeaderboard(game);
-                Collections.sort(leaderboard, Score.ScoreComparator.reversed());
-                return leaderboard;
-            }
-
-            System.out.println("Username or password incorrect");
-            return null;
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return null;
+        if(databaseConnection.CheckLogin(username,password)) {
+            List<Score> leaderboard = databaseConnection.getLeaderboard(game);
+            Collections.sort(leaderboard, Score.ScoreComparator.reversed());
+            return leaderboard;
         }
+
+        System.out.println("Username or password incorrect");
+        return null;
     }
     
     @Override
     public Score getScoresPlayer(String username, String password, String enteredName, String game) throws RemoteException {
-        try {
-            if(databaseConnection.CheckLogin(username,password)) {
-                return databaseConnection.getScoresPlayer(enteredName, game);
-            }
-
-            System.out.println("Username or password incorrect");
-            return null;
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return null;
+        if (databaseConnection.CheckLogin(username, password)) {
+            return databaseConnection.getScoresPlayer(enteredName, game);
         }
+
+        System.out.println("Username or password incorrect");
+        return null;
     }
 }

@@ -1,8 +1,5 @@
 package portalserver;
 
-import portalserver.interfaces.ILogin;
-
-import java.rmi.AccessException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
