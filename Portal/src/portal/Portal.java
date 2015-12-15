@@ -14,7 +14,6 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.util.concurrent.ExecutorService;
-import static portal.Controllers.LoginController.stage;
 
 /**
  *

@@ -5,32 +5,23 @@
  */
 package portal.Controllers;
 
-import java.io.IOException;
-import javafx.fxml.Initializable;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
-import javafx.scene.control.Label;
+import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
-import javafx.stage.Stage;
 import portal.Administration;
-import portalserver.interfaces.IPortal;
+import portal.Models.Game;
+import portal.Models.Score;
 
-
+import java.io.IOException;
 import java.net.URL;
 import java.rmi.RemoteException;
 import java.util.List;
 import java.util.ResourceBundle;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
-import javafx.scene.control.ListView;
-import javafx.scene.control.TextArea;
-import portal.Models.Game;
-import portal.Models.Score;
-import portalserver.interfaces.ILobby;
 /**
  *
  * @author Rob
