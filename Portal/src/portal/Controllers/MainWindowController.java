@@ -2,6 +2,7 @@ package portal.Controllers;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -11,6 +12,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
 import javafx.scene.control.*;
 import javafx.stage.Modality;
+import javafx.stage.WindowEvent;
 import portal.Models.Game;
 
 import java.io.*;
@@ -56,6 +58,7 @@ public class MainWindowController implements Initializable {
     private Boolean isConnected;
     private Administration admin;
     private Game selectedGame;
+    private String selectedLobbyName;
     
     private int port;
     private Socket sock;
@@ -97,6 +100,9 @@ public class MainWindowController implements Initializable {
             if (newValue == null) {
                 btnJoinLobby.setDisable(true);
             } else {
+                admin.setSelectedLobby(lobbiesHashMap.get(newValue));
+                System.out.println("hvjavjahjkh");
+                selectedLobbyName = newValue;
                 btnJoinLobby.setDisable(false);
             }
         });
@@ -206,8 +212,7 @@ public class MainWindowController implements Initializable {
                 System.out.println(b);
             }
 
-            lvwPlayers.setItems(observablePlayers);
-            observablePlayers.addAll(player.getPlayers());
+            showLobbiesWindow();
         } catch (RemoteException e) {
             e.printStackTrace();
         }
@@ -415,6 +420,40 @@ public class MainWindowController implements Initializable {
             stage.setScene(scene);
             stage.show();
             System.out.println("Foo");
+
+        } else {
+            System.out.println("Failed");
+        }
+    }
+
+    private void showLobbiesWindow() {
+        Stage stage = new Stage();
+        Parent root = null;
+
+        stage.setOnHiding(new EventHandler<WindowEvent>() {
+            @Override
+            public void handle(WindowEvent event) {
+                System.out.println("Closed!");
+            }
+        });
+
+        try {
+
+            System.out.println("Pad: " + getClass().getResource("Lobby.fxml"));
+            root = FXMLLoader.load(getClass().getResource("Lobby.fxml"));
+        } catch (IOException e) {
+            e.printStackTrace();
+            System.out.println(e.getMessage());
+        }
+
+        if (root != null) {
+            Scene scene = new Scene(root, 300, 400);
+
+            stage.initModality(Modality.WINDOW_MODAL);
+            stage.initOwner(Portal.Stage);
+            stage.setTitle(selectedLobbyName);
+            stage.setScene(scene);
+            stage.show();
 
         } else {
             System.out.println("Failed");

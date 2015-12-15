@@ -11,8 +11,8 @@ package portalserver;
  */
 public final class User {
     
-    private static int id;
-    private static String name;
+    private int id;
+    private String name;
     
     public User(int id, String name){
         this.id = id;

@@ -1,6 +1,7 @@
 package portal;
 
 import portal.Models.Game;
+import portalserver.interfaces.ILobby;
 import portalserver.interfaces.ILogin;
 import portalserver.interfaces.IPortal;
 
@@ -16,6 +17,7 @@ public class Administration {
     private IPortal portal;
     private Game selectedGame;
     private Game selectedGameLeaderboard;
+    private ILobby selectedLobby;
 
     private Administration() {
 
@@ -71,5 +73,13 @@ public class Administration {
 
     public void setSelectedGameLeaderboardID(Game selectedGame) {
         this.selectedGameLeaderboard = selectedGame;
+    }
+
+    public ILobby getSelectedLobby() {
+        return selectedLobby;
+    }
+
+    public void setSelectedLobby(ILobby selectedLobby) {
+        this.selectedLobby = selectedLobby;
     }
 }
