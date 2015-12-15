@@ -1,8 +1,5 @@
 package portal.Controllers;
 
-import javafx.beans.value.ChangeListener;
-import database.DatabaseConnection;
-import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -14,7 +11,6 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
 import javafx.scene.control.*;
 import javafx.stage.Modality;
-import javafx.util.Callback;
 import portal.Models.Game;
 
 import java.io.*;
@@ -32,7 +28,6 @@ import javafx.application.Platform;
 import javafx.event.Event;
 import javafx.stage.Stage;
 import portal.*;
-import portalserver.User;
 import portalserver.interfaces.ILobby;
 import portalserver.interfaces.IPlayer;
 
@@ -108,7 +103,7 @@ public class MainWindowController implements Initializable {
 
         lvwGames.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
             selectedGame = newValue;
-            LoadLobbies(newValue);
+            loadLobbies(newValue);
         });
     }
 
@@ -163,11 +158,11 @@ public class MainWindowController implements Initializable {
     
     public void onRefresh(Event evt) {
         if(selectedGame != null) {
-            LoadLobbies(selectedGame);
+            loadLobbies(selectedGame);
         }
     }
     
-    public void LoadLobbies(Game newValue) {
+    public void loadLobbies(Game newValue) {
         btnAddLobby.setDisable(false);
         admin.setSelectedGameID(newValue);
 
@@ -389,7 +384,8 @@ public class MainWindowController implements Initializable {
             stage.initOwner(Portal.Stage);
             stage.setTitle("Add lobby");
             stage.setScene(scene);
-            stage.show();
+            stage.showAndWait();
+            loadLobbies(selectedGame);
             System.out.println("Foo");
 
         } else {

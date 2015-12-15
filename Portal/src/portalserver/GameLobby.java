@@ -40,8 +40,8 @@ public class GameLobby extends UnicastRemoteObject implements IHost, IPlayer, IL
         try {
             System.out.println(username);
             System.out.println(password);
-            User user = databaseConnection.getUser(username, password);
-            System.out.println(user.getName());
+            host = databaseConnection.getUser(username, password);
+            System.out.println(host.getName());
         } catch (SQLException e) {
             e.printStackTrace();
         }
