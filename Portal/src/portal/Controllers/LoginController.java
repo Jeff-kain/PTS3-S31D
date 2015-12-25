@@ -21,11 +21,9 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 import java.util.concurrent.*;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
- * Created by tverv on 08-Dec-15.
+ * Created by tverv on 08-Dec-15.ó
  */
 public class LoginController implements Initializable {
     //Controls
@@ -60,13 +58,6 @@ public class LoginController implements Initializable {
             dc = DatabaseConnection.getInstance();
             rmiClient = new RMIClient();
             login = rmiClient.setUp();
-            if(login == null) {
-                lblError.setText("Connection with the server failed, try again later.");
-
-                lblError.setVisible(true);
-                btnLogin.setDisable(true);
-                btnRegister.setDisable(true);
-            }
             admin.setLogin(login);
 
         } catch (IOException ex) {
@@ -92,34 +83,26 @@ public class LoginController implements Initializable {
                 System.out.println("Login failed");
             }
         } catch (Exception ex) {
-            Logger.getLogger(LoginController.class.getName()).log(Level.SEVERE, null, ex);
+            ex.printStackTrace();
         }
     }
 
-    public void LoginAttempt() {
+    public void onRegister(Event evt) {
+        try {
+            portal = login.Register(tfdUsername.getText(),pfdPassword.getText());
 
-        Callable dbQuery = new Callable() {
+            if(portal != null) {
+                admin.setPortal(portal);
+                admin.setUsername(tfdUsername.getText());
+                admin.setPassword(pfdPassword.getText());
 
-            @Override
-            public Object call() throws Exception {
-                boolean isConnected = dc.CheckLogin(tfdUsername.getText(),pfdPassword.getText());
-                return isConnected;
+                loadMainWindow();
+            } else {
+                System.out.println("Register failed");
             }
-        };
-
-        Future future = executor.submit(dbQuery);
-        executor.submit(new Runnable(){
-
-            @Override
-            public void run() {
-                try {
-                    isOk = (boolean) future.get();
-                    
-                } catch (InterruptedException | ExecutionException ex) {
-                    ex.printStackTrace();
-                }
-            }
-        });
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
     }
 
     private void loadMainWindow() throws Exception {

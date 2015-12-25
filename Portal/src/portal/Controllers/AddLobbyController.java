@@ -12,7 +12,6 @@ import javafx.stage.Stage;
 import portal.Administration;
 import portalserver.interfaces.IPortal;
 
-
 import java.net.URL;
 import java.rmi.RemoteException;
 import java.util.ResourceBundle;

@@ -8,10 +8,8 @@ import portalserver.interfaces.IPlayer;
 
 import java.io.IOException;
 import java.io.Serializable;
-import java.lang.management.PlatformLoggingMXBean;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -37,14 +35,10 @@ public class GameLobby extends UnicastRemoteObject implements IHost, IPlayer, IL
         this.game = game;
         this.name = lobbyname;
         this.lobbypassword = lobbypassword;
-        try {
             System.out.println(username);
             System.out.println(password);
             host = databaseConnection.getUser(username, password);
             System.out.println(host.getName());
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
 
         players = new ArrayList<>();
 
@@ -97,9 +91,6 @@ public class GameLobby extends UnicastRemoteObject implements IHost, IPlayer, IL
             }
 
         } catch (IOException e) {
-            e.printStackTrace();
-            return null;
-        } catch (SQLException e) {
             e.printStackTrace();
             return null;
         }

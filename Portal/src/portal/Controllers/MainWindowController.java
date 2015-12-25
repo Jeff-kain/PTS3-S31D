@@ -1,7 +1,9 @@
 package portal.Controllers;
 
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -10,12 +12,21 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
-import javafx.scene.control.*;
+import javafx.scene.control.TextArea;
+import javafx.scene.control.TextField;
 import javafx.stage.Modality;
+import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
+import portal.Administration;
 import portal.Models.Game;
+import portal.Portal;
+import portalserver.interfaces.ILobby;
+import portalserver.interfaces.IPlayer;
 
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.PrintWriter;
 import java.net.InetAddress;
 import java.net.Socket;
 import java.net.URL;
@@ -26,12 +37,6 @@ import java.util.List;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javafx.application.Platform;
-import javafx.event.Event;
-import javafx.stage.Stage;
-import portal.*;
-import portalserver.interfaces.ILobby;
-import portalserver.interfaces.IPlayer;
 
 import static portal.Portal.Stage;
 
@@ -39,19 +44,29 @@ import static portal.Portal.Stage;
  * Created by tverv on 08-Dec-15.
  */
 public class MainWindowController implements Initializable {
+
     //Observable lists
+
     ObservableList<Game> observableGames;
     ObservableList<String> observableLobbies;
     ObservableList<String> observablePlayers;
-    HashMap<String,ILobby> lobbiesHashMap;
-    @FXML private ListView<Game> lvwGames;
-    @FXML private ListView<String> lvwLobbies;
-    @FXML private ListView<String> lvwPlayers;
-    @FXML TextField tfSend;
-    @FXML Button btnSend;
-    @FXML Button btnAddLobby;
-    @FXML Button btnJoinLobby;
-    @FXML TextArea taChat;
+    HashMap<String, ILobby> lobbiesHashMap;
+    @FXML
+    private ListView<Game> lvwGames;
+    @FXML
+    private ListView<String> lvwLobbies;
+    @FXML
+    private ListView<String> lvwPlayers;
+    @FXML
+    TextField tfSend;
+    @FXML
+    Button btnSend;
+    @FXML
+    Button btnAddLobby;
+    @FXML
+    Button btnJoinLobby;
+    @FXML
+    TextArea taChat;
 
     private String address, username;
     private ArrayList<String> users;
@@ -59,7 +74,7 @@ public class MainWindowController implements Initializable {
     private Administration admin;
     private Game selectedGame;
     private String selectedLobbyName;
-    
+
     private int port;
     private Socket sock;
     private BufferedReader reader;
@@ -67,8 +82,6 @@ public class MainWindowController implements Initializable {
     private InetAddress addr;
 
     // the server, the port and the username
-
-
     public MainWindowController() {
         admin = Administration.getInstance();
     }
@@ -95,13 +108,11 @@ public class MainWindowController implements Initializable {
             e.printStackTrace();
         }
 
-
         lvwLobbies.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue == null) {
                 btnJoinLobby.setDisable(true);
             } else {
                 admin.setSelectedLobby(lobbiesHashMap.get(newValue));
-                System.out.println("hvjavjahjkh");
                 selectedLobbyName = newValue;
                 btnJoinLobby.setDisable(false);
             }
@@ -126,48 +137,44 @@ public class MainWindowController implements Initializable {
     public void Display(String Input) {
         try {
             taChat.appendText(Input);
-        } catch(Exception e) {}
+        } catch (Exception e) {
+        }
     }
 
     public void EndChat() {
         taChat.end();
     }
-    
+
     public void onChangeUser(Event evt) {
         userDisconnect();
         Stage stage = LoginController.stage;
         Parent root = null;
-        try {       
+        try {
             root = FXMLLoader.load(getClass().getResource("Login.fxml"));
         } catch (IOException ex) {
             ex.printStackTrace();
         }
-        
-        if(root != null) {
+
+        if (root != null) {
             Scene scene = new Scene(root, 300, 400);
             Stage.setTitle("Login");
             Stage.setScene(scene);
             Stage.show();
-        }
-        else {
+        } else {
             System.out.println("Failed");
         }
     }
 
     public void onSettings(Event evt) {
-        
+
     }
-    
-    public void onStart(Event evt) {
-        
-    }
-    
+
     public void onRefresh(Event evt) {
-        if(selectedGame != null) {
+        if (selectedGame != null) {
             loadLobbies(selectedGame);
         }
     }
-    
+
     public void loadLobbies(Game newValue) {
         btnAddLobby.setDisable(false);
         admin.setSelectedGameID(newValue);
@@ -176,7 +183,7 @@ public class MainWindowController implements Initializable {
             observableLobbies.clear();
             List<ILobby> lobbies = admin.getPortal().getLobbies(admin.getUsername(), admin.getPassword(), newValue);
 
-            for(ILobby lobby: lobbies) {
+            for (ILobby lobby : lobbies) {
                 System.out.println(lobby.getName());
                 observableLobbies.add(lobby.getName());
                 lobbiesHashMap.put(lobby.getName(), lobby);
@@ -186,18 +193,25 @@ public class MainWindowController implements Initializable {
             e.printStackTrace();
         }
     }
-        
+
     public void onLeaderboard(Event evt) {
         showLeaderboardWindow();
     }
-    
+
     public void playOffline(Event evt) {
-        Process p;
+        String path = "java -jar C:\\Users\\jeffrey\\Desktop\\Bomberman.jar";
+        ProcessBuilder pb = new ProcessBuilder(path);
         try {
-            p = Runtime.getRuntime().exec("\"C:/Program Files (x86)/Gyazo/Gyazowin.exe\"");
-        p.waitFor();
-        } catch (IOException | InterruptedException ex) {
-            Logger.getLogger(MainWindowController.class.getName()).log(Level.SEVERE, null, ex);
+            Process p = pb.start();
+//        try {
+//            //p = Runtime.getRuntime().exec("\"C:/Program Files (x86)/Gyazo/Gyazowin.exe\"");
+//            p.waitFor();
+//        } catch (IOException | InterruptedException ex) {
+//            ex.printStackTrace();
+//        }
+        } catch (IOException ex) {
+            System.out.println(ex.getMessage());
+            ex.printStackTrace();
         }
     }
 
@@ -208,7 +222,7 @@ public class MainWindowController implements Initializable {
 
             List<String> bla = player.getPlayers();
 
-            for (String b: bla) {
+            for (String b : bla) {
                 System.out.println(b);
             }
 
@@ -217,16 +231,16 @@ public class MainWindowController implements Initializable {
             e.printStackTrace();
         }
     }
-    
+
     public void onExit(Event evt) {
         userDisconnect();
         admin.setUsername("Null");
         Stage stage = LoginController.stage;
         stage.setOnCloseRequest(e -> Platform.exit());
         System.exit(0);
-        
+
     }
-    
+
     public void btSend(Event evt) {
         try {
             if ((tfSend.getText()).equals("")) {
@@ -244,7 +258,8 @@ public class MainWindowController implements Initializable {
                 tfSend.setText("");
                 tfSend.requestFocus();
             }
-        } catch(Exception e) {}
+        } catch (Exception e) {
+        }
     }
 
     public void Connect() {
@@ -254,8 +269,6 @@ public class MainWindowController implements Initializable {
                 username = admin.getUsername();
 
                 try {
-
-                    //84.26.129.94
                     address = "127.0.0.1";
                     sock = new Socket(address, port);
                     InputStreamReader streamreader = new InputStreamReader(sock.getInputStream());
@@ -286,14 +299,16 @@ public class MainWindowController implements Initializable {
             sendDisconnect();
             Disconnect();
             taChat.setText("");
-        } catch(Exception e) {}
+        } catch (Exception e) {
+        }
     }
 
     public void ListenThread() {
         try {
             Thread IncomingReader = new Thread(new IncomingReader());
             IncomingReader.start();
-        } catch(Exception e) {}
+        } catch (Exception e) {
+        }
     }
 
     public void userAddClient(String data) {
@@ -311,7 +326,8 @@ public class MainWindowController implements Initializable {
             for (String token : tempList) {
                 Display(token + "\n");
             }
-        } catch(Exception e) {}
+        } catch (Exception e) {
+        }
     }
 
     public void sendDisconnect() {
@@ -397,7 +413,7 @@ public class MainWindowController implements Initializable {
             System.out.println("Failed");
         }
     }
-    
+
     private void showLeaderboardWindow() {
         //Loading the .fxml file.
         Stage stage = new Stage();
@@ -419,7 +435,6 @@ public class MainWindowController implements Initializable {
             stage.setTitle("Leaderboard");
             stage.setScene(scene);
             stage.show();
-            System.out.println("Foo");
 
         } else {
             System.out.println("Failed");

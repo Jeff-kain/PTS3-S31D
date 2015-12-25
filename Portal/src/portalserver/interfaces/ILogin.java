@@ -8,4 +8,6 @@ import java.rmi.RemoteException;
  */
 public interface ILogin extends Remote{
     IPortal login(String username, String password) throws RemoteException;
+    
+    IPortal Register(String username, String password) throws RemoteException;
 }

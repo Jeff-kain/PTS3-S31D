@@ -27,7 +27,6 @@ public class LobbyController implements Initializable{
     @FXML ListView<String> lvwPlayers;
 
     ObservableList<String> observablePlayers;
-
     Administration admin;
 
     @Override

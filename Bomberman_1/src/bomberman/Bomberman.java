@@ -16,6 +16,7 @@ import Game.Direction;
 import Game.IGameObject;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
@@ -38,10 +39,12 @@ import powerup.*;
 
 /**
  *
- * @author jeffrey
-// */
+ * @author jeffrey //
+ */
 public class Bomberman {
+
     public static void main(String[] args) {
+
         try {
             AppGameContainer appgc;
             appgc = new AppGameContainer(new Bomberman_StateBasedGame("Bomberman"));
@@ -51,5 +54,6 @@ public class Bomberman {
         } catch (SlickException ex) {
             Logger.getLogger(Bomberman.class.getName()).log(Level.SEVERE, null, ex);
         }
-    }
+        }
+    
 }
