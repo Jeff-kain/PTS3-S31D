@@ -110,8 +110,6 @@ public class GameLobby extends UnicastRemoteObject implements IHost, IPlayer, IL
 
         } catch (IOException e) {
             e.printStackTrace();
-        } catch (SQLException e) {
-            e.printStackTrace();
         }
 
     }

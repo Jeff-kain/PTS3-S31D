@@ -56,8 +56,6 @@ public class MainWindowController implements Initializable {
     @FXML
     private ListView<String> lvwLobbies;
     @FXML
-    private ListView<String> lvwPlayers;
-    @FXML
     TextField tfSend;
     @FXML
     Button btnSend;
@@ -94,8 +92,6 @@ public class MainWindowController implements Initializable {
         lvwLobbies.setItems(observableLobbies);
         observableGames = FXCollections.observableArrayList();
         lvwGames.setItems(observableGames);
-        observablePlayers = FXCollections.observableArrayList();
-        lvwPlayers.setItems(observablePlayers);
 
         users = new ArrayList();
         isConnected = false;
