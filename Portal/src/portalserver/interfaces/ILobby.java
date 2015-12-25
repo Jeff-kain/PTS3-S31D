@@ -11,6 +11,8 @@ public interface ILobby extends Remote{
 
     IPlayer joinGame(String username, String password) throws RemoteException;
 
+    void leaveGame(String username, String password) throws  RemoteException;
+
     String getName() throws RemoteException;
 
     List<String> getPlayers() throws RemoteException;

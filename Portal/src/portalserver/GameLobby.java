@@ -106,6 +106,26 @@ public class GameLobby extends UnicastRemoteObject implements IHost, IPlayer, IL
     }
 
     @Override
+    public void leaveGame(String username, String password) throws RemoteException {
+        try {
+            databaseConnection = DatabaseConnection.getInstance();
+            User player = databaseConnection.getUser(username, password);
+
+            for(User p: players) {
+                if(p.getName() == username) {
+                    players.remove(p);
+                }
+            }
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    @Override
     public List<String> getPlayers() throws RemoteException {
         System.out.println("Host: " + host.getName());
         System.out.println("getPlayers() " + players.size());
