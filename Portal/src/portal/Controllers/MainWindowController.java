@@ -256,7 +256,7 @@ public class MainWindowController implements Initializable {
                 try {
 
                     //84.26.129.94
-                    address = "145.93.52.206";
+                    address = "127.0.0.1";
                     sock = new Socket(address, port);
                     InputStreamReader streamreader = new InputStreamReader(sock.getInputStream());
                     reader = new BufferedReader(streamreader);

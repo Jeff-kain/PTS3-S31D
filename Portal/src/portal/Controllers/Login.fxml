@@ -24,15 +24,20 @@
             <Insets left="30.0" right="30.0" top="10.0" />
          </VBox.margin>
       </PasswordField>
-      <Button alignment="CENTER" contentDisplay="CENTER" minWidth="240.0" mnemonicParsing="false" onAction="#btnLogin" text="Login">
+      <Button fx:id="btnLogin" alignment="CENTER" contentDisplay="CENTER" minWidth="240.0" mnemonicParsing="false" onAction="#btnLogin" text="Login">
          <VBox.margin>
             <Insets left="30.0" top="10.0" />
          </VBox.margin>
       </Button>
-      <Button alignment="CENTER" minWidth="240.0" mnemonicParsing="false" text="Register">
+      <Button fx:id="btnRegister" alignment="CENTER" minWidth="240.0" mnemonicParsing="false" text="Register">
          <VBox.margin>
             <Insets left="30.0" top="4.0" />
          </VBox.margin>
       </Button>
+      <Label fx:id="lblError" text="Error" textFill="RED" visible="false" wrapText="true">
+         <padding>
+            <Insets left="30.0" right="30.0" top="4.0" />
+         </padding>
+      </Label>
    </children>
 </VBox>

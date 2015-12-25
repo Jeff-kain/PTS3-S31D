@@ -8,6 +8,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import portal.Administration;
@@ -28,8 +29,11 @@ import java.util.logging.Logger;
  */
 public class LoginController implements Initializable {
     //Controls
+    @FXML private Button btnLogin;
+    @FXML private Button btnRegister;
     @FXML private TextField tfdUsername;
     @FXML private TextField pfdPassword;
+    @FXML private Label lblError;
 
     /**
      * Initializes the controller class.
@@ -56,6 +60,13 @@ public class LoginController implements Initializable {
             dc = DatabaseConnection.getInstance();
             rmiClient = new RMIClient();
             login = rmiClient.setUp();
+            if(login == null) {
+                lblError.setText("Connection with the server failed, try again later.");
+
+                lblError.setVisible(true);
+                btnLogin.setDisable(true);
+                btnRegister.setDisable(true);
+            }
             admin.setLogin(login);
 
         } catch (IOException ex) {
@@ -76,6 +87,8 @@ public class LoginController implements Initializable {
 
                 loadMainWindow();
             } else {
+                lblError.setText("Invalid username or password, try again.");
+                lblError.setVisible(true);
                 System.out.println("Login failed");
             }
         } catch (Exception ex) {
