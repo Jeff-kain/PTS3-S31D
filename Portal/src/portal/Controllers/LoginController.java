@@ -58,6 +58,16 @@ public class LoginController implements Initializable {
             dc = DatabaseConnection.getInstance();
             rmiClient = new RMIClient();
             login = rmiClient.setUp();
+
+            if(login == null) {
+                lblError.setText("No connection with the server, try again later.");
+                lblError.setVisible(true);
+                tfdUsername.setDisable(true);
+                pfdPassword.setDisable(true);
+                btnLogin.setDisable(true);
+                btnRegister.setDisable(true);
+            }
+
             admin.setLogin(login);
 
         } catch (IOException ex) {
@@ -69,18 +79,25 @@ public class LoginController implements Initializable {
 
     public void btnLogin(Event evt) {
         try {
-            portal = login.login(tfdUsername.getText(),pfdPassword.getText());
 
-            if(portal != null) {
-                admin.setPortal(portal);
-                admin.setUsername(tfdUsername.getText());
-                admin.setPassword(pfdPassword.getText());
+            if(tfdUsername.getText().equals("") || pfdPassword.getText().equals("")) {
+                lblError.setText("Please fill in both fields.");
+            }
 
-                loadMainWindow();
-            } else {
-                lblError.setText("Invalid username or password, try again.");
-                lblError.setVisible(true);
-                System.out.println("Login failed");
+            else {
+                portal = login.login(tfdUsername.getText(), pfdPassword.getText());
+
+                if (portal != null) {
+                    admin.setPortal(portal);
+                    admin.setUsername(tfdUsername.getText());
+                    admin.setPassword(pfdPassword.getText());
+
+                    loadMainWindow();
+                } else {
+                    lblError.setText("Invalid username or password, try again.");
+                    lblError.setVisible(true);
+                    System.out.println("Login failed");
+                }
             }
         } catch (Exception ex) {
             ex.printStackTrace();

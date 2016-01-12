@@ -10,6 +10,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import portal.Administration;
+import portalserver.interfaces.IHost;
 import portalserver.interfaces.IPortal;
 
 import java.net.URL;
@@ -54,7 +55,8 @@ public class AddLobbyController implements Initializable{
     public void saveLobby(Event evt) {
         if(tfdName.getText() != "") {
             try {
-                portal.createLobby(admin.getUsername(),admin.getPassword(), admin.getSelectedGame(), tfdName.getText(), tfdPassword.getText());
+                IHost hostedLobby = portal.createLobby(admin.getUsername(),admin.getPassword(), admin.getSelectedGame(), tfdName.getText(), tfdPassword.getText());
+                admin.setHostedLobby(hostedLobby);
                 ((Stage)lblGame.getScene().getWindow()).close();
             } catch (RemoteException e) {
                 e.printStackTrace();

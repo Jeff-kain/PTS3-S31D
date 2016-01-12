@@ -34,7 +34,16 @@ public class LobbyController implements Initializable{
         admin = Administration.getInstance();
 
         try {
-            lblLobbyName.setText("Lobby: " + admin.getSelectedLobby().getName());
+            System.out.println("FooBar");
+
+            if(admin.getHostedLobby() != null) {
+                lblLobbyName.setText("Lobby: " + admin.getHostedLobby().getName());
+            }
+
+            else {
+                lblLobbyName.setText("Lobby: " + admin.getSelectedLobby().getName());
+            }
+
         } catch (RemoteException e) {
             e.printStackTrace();
         }
