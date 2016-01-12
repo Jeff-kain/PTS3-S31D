@@ -32,10 +32,14 @@ public class Menu_StateBasedGame extends BasicGameState {
     private StateBasedGame game;
     Manager manager = Manager.getManager();
     private boolean gamestarted;
+    private String mode;
+    private String ip;
+    int counter;
 
     @Override
     public void init(GameContainer gc, StateBasedGame sbg) throws SlickException {
         this.game = sbg;
+
     }
 
     @Override
@@ -56,7 +60,49 @@ public class Menu_StateBasedGame extends BasicGameState {
 
     @Override
     public void update(GameContainer gc, StateBasedGame sbg, int i) throws SlickException {
-        if (manager.getRemoteclient() != null) {
+        mode = Bomberman.arg[0];
+        ip = Bomberman.arg[1];
+        if (mode != null) {
+            if (mode == "localgame") {
+                manager.setBoolClient(false);
+                manager.setBoolLAN(false);
+                manager.setAmplayer(2);
+                manager.setPlayer2(2);
+                manager.setPlayer1(1);
+                game.enterState(2, new FadeOutTransition(Color.black), new FadeInTransition(Color.black));
+            }
+            if (mode == "host") {
+                manager.setBoolLAN(true);
+                manager.setAmplayer(2);
+                manager.setPlayer1(1);
+
+                try {
+                    HostServer host = new HostServer(1100, "host");
+                } catch (RemoteException ex) {
+                    Logger.getLogger(Menu_StateBasedGame.class.getName()).log(Level.SEVERE, null, ex);
+                } catch (UnknownHostException ex) {
+                    Logger.getLogger(Menu_StateBasedGame.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                game.enterState(2, new FadeOutTransition(Color.black), new FadeInTransition(Color.black));
+            } else if (mode == "client") {
+                manager.setBoolClient(true);
+                manager.setBoolLAN(true);
+                manager.setAmplayer(2);
+                manager.setPlayer2(2);
+                String hostIP = null;
+                //hostIP = "145.93.64.173"; //tim IP
+                hostIP = ip;
+                String hostservice = ("rmi://" + hostIP + ":" + 1100 + "/host");
+
+                try {
+                    Client client = new Client(1090, "client", hostservice);
+                } catch (RemoteException ex) {
+                    Logger.getLogger(Menu_StateBasedGame.class.getName()).log(Level.SEVERE, null, ex);
+                }
+
+                game.enterState(2, new FadeOutTransition(Color.black), new FadeInTransition(Color.black));
+
+            }
         }
     }
 

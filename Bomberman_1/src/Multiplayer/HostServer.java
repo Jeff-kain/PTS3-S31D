@@ -76,7 +76,7 @@ public class HostServer extends UnicastRemoteObject implements IRemoteHost {
             // besser ist folgendes:
             // service = (IRemoteClient) LocateRegistry
             // .getRegistry("hostip", 1099).lookup(strService);
-            service = (IRemoteClient) Naming.lookup("rmi://145.93.52.35:1090/client");
+            service = (IRemoteClient) Naming.lookup(strService);
         } catch (MalformedURLException e) {
             e.printStackTrace();
         } catch (NotBoundException e) {
@@ -99,6 +99,7 @@ public class HostServer extends UnicastRemoteObject implements IRemoteHost {
     public void joingame(String strService) throws RemoteException {
         retrieveClientService(strService);
         manager.setRemoteclient(service);
+        System.out.println(service + " has joined");
     }
 
     @Override

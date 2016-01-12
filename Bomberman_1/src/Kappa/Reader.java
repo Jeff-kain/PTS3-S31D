@@ -17,14 +17,18 @@ public class Reader{
     static SocketChannel sChannel;
     public static void main(String[] args)
             throws IOException, ClassNotFoundException {
-        System.out.println("Receiver Start");
-
-        sChannel = SocketChannel.open();
-        sChannel.configureBlocking(true);
-            if (sChannel.connect(new InetSocketAddress(InetAddress.getLocalHost(), 12345))) {
-                User user = new User();
-            }
-        System.out.println("End Receiver");
+        String[] arguments = new String[2];
+        arguments[0] = "localgame";
+        arguments[1] = "192.168.1.62";
+        bomberman.Bomberman.main(arguments);
+//        System.out.println("Receiver Start");
+//
+//        sChannel = SocketChannel.open();
+//        sChannel.configureBlocking(true);
+//            if (sChannel.connect(new InetSocketAddress(InetAddress.getLocalHost(), 12345))) {
+//                User user = new User();
+//            }
+//        System.out.println("End Receiver");
     }
     
 }

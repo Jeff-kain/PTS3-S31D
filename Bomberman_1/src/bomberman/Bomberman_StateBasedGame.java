@@ -56,6 +56,5 @@ public class Bomberman_StateBasedGame extends StateBasedGame
         addState(new GameOver_StateBasedGame()); // ID = 3
     }
     
-    public static void main(String[] args){
-    }
+
 }

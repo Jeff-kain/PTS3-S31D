@@ -195,7 +195,7 @@ public class MainWindowController implements Initializable {
     }
 
     public void playOffline(Event evt) {
-        String path = "java -jar C:\\Users\\jeffrey\\Desktop\\Bomberman.jar";
+        String path = "java -jar"+  "\"C:\\Users\\jeffrey\\Desktop\\Bomberman.jar";
         ProcessBuilder pb = new ProcessBuilder(path);
         try {
             Process p = pb.start();
