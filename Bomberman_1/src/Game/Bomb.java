@@ -123,7 +123,6 @@ public class Bomb implements IGameObject, Serializable {
                     p.setKick(true);
                     if (p.getKick() && isKicked == false) {
                         kickBomb(p.getKickDirection());
-                        isKicked = true;
                     }
                 }
             }
@@ -203,6 +202,8 @@ public class Bomb implements IGameObject, Serializable {
                                 break;
                         }
                         moving = false;
+                        isKicked = true;
+
                         break;
 
                     }

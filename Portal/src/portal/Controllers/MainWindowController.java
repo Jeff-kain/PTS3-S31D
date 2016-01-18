@@ -212,7 +212,7 @@ public class MainWindowController implements Initializable {
 //        Thread startLocal = new Thread(new JavaApplication10());
 //        startLocal.start();
         //String argss[] = {"java", "-jar", "Bomberman_1.jar", "host", InetAddress.getLocalHost().getHostAddress()};
-        String argss[] = {"java", "-jar", "Bomberman_1.jar", "client", "145.93.113.247"};
+        String argss[] = {"java", "-jar", "Bomberman_1.jar", "localgame", "145.93.113.247"};
 
         ProcessBuilder builder = new ProcessBuilder(argss).inheritIO();
         try {
