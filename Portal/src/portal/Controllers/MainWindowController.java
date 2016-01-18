@@ -30,6 +30,7 @@ import java.io.PrintWriter;
 import java.net.InetAddress;
 import java.net.Socket;
 import java.net.URL;
+import java.net.UnknownHostException;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -46,7 +47,6 @@ import static portal.Portal.Stage;
 public class MainWindowController implements Initializable {
 
     //Observable lists
-
     ObservableList<Game> observableGames;
     ObservableList<String> observableLobbies;
     ObservableList<String> observablePlayers;
@@ -195,20 +195,19 @@ public class MainWindowController implements Initializable {
     }
 
     public void playOffline(Event evt) {
-        String path = "java -jar"+  "\"C:\\Users\\jeffrey\\Desktop\\Bomberman.jar";
-        ProcessBuilder pb = new ProcessBuilder(path);
-        try {
-            Process p = pb.start();
+
+//        Process p;
 //        try {
-//            //p = Runtime.getRuntime().exec("\"C:/Program Files (x86)/Gyazo/Gyazowin.exe\"");
-//            p.waitFor();
-//        } catch (IOException | InterruptedException ex) {
-//            ex.printStackTrace();
+//            p = Runtime.getRuntime().exec("java -jar Bomberman_1.jar localgame 192");
+//        } catch (Exception e) {
 //        }
-        } catch (IOException ex) {
-            System.out.println(ex.getMessage());
-            ex.printStackTrace();
-        }
+////            ProcessBuilder pb = new ProcessBuilder("java -jar Bomberman_1.jar");
+////            Process p1 = pb.start();
+////        } catch (IOException ex) {
+////            Logger.getLogger(JavaApplication10.class.getName()).log(Level.SEVERE, null, ex);
+////        }
+        Thread startLocal = new Thread(new JavaApplication10());
+        startLocal.start();
     }
 
     public void joinLobby(Event evt) {
@@ -345,6 +344,24 @@ public class MainWindowController implements Initializable {
             Display("Failed to disconnect. \n");
         }
         isConnected = false;
+    }
+
+    private static class localgame implements Runnable {
+
+        @Override
+        public void run() {
+            String argss[] = {"java", "-jar", "Bomberman_1.jar", "localgame", "192"};
+            ProcessBuilder builder = new ProcessBuilder(argss);
+            try {
+                builder.redirectErrorStream(true);
+                Process qq = builder.start();
+                qq.waitFor();
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            } catch (InterruptedException ex) {
+                Logger.getLogger(MainWindowController.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
     }
 
     public class IncomingReader implements Runnable {

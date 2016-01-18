@@ -42,22 +42,25 @@ import powerup.*;
  * @author jeffrey //
  */
 public class Bomberman {
-
-    public static String[] arg = new String[2];
+ 
 
     public static void main(String[] args) {
         for (int i = 0; i < args.length; i++) {
-            arg[i] = args[i];
+//            modus = args[0];
+//            arg[i] = args[i];
             System.out.println(args[i]);
         }
         try {
             AppGameContainer appgc;
-            appgc = new AppGameContainer(new Bomberman_StateBasedGame("Bomberman"));
+            appgc = new AppGameContainer(new Bomberman_StateBasedGame("Bomberman",args));
             appgc.setDisplayMode(720, 720, false);
             appgc.setVSync(true);
             appgc.start();
         } catch (SlickException ex) {
             Logger.getLogger(Bomberman.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (Exception e) {
+            Logger.getLogger(Bomberman.class.getName()).log(Level.SEVERE, null, e);
+
         }
     }
 

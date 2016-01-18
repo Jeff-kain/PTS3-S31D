@@ -32,7 +32,7 @@ public class DatabaseConnection {
     private DatabaseConnection() throws IOException {
         props = new Properties();
 	    InputStream input = null;
-        File file = new File("./src/database/config.properties");
+        File file = new File("config.properties");
         
         try {
             input = new FileInputStream(file);
