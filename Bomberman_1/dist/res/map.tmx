@@ -1,0 +1,494 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" orientation="orthogonal" renderorder="right-down" width="15" height="15" tilewidth="48" tileheight="48" nextobjectid="463">
+ <tileset firstgid="1" name="sprites3x" tilewidth="48" tileheight="48" tilecount="285">
+  <image source="sprites3x.png" trans="ff00ff" width="720" height="912"/>
+ </tileset>
+ <tileset firstgid="286" name="powerups" tilewidth="48" tileheight="48" tilecount="21">
+  <image source="Powerups.png" trans="ff00ff" width="1008" height="48"/>
+ </tileset>
+ <tileset firstgid="307" name="castlesprites" tilewidth="48" tileheight="48" tilecount="2">
+  <image source="castlesprites.png" trans="ff00ff" width="96" height="48"/>
+ </tileset>
+ <objectgroup name="Boxes" width="48" height="48">
+  <object id="150" type="RedCastle" x="624" y="48" width="48" height="48"/>
+  <object id="218" type="Speed_Up" x="240" y="144" width="48" height="48">
+   <properties>
+    <property name="Hoogte" value=""/>
+    <property name="Rotatie" value=""/>
+   </properties>
+  </object>
+  <object id="219" type="Bomb_Up" x="288" y="144" width="48" height="48">
+   <properties>
+    <property name="Hoogte" value=""/>
+    <property name="Rotatie" value=""/>
+   </properties>
+  </object>
+  <object id="220" type="Kick" x="240" y="240" width="48" height="48">
+   <properties>
+    <property name="Hoogte" value=""/>
+    <property name="Rotatie" value=""/>
+   </properties>
+  </object>
+  <object id="221" type="PowerUp" x="288" y="240" width="48" height="48">
+   <properties>
+    <property name="Hoogte" value=""/>
+    <property name="Rotatie" value=""/>
+   </properties>
+  </object>
+  <object id="222" type="Speed_Up" x="240" y="336" width="48" height="48">
+   <properties>
+    <property name="Hoogte" value=""/>
+    <property name="Rotatie" value=""/>
+   </properties>
+  </object>
+  <object id="223" type="PowerUp" x="288" y="336" width="48" height="48">
+   <properties>
+    <property name="Hoogte" value=""/>
+    <property name="Rotatie" value=""/>
+   </properties>
+  </object>
+  <object id="224" type="Speed_Up" x="240" y="432" width="48" height="48">
+   <properties>
+    <property name="Hoogte" value=""/>
+    <property name="Rotatie" value=""/>
+   </properties>
+  </object>
+  <object id="225" type="Explosion_Up" x="288" y="432" width="48" height="48">
+   <properties>
+    <property name="Hoogte" value=""/>
+    <property name="Rotatie" value=""/>
+   </properties>
+  </object>
+  <object id="226" type="PowerUp" x="240" y="528" width="48" height="48">
+   <properties>
+    <property name="Hoogte" value=""/>
+    <property name="Rotatie" value=""/>
+   </properties>
+  </object>
+  <object id="227" type="Bomb_Up" x="288" y="528" width="48" height="48">
+   <properties>
+    <property name="Hoogte" value=""/>
+    <property name="Rotatie" value=""/>
+   </properties>
+  </object>
+  <object id="228" type="Bomb_Up" x="240" y="624" width="48" height="48">
+   <properties>
+    <property name="Hoogte" value=""/>
+    <property name="Rotatie" value=""/>
+   </properties>
+  </object>
+  <object id="229" type="Speed_Up" x="288" y="624" width="48" height="48">
+   <properties>
+    <property name="Hoogte" value=""/>
+    <property name="Rotatie" value=""/>
+   </properties>
+  </object>
+  <object id="231" type="Bomb_Up" x="144" y="144" width="48" height="48">
+   <properties>
+    <property name="Hoogte" value=""/>
+    <property name="Rotatie" value=""/>
+   </properties>
+  </object>
+  <object id="232" type="Speed_Up" x="96" y="144" width="48" height="48">
+   <properties>
+    <property name="Hoogte" value=""/>
+    <property name="Rotatie" value=""/>
+   </properties>
+  </object>
+  <object id="234" type="Bomb_Up" x="192" y="240" width="48" height="48">
+   <properties>
+    <property name="Hoogte" value=""/>
+    <property name="Rotatie" value=""/>
+   </properties>
+  </object>
+  <object id="235" type="Explosion_Up" x="144" y="240" width="48" height="48">
+   <properties>
+    <property name="Hoogte" value=""/>
+    <property name="Rotatie" value=""/>
+   </properties>
+  </object>
+  <object id="236" type="Speed_Up" x="96" y="240" width="48" height="48">
+   <properties>
+    <property name="Hoogte" value=""/>
+    <property name="Rotatie" value=""/>
+   </properties>
+  </object>
+  <object id="238" type="PowerUp" x="96" y="336" width="48" height="48">
+   <properties>
+    <property name="Hoogte" value=""/>
+    <property name="Rotatie" value=""/>
+   </properties>
+  </object>
+  <object id="239" type="Bomb_Up" x="192" y="336" width="48" height="48">
+   <properties>
+    <property name="Hoogte" value=""/>
+    <property name="Rotatie" value=""/>
+   </properties>
+  </object>
+  <object id="240" type="PowerUp" x="144" y="336" width="48" height="48">
+   <properties>
+    <property name="Hoogte" value=""/>
+    <property name="Rotatie" value=""/>
+   </properties>
+  </object>
+  <object id="242" type="Speed_Up" x="96" y="432" width="48" height="48">
+   <properties>
+    <property name="Hoogte" value=""/>
+    <property name="Rotatie" value=""/>
+   </properties>
+  </object>
+  <object id="243" type="PowerUp" x="192" y="432" width="48" height="48">
+   <properties>
+    <property name="Hoogte" value=""/>
+    <property name="Rotatie" value=""/>
+   </properties>
+  </object>
+  <object id="244" type="Speed_Up" x="144" y="432" width="48" height="48">
+   <properties>
+    <property name="Hoogte" value=""/>
+    <property name="Rotatie" value=""/>
+   </properties>
+  </object>
+  <object id="246" type="Speed_Up" x="192" y="528" width="48" height="48">
+   <properties>
+    <property name="Hoogte" value=""/>
+    <property name="Rotatie" value=""/>
+   </properties>
+  </object>
+  <object id="247" type="PowerUp" x="144" y="528" width="48" height="48">
+   <properties>
+    <property name="Hoogte" value=""/>
+    <property name="Rotatie" value=""/>
+   </properties>
+  </object>
+  <object id="249" type="Kick" x="384" y="624" width="48" height="48">
+   <properties>
+    <property name="Hoogte" value=""/>
+    <property name="Rotatie" value=""/>
+   </properties>
+  </object>
+  <object id="250" type="PowerUp" x="384" y="528" width="48" height="48">
+   <properties>
+    <property name="Hoogte" value=""/>
+    <property name="Rotatie" value=""/>
+   </properties>
+  </object>
+  <object id="251" type="Speed_Up" x="528" y="528" width="48" height="48">
+   <properties>
+    <property name="Hoogte" value=""/>
+    <property name="Rotatie" value=""/>
+   </properties>
+  </object>
+  <object id="252" type="PowerUp" x="576" y="528" width="48" height="48">
+   <properties>
+    <property name="Hoogte" value=""/>
+    <property name="Rotatie" value=""/>
+   </properties>
+  </object>
+  <object id="254" type="Bomb_Up" x="480" y="528" width="48" height="48">
+   <properties>
+    <property name="Hoogte" value=""/>
+    <property name="Rotatie" value=""/>
+   </properties>
+  </object>
+  <object id="255" type="Kick" x="432" y="528" width="48" height="48">
+   <properties>
+    <property name="Hoogte" value=""/>
+    <property name="Rotatie" value=""/>
+   </properties>
+  </object>
+  <object id="256" type="Bomb_Up" x="384" y="432" width="48" height="48">
+   <properties>
+    <property name="Hoogte" value=""/>
+    <property name="Rotatie" value=""/>
+   </properties>
+  </object>
+  <object id="257" type="Speed_Up" x="528" y="432" width="48" height="48">
+   <properties>
+    <property name="Hoogte" value=""/>
+    <property name="Rotatie" value=""/>
+   </properties>
+  </object>
+  <object id="258" type="Explosion_Up" x="576" y="432" width="48" height="48">
+   <properties>
+    <property name="Hoogte" value=""/>
+    <property name="Rotatie" value=""/>
+   </properties>
+  </object>
+  <object id="260" type="Bomb_Up" x="480" y="432" width="48" height="48">
+   <properties>
+    <property name="Hoogte" value=""/>
+    <property name="Rotatie" value=""/>
+   </properties>
+  </object>
+  <object id="261" type="Speed_Up" x="432" y="432" width="48" height="48">
+   <properties>
+    <property name="Hoogte" value=""/>
+    <property name="Rotatie" value=""/>
+   </properties>
+  </object>
+  <object id="262" type="PowerUp" x="384" y="336" width="48" height="48">
+   <properties>
+    <property name="Hoogte" value=""/>
+    <property name="Rotatie" value=""/>
+   </properties>
+  </object>
+  <object id="263" type="Speed_Up" x="528" y="336" width="48" height="48">
+   <properties>
+    <property name="Hoogte" value=""/>
+    <property name="Rotatie" value=""/>
+   </properties>
+  </object>
+  <object id="264" type="PowerUp" x="576" y="336" width="48" height="48">
+   <properties>
+    <property name="Hoogte" value=""/>
+    <property name="Rotatie" value=""/>
+   </properties>
+  </object>
+  <object id="266" type="Bomb_Up" x="480" y="336" width="48" height="48">
+   <properties>
+    <property name="Hoogte" value=""/>
+    <property name="Rotatie" value=""/>
+   </properties>
+  </object>
+  <object id="267" type="Explosion_Up" x="432" y="336" width="48" height="48">
+   <properties>
+    <property name="Hoogte" value=""/>
+    <property name="Rotatie" value=""/>
+   </properties>
+  </object>
+  <object id="268" type="Kick" x="384" y="240" width="48" height="48">
+   <properties>
+    <property name="Hoogte" value=""/>
+    <property name="Rotatie" value=""/>
+   </properties>
+  </object>
+  <object id="269" type="Speed_Up" x="528" y="240" width="48" height="48">
+   <properties>
+    <property name="Hoogte" value=""/>
+    <property name="Rotatie" value=""/>
+   </properties>
+  </object>
+  <object id="270" type="Kick" x="576" y="240" width="48" height="48">
+   <properties>
+    <property name="Hoogte" value=""/>
+    <property name="Rotatie" value=""/>
+   </properties>
+  </object>
+  <object id="272" type="Bomb_Up" x="480" y="240" width="48" height="48">
+   <properties>
+    <property name="Hoogte" value=""/>
+    <property name="Rotatie" value=""/>
+   </properties>
+  </object>
+  <object id="273" type="Speed_Up" x="432" y="240" width="48" height="48">
+   <properties>
+    <property name="Hoogte" value=""/>
+    <property name="Rotatie" value=""/>
+   </properties>
+  </object>
+  <object id="275" type="PowerUp" x="528" y="144" width="48" height="48">
+   <properties>
+    <property name="Hoogte" value=""/>
+    <property name="Rotatie" value=""/>
+   </properties>
+  </object>
+  <object id="276" type="Speed_Up" x="480" y="144" width="48" height="48">
+   <properties>
+    <property name="Hoogte" value=""/>
+    <property name="Rotatie" value=""/>
+   </properties>
+  </object>
+  <object id="277" type="Speed_Up" x="432" y="144" width="48" height="48">
+   <properties>
+    <property name="Hoogte" value=""/>
+    <property name="Rotatie" value=""/>
+   </properties>
+  </object>
+  <object id="278" type="Speed_Up" x="384" y="48" width="48" height="48">
+   <properties>
+    <property name="Hoogte" value=""/>
+    <property name="Rotatie" value=""/>
+   </properties>
+  </object>
+  <object id="279" type="Kick" x="480" y="48" width="48" height="48">
+   <properties>
+    <property name="Hoogte" value=""/>
+    <property name="Rotatie" value=""/>
+   </properties>
+  </object>
+  <object id="280" type="Bomb_Up" x="432" y="48" width="48" height="48">
+   <properties>
+    <property name="Hoogte" value=""/>
+    <property name="Rotatie" value=""/>
+   </properties>
+  </object>
+  <object id="281" type="Kick" x="336" y="336" width="48" height="48">
+   <properties>
+    <property name="Hoogte" value=""/>
+    <property name="Rotatie" value=""/>
+   </properties>
+  </object>
+  <object id="282" type="BlueCastle" x="48" y="624" width="48" height="48"/>
+  <object id="291" type="Wall" x="0" y="0" width="48" height="48"/>
+  <object id="292" type="Wall" x="0" y="48" width="48" height="48"/>
+  <object id="294" type="Wall" x="0" y="96" width="48" height="48"/>
+  <object id="295" type="Wall" x="0" y="192" width="48" height="48"/>
+  <object id="296" type="Wall" x="0" y="240" width="48" height="48"/>
+  <object id="297" type="Wall" x="0" y="144" width="48" height="48"/>
+  <object id="298" type="Wall" x="0" y="288" width="48" height="48"/>
+  <object id="299" type="Wall" x="0" y="336" width="48" height="48"/>
+  <object id="300" type="Wall" x="0" y="384" width="48" height="48"/>
+  <object id="301" type="Wall" x="0" y="480" width="48" height="48"/>
+  <object id="302" type="Wall" x="0" y="528" width="48" height="48"/>
+  <object id="303" type="Wall" x="0" y="432" width="48" height="48"/>
+  <object id="304" type="Wall" x="672" y="0" width="48" height="48"/>
+  <object id="305" type="Wall" x="672" y="48" width="48" height="48"/>
+  <object id="306" type="Wall" x="672" y="96" width="48" height="48"/>
+  <object id="307" type="Wall" x="672" y="192" width="48" height="48"/>
+  <object id="308" type="Wall" x="672" y="240" width="48" height="48"/>
+  <object id="309" type="Wall" x="672" y="144" width="48" height="48"/>
+  <object id="310" type="Wall" x="672" y="288" width="48" height="48"/>
+  <object id="311" type="Wall" x="672" y="336" width="48" height="48"/>
+  <object id="312" type="Wall" x="672" y="384" width="48" height="48"/>
+  <object id="313" type="Wall" x="672" y="480" width="48" height="48"/>
+  <object id="314" type="Wall" x="672" y="528" width="48" height="48"/>
+  <object id="315" type="Wall" x="672" y="432" width="48" height="48"/>
+  <object id="316" type="Wall" x="0" y="576" width="48" height="48"/>
+  <object id="317" type="Wall" x="0" y="624" width="48" height="48"/>
+  <object id="318" type="Wall" x="0" y="672" width="48" height="48"/>
+  <object id="319" type="Wall" x="672" y="576" width="48" height="48"/>
+  <object id="320" type="Wall" x="672" y="624" width="48" height="48"/>
+  <object id="321" type="Wall" x="672" y="672" width="48" height="48"/>
+  <object id="322" type="Wall" x="48" y="0" width="48" height="48"/>
+  <object id="324" type="Wall" x="96" y="0" width="48" height="48"/>
+  <object id="325" type="Wall" x="144" y="0" width="48" height="48"/>
+  <object id="326" type="Wall" x="192" y="0" width="48" height="48"/>
+  <object id="327" type="Wall" x="240" y="0" width="48" height="48"/>
+  <object id="328" type="Wall" x="288" y="0" width="48" height="48"/>
+  <object id="329" type="Wall" x="336" y="0" width="48" height="48"/>
+  <object id="330" type="Wall" x="384" y="0" width="48" height="48"/>
+  <object id="331" type="Wall" x="432" y="0" width="48" height="48"/>
+  <object id="332" type="Wall" x="480" y="0" width="48" height="48"/>
+  <object id="333" type="Wall" x="528" y="0" width="48" height="48"/>
+  <object id="334" type="Wall" x="576" y="0" width="48" height="48"/>
+  <object id="335" type="Wall" x="624" y="0" width="48" height="48"/>
+  <object id="336" type="Wall" x="48" y="672" width="48" height="48"/>
+  <object id="337" type="Wall" x="96" y="672" width="48" height="48"/>
+  <object id="338" type="Wall" x="144" y="672" width="48" height="48"/>
+  <object id="339" type="Wall" x="192" y="672" width="48" height="48"/>
+  <object id="340" type="Wall" x="240" y="672" width="48" height="48"/>
+  <object id="341" type="Wall" x="288" y="672" width="48" height="48"/>
+  <object id="342" type="Wall" x="336" y="672" width="48" height="48"/>
+  <object id="343" type="Wall" x="384" y="672" width="48" height="48"/>
+  <object id="344" type="Wall" x="432" y="672" width="48" height="48"/>
+  <object id="345" type="Wall" x="480" y="672" width="48" height="48"/>
+  <object id="346" type="Wall" x="528" y="672" width="48" height="48"/>
+  <object id="347" type="Wall" x="576" y="672" width="48" height="48"/>
+  <object id="348" type="Wall" x="624" y="672" width="48" height="48"/>
+  <object id="349" type="Wall" x="96" y="96" width="48" height="48"/>
+  <object id="364" type="Wall" x="192" y="96" width="48" height="48"/>
+  <object id="365" type="Wall" x="288" y="96" width="48" height="48"/>
+  <object id="366" type="Wall" x="384" y="96" width="48" height="48"/>
+  <object id="367" type="Wall" x="480" y="96" width="48" height="48"/>
+  <object id="368" type="Wall" x="96" y="192" width="48" height="48"/>
+  <object id="369" type="Wall" x="192" y="192" width="48" height="48"/>
+  <object id="370" type="Wall" x="288" y="192" width="48" height="48"/>
+  <object id="371" type="Wall" x="384" y="192" width="48" height="48"/>
+  <object id="372" type="Wall" x="480" y="192" width="48" height="48"/>
+  <object id="373" type="Wall" x="576" y="192" width="48" height="48"/>
+  <object id="374" type="Wall" x="576" y="288" width="48" height="48"/>
+  <object id="375" type="Wall" x="480" y="288" width="48" height="48"/>
+  <object id="376" type="Wall" x="384" y="288" width="48" height="48"/>
+  <object id="377" type="Wall" x="288" y="288" width="48" height="48"/>
+  <object id="378" type="Wall" x="192" y="288" width="48" height="48"/>
+  <object id="379" type="Wall" x="96" y="288" width="48" height="48"/>
+  <object id="380" type="Wall" x="96" y="384" width="48" height="48"/>
+  <object id="381" type="Wall" x="192" y="384" width="48" height="48"/>
+  <object id="382" type="Wall" x="288" y="384" width="48" height="48"/>
+  <object id="383" type="Wall" x="384" y="384" width="48" height="48"/>
+  <object id="384" type="Wall" x="480" y="384" width="48" height="48"/>
+  <object id="385" type="Wall" x="576" y="384" width="48" height="48"/>
+  <object id="386" type="Wall" x="576" y="480" width="48" height="48"/>
+  <object id="387" type="Wall" x="480" y="480" width="48" height="48"/>
+  <object id="388" type="Wall" x="384" y="480" width="48" height="48"/>
+  <object id="389" type="Wall" x="288" y="480" width="48" height="48"/>
+  <object id="390" type="Wall" x="192" y="480" width="48" height="48"/>
+  <object id="391" type="Wall" x="96" y="480" width="48" height="48"/>
+  <object id="392" type="Wall" x="192" y="576" width="48" height="48"/>
+  <object id="393" type="Wall" x="288" y="576" width="48" height="48"/>
+  <object id="394" type="Wall" x="384" y="576" width="48" height="48"/>
+  <object id="395" type="Wall" x="480" y="576" width="48" height="48"/>
+  <object id="396" type="Wall" x="576" y="576" width="48" height="48"/>
+  <object id="403" type="Box" x="288" y="48" width="48" height="48"/>
+  <object id="404" type="Box" x="240" y="48" width="48" height="48"/>
+  <object id="405" type="Box" x="192" y="48" width="48" height="48"/>
+  <object id="406" type="Box" x="192" y="624" width="48" height="48"/>
+  <object id="407" type="Box" x="480" y="624" width="48" height="48"/>
+  <object id="408" type="Box" x="240" y="144" width="48" height="48"/>
+  <object id="409" type="Box" x="288" y="144" width="48" height="48"/>
+  <object id="410" type="Box" x="240" y="240" width="48" height="48"/>
+  <object id="411" type="Box" x="288" y="240" width="48" height="48"/>
+  <object id="412" type="Box" x="240" y="336" width="48" height="48"/>
+  <object id="413" type="Box" x="288" y="336" width="48" height="48"/>
+  <object id="414" type="Box" x="240" y="432" width="48" height="48"/>
+  <object id="415" type="Box" x="288" y="432" width="48" height="48"/>
+  <object id="416" type="Box" x="240" y="528" width="48" height="48"/>
+  <object id="417" type="Box" x="288" y="528" width="48" height="48"/>
+  <object id="418" type="Box" x="240" y="624" width="48" height="48"/>
+  <object id="419" type="Box" x="288" y="624" width="48" height="48"/>
+  <object id="420" type="Box" x="192" y="144" width="48" height="48"/>
+  <object id="421" type="Box" x="144" y="144" width="48" height="48"/>
+  <object id="422" type="Box" x="96" y="144" width="48" height="48"/>
+  <object id="423" type="Box" x="192" y="240" width="48" height="48"/>
+  <object id="424" type="Box" x="144" y="240" width="48" height="48"/>
+  <object id="425" type="Box" x="96" y="240" width="48" height="48"/>
+  <object id="426" type="Box" x="96" y="336" width="48" height="48"/>
+  <object id="427" type="Box" x="192" y="336" width="48" height="48"/>
+  <object id="428" type="Box" x="144" y="336" width="48" height="48"/>
+  <object id="429" type="Box" x="96" y="432" width="48" height="48"/>
+  <object id="430" type="Box" x="192" y="432" width="48" height="48"/>
+  <object id="431" type="Box" x="144" y="432" width="48" height="48"/>
+  <object id="432" type="Box" x="192" y="528" width="48" height="48"/>
+  <object id="433" type="Box" x="144" y="528" width="48" height="48"/>
+  <object id="434" type="Box" x="432" y="624" width="48" height="48"/>
+  <object id="435" type="Box" x="384" y="624" width="48" height="48"/>
+  <object id="436" type="Box" x="384" y="528" width="48" height="48"/>
+  <object id="437" type="Box" x="528" y="528" width="48" height="48"/>
+  <object id="438" type="Box" x="576" y="528" width="48" height="48"/>
+  <object id="439" type="Box" x="480" y="528" width="48" height="48"/>
+  <object id="440" type="Box" x="432" y="528" width="48" height="48"/>
+  <object id="441" type="Box" x="384" y="432" width="48" height="48"/>
+  <object id="442" type="Box" x="528" y="432" width="48" height="48"/>
+  <object id="443" type="Box" x="576" y="432" width="48" height="48"/>
+  <object id="444" type="Box" x="480" y="432" width="48" height="48"/>
+  <object id="445" type="Box" x="432" y="432" width="48" height="48"/>
+  <object id="446" type="Box" x="384" y="336" width="48" height="48"/>
+  <object id="447" type="Box" x="528" y="336" width="48" height="48"/>
+  <object id="448" type="Box" x="576" y="336" width="48" height="48"/>
+  <object id="449" type="Box" x="480" y="336" width="48" height="48"/>
+  <object id="450" type="Box" x="432" y="336" width="48" height="48"/>
+  <object id="451" type="Box" x="384" y="240" width="48" height="48"/>
+  <object id="452" type="Box" x="528" y="240" width="48" height="48"/>
+  <object id="453" type="Box" x="576" y="240" width="48" height="48"/>
+  <object id="454" type="Box" x="480" y="240" width="48" height="48"/>
+  <object id="455" type="Box" x="432" y="240" width="48" height="48"/>
+  <object id="456" type="Box" x="528" y="144" width="48" height="48"/>
+  <object id="457" type="Box" x="480" y="144" width="48" height="48"/>
+  <object id="458" type="Box" x="432" y="144" width="48" height="48"/>
+  <object id="459" type="Box" x="384" y="48" width="48" height="48"/>
+  <object id="460" type="Box" x="480" y="48" width="48" height="48"/>
+  <object id="461" type="Box" x="432" y="48" width="48" height="48"/>
+  <object id="462" type="Box" x="336" y="336" width="48" height="48"/>
+ </objectgroup>
+ <layer name="background" width="15" height="15">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAC1NgYGBQGMWjeBQPGAYAzVDPP4QDAAA=
+  </data>
+ </layer>
+ <layer name="castle" width="15" height="15">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAC2NgGAWjYBQMJAAA7Ly31YQDAAA=
+  </data>
+ </layer>
+</map>
