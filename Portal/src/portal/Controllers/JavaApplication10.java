@@ -51,9 +51,15 @@ public class JavaApplication10 implements Runnable {
         ProcessBuilder builder = new ProcessBuilder(argss);
         try {
             Process qq = builder.start();
-           // qq.waitFor();
+            // qq.waitFor();
         } catch (IOException ex) {
-            ex.printStackTrace();
-        } 
+            Logger.getLogger(JavaApplication10.class.getName()).log(Level.SEVERE, null, ex);
+            try {
+                builder.wait();
+            } catch (InterruptedException ex1) {
+                Logger.getLogger(JavaApplication10.class.getName()).log(Level.SEVERE, null, ex1);
+            }
+        }
+
     }
 }

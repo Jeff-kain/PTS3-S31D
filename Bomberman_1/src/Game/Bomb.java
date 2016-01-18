@@ -59,6 +59,7 @@ public class Bomb implements IGameObject, Serializable {
     private int steps;
     private float kickRange;
     private boolean moving = false;
+    private boolean isKicked = false;
 
     public Bomb(SpriteSheet sprites, Float x, Float y, float range) {
         this.sprites = sprites;
@@ -120,8 +121,9 @@ public class Bomb implements IGameObject, Serializable {
             if (intersects(p)) {
                 if (!moving) {
                     p.setKick(true);
-                    if (p.getKick()) {
+                    if (p.getKick() && isKicked == false) {
                         kickBomb(p.getKickDirection());
+                        isKicked = true;
                     }
                 }
             }
@@ -193,7 +195,7 @@ public class Bomb implements IGameObject, Serializable {
                                 break;
 
                             case 3:
-                                setPosition(x, y + 0.5f);
+                                setPosition(x, y - 0.5f);
                                 break;
 
                             case 2:
