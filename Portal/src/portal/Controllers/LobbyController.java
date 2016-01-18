@@ -7,6 +7,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import portal.Administration;
 
@@ -52,7 +53,11 @@ public class LobbyController implements Initializable{
         lvwPlayers.setItems(observablePlayers);
 
         try {
-            observablePlayers.addAll(admin.getSelectedLobby().getPlayers());
+            if(admin.getSelectedLobby() == null) {
+                observablePlayers.addAll(admin.getHostedLobby().getPlayers());
+            } else {
+                observablePlayers.addAll(admin.getSelectedLobby().getPlayers());
+            }
         } catch (RemoteException e) {
             e.printStackTrace();
         }
@@ -70,7 +75,12 @@ public class LobbyController implements Initializable{
                     try {
                         System.out.println("Timer");
                         observablePlayers.clear();
-                        observablePlayers.addAll(admin.getSelectedLobby().getPlayers());
+
+                        if(admin.getSelectedLobby() == null) {
+                            observablePlayers.addAll(admin.getHostedLobby().getPlayers());
+                        } else {
+                            observablePlayers.addAll(admin.getSelectedLobby().getPlayers());
+                        }
 
                         if(observablePlayers.size() == 2) {
                             btnStartGame.setDisable(false);
