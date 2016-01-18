@@ -41,20 +41,26 @@ import powerup.Speed_Up;
  *
  * @author Rob
  */
-public class Bomberman_StateBasedGame extends StateBasedGame
-{
+public class Bomberman_StateBasedGame extends StateBasedGame {
 
-    public Bomberman_StateBasedGame(String name) {
+    public static String[] arguments;
+
+    public Bomberman_StateBasedGame(String name, String[] args) {
         super(name);
+        this.arguments = args;
+        for (int i = 0; i < arguments.length; i++) {
+//            modus = args[0];
+//            arg[i] = args[i];
+            System.out.println(arguments[i]);
+        }
     }
 
     @Override
     public void initStatesList(GameContainer gc) throws SlickException {
-        addState(new Menu_StateBasedGame()); // ID = 0
+        addState(new Menu_StateBasedGame(arguments)); // ID = 0
         addState(new Lobby_StateBasedGame()); //ID = 1
         addState(new Game_StateBasedGame()); // ID = 2
         addState(new GameOver_StateBasedGame()); // ID = 3
     }
-    
 
 }

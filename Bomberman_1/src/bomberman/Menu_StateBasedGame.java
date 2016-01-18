@@ -34,12 +34,18 @@ public class Menu_StateBasedGame extends BasicGameState {
     private boolean gamestarted;
     private String mode;
     private String ip;
+    private String[] args;
+    private String[] args2;
     int counter;
+
+    Menu_StateBasedGame(String[] arguments) {
+        this.args2 = arguments;
+    }
 
     @Override
     public void init(GameContainer gc, StateBasedGame sbg) throws SlickException {
         this.game = sbg;
-
+        this.args = args2;
     }
 
     @Override
@@ -53,17 +59,14 @@ public class Menu_StateBasedGame extends BasicGameState {
         g.drawString("4. Show Lobbies", 50, 160);
         g.drawString("5. Back to portal", 50, 180);
 
-        if (gamestarted == false) {
-            g.drawString("Waiting for players", 50, 280);
-        }
     }
 
     @Override
     public void update(GameContainer gc, StateBasedGame sbg, int i) throws SlickException {
-        mode = Bomberman.arg[0];
-        ip = Bomberman.arg[1];
+        mode = args[0];
+        ip = args[1];
         if (mode != null) {
-            if (mode == "localgame") {
+            if (mode.equals("localgame")) {
                 manager.setBoolClient(false);
                 manager.setBoolLAN(false);
                 manager.setAmplayer(2);
@@ -71,7 +74,7 @@ public class Menu_StateBasedGame extends BasicGameState {
                 manager.setPlayer1(1);
                 game.enterState(2, new FadeOutTransition(Color.black), new FadeInTransition(Color.black));
             }
-            if (mode == "host") {
+            if (mode.equals("host")) {
                 manager.setBoolLAN(true);
                 manager.setAmplayer(2);
                 manager.setPlayer1(1);
@@ -84,7 +87,7 @@ public class Menu_StateBasedGame extends BasicGameState {
                     Logger.getLogger(Menu_StateBasedGame.class.getName()).log(Level.SEVERE, null, ex);
                 }
                 game.enterState(2, new FadeOutTransition(Color.black), new FadeInTransition(Color.black));
-            } else if (mode == "client") {
+            } else if (mode.equals("client")) {
                 manager.setBoolClient(true);
                 manager.setBoolLAN(true);
                 manager.setAmplayer(2);
