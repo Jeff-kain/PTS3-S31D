@@ -5,7 +5,6 @@
  */
 package Multiplayer;
 
-import Game.Direction;
 import java.rmi.Remote;
 import java.rmi.RemoteException;
 
@@ -13,16 +12,19 @@ import java.rmi.RemoteException;
  *
  * @author jeffrey
  */
-public interface IRemoteHost extends Remote {
+public interface ISpectate extends Remote {
 
     public static final int UP = 1, LEFT = 2, DOWN = 3, RIGHT = 4, BOMB = 5;
 
-    public String getClientName() throws RemoteException;
+    public String getHostName() throws RemoteException;
 
-    public void joingame(String strService) throws RemoteException;
+    public void hostKeyUpdate(int playerindex, int keycode, boolean pressed)
+            throws RemoteException;
+
+    public void tick() throws RemoteException;
+
+    public void movep2h(int direction, float x, float y) throws RemoteException;
 
     public void movep2c(int direction, float x, float y) throws RemoteException;
-    
-    public void spectategame(String strService) throws  RemoteException;
 
 }

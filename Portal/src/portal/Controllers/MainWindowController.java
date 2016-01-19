@@ -215,7 +215,6 @@ public class MainWindowController implements Initializable {
         ProcessBuilder builder = new ProcessBuilder(argss).inheritIO();
         try {
             final Process process = builder.start();
-
             // qq.waitFor();
         } catch (IOException ex) {
             ex.printStackTrace();
@@ -280,9 +279,7 @@ public class MainWindowController implements Initializable {
                     writer = new PrintWriter(sock.getOutputStream());
                     writer.println(username + ":has connected.:Connect");
                     writer.flush();
-
                     isConnected = true;
-
                 } catch (IOException e) {
                     System.out.println(e.getMessage());
                     e.printStackTrace();

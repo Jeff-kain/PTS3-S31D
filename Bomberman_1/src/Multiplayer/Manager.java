@@ -12,7 +12,7 @@ import java.rmi.registry.Registry;
  *
  * @author jeffrey
  */
-public class Manager implements Serializable{
+public class Manager implements Serializable {
 
     static Manager manager;
     IRemoteHost remotehost = null;
@@ -39,7 +39,7 @@ public class Manager implements Serializable{
     public void setPlayer2(int player2) {
         this.player2 = player2;
     }
-    
+
     int amplayer = 1;
     int feldx = 15;
     int feldxbml;
@@ -56,8 +56,10 @@ public class Manager implements Serializable{
     boolean boolKI = false;
     boolean boolLAN = false;
     boolean boolClient = false;
+    boolean boolSpectate = false;
     boolean sound = false;
     IRemoteClient remoteclient = null;
+    ISpectate remoteSpectate = null;
 
     String levelpath = "data/levels/level_1.bml";
     String levelname = "";
@@ -200,6 +202,22 @@ public class Manager implements Serializable{
         this.boolClient = boolClient;
     }
 
+    public ISpectate getRemoteSpectate() {
+        return remoteSpectate;
+    }
+
+    public void setRemoteSpectate(ISpectate remoteSpectate) {
+        this.remoteSpectate = remoteSpectate;
+    }
+
+    public boolean isBoolSpectate() {
+        return boolSpectate;
+    }
+
+    public void setBoolSpectate(boolean boolSpectate) {
+        this.boolSpectate = boolSpectate;
+    }
+
     public boolean isSound() {
         return sound;
     }
@@ -271,7 +289,6 @@ public class Manager implements Serializable{
     public void setNamePlayer4(String namePlayer4) {
         this.namePlayer4 = namePlayer4;
     }
-    
 
     public Registry getRegistry() {
         return registry;

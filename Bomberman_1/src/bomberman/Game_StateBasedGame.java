@@ -324,7 +324,7 @@ public class Game_StateBasedGame extends BasicGameState {
                 }
             }
 
-            if (gc.getInput().isKeyPressed(Input.KEY_ENTER)) {
+            if (gc.getInput().isKeyPressed(Input.KEY_ENTER) && player.getVisible()) {
                 Bomb b = new Bomb(sprites, player.getX(), player.getY(), player.getBombRange());
 
                 if (playground.getBombs().size() < player.getBombCount()) {
@@ -343,7 +343,7 @@ public class Game_StateBasedGame extends BasicGameState {
             timeOutP1 = 0;
         }
 
-        if (player.intersectWithBox() || player.intersectWithWall() || player.intersectWithPlayer()) {
+        if (player.intersectWithBox() || player.intersectWithWall() || player.intersectWithPlayer() || player.intersectWithCastle()) {
             player.setPosition(hposx, hposy);
         }
 
@@ -379,7 +379,7 @@ public class Game_StateBasedGame extends BasicGameState {
                     }
                 }
 
-                if (gc.getInput().isKeyPressed(Input.KEY_SPACE)) {
+                if (gc.getInput().isKeyPressed(Input.KEY_SPACE) && player2.getVisible()) {
                     Bomb b = new Bomb(sprites, player2.getX(), player2.getY(), player2.getBombRange());
 
                     if (playground.getBombs2().size() < player2.getBombCount()) {
@@ -397,7 +397,7 @@ public class Game_StateBasedGame extends BasicGameState {
                 timeOutP2 = 0;
             }
 
-            if (player2.intersectWithBox() || player2.intersectWithWall() || player2.intersectWithPlayer()) {
+            if (player2.intersectWithBox() || player2.intersectWithWall() || player2.intersectWithPlayer() || player2.intersectWithCastle()) {
                 player2.setPosition(hpos2x, hpos2y);
             }
 

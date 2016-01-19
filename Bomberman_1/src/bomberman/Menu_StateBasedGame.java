@@ -64,6 +64,7 @@ public class Menu_StateBasedGame extends BasicGameState {
 
     @Override
     public void update(GameContainer gc, StateBasedGame sbg, int i) throws SlickException {
+        
         mode = args[0];
         if (args[1] != null) {
             ip = args[1];

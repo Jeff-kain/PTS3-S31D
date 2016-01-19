@@ -296,9 +296,16 @@ public class Player implements IGameObject, Serializable {
                 if (manager.isBoolClient()) {
 
                     manager.getRemotehost().movep2c(direction, this.x, this.y);
+                    if (manager.getRemoteSpectate() != null) {
+                        manager.getRemoteSpectate().movep2c(direction, this.x, this.y);
+                    }
                 } else {
 
                     manager.getRemoteclient().movep2h(direction, this.x, this.y);
+                    if (manager.getRemoteSpectate() != null) {
+                        manager.getRemoteSpectate().movep2h(direction, this.x, this.y);
+
+                    }
                 }
             }
 
@@ -344,7 +351,7 @@ public class Player implements IGameObject, Serializable {
             System.out.println("bombermanClient added to level");
 
         }
-        if (this.intersectWithBox() || this.intersectWithWall() || this.intersectWithPlayer()) {
+        if (this.intersectWithBox() || this.intersectWithWall() || this.intersectWithPlayer() || this.intersectWithCastle()) {
             setPosition(oldx, oldy);
         }
     }
@@ -448,6 +455,16 @@ public class Player implements IGameObject, Serializable {
             if (w.intersects(this)) {
                 return true;
             }
+        }
+        return false;
+    }
+
+    public boolean intersectWithCastle() {
+        if (game.getTeam1().intersects(this)) {
+            return true;
+        }
+        if (game.getTeam2().intersects(this)) {
+            return true;
         }
         return false;
     }

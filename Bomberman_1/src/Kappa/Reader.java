@@ -18,7 +18,7 @@ public class Reader{
     public static void main(String[] args)
             throws IOException, ClassNotFoundException {
         String[] arguments = new String[3];
-        arguments[0] = "host";
+        arguments[0] = "localgame";
         arguments[1] = InetAddress.getLocalHost().getHostAddress();
         arguments[2] = "Jeffrey";
         bomberman.Bomberman.main(arguments);

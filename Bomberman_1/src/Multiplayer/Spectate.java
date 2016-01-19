@@ -5,6 +5,28 @@
  */
 package Multiplayer;
 
+import Game.Game;
+import Game.Keyset;
+import Game.Player;
+import java.net.InetAddress;
+import java.net.MalformedURLException;
+import java.net.UnknownHostException;
+import java.rmi.Naming;
+import java.rmi.NotBoundException;
+import java.rmi.RemoteException;
+import java.rmi.registry.LocateRegistry;
+import java.rmi.registry.Registry;
+import java.rmi.server.UnicastRemoteObject;
+
+/**
+ *
+ * @author jeffrey
+ */
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
 import Game.Direction;
 import Game.Game;
 import Game.Keyset;
@@ -23,19 +45,19 @@ import java.rmi.server.UnicastRemoteObject;
  *
  * @author jeffrey
  */
-public class Client extends UnicastRemoteObject implements IRemoteClient {
+public class Spectate extends UnicastRemoteObject implements ISpectate {
 
     IRemoteHost service;
-
+    IRemoteClient serviceClient;
     Manager manager = Manager.getManager();
 
-    public Client(int regport, String servicename, String hostservice) throws RemoteException {
+    public Spectate(int regport, String servicename, String hostservice) throws RemoteException {
         String strService = publishClient(regport, servicename);
         service = retrieveService(hostservice);
         // service = retrieveService("rmi://" + "145.93.64.173" + ":" + 1090 + "/host");
         System.out.println(hostservice);
         manager.setRemotehost(service);
-        service.joingame(strService);
+        service.spectategame(strService);
     }
 
     public String publishClient(int registryPort, String servicename)
@@ -82,6 +104,27 @@ public class Client extends UnicastRemoteObject implements IRemoteClient {
         return service_;
     }
 
+    public void retrieveClientService(String strService) {
+        // System.out.println("fetch:    rmi://" + IRemoteClient.clientname +
+        // ":"
+        // + IRemoteClient.registryPort + "/" + IRemoteClient.servicename);
+        try {
+
+            // besser ist folgendes:
+            // service = (IRemoteClient) LocateRegistry
+            // .getRegistry("hostip", 1099).lookup(strService);
+            serviceClient = (IRemoteClient) Naming.lookup(strService);
+            manager.setNamePlayer2(serviceClient.getHostName());
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        } catch (NotBoundException e) {
+            System.out.println("Client did not yet publish.");
+            e.printStackTrace();
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        }
+    }
+
     @Override
     public void hostKeyUpdate(int playerindex, int keycode, boolean pressed) throws RemoteException {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
@@ -96,6 +139,15 @@ public class Client extends UnicastRemoteObject implements IRemoteClient {
     public void movep2h(int direction, float x, float y) throws RemoteException {
         direction = translate(direction);
         ((Player) (Game.getInstance().getAllPlayers().get(0))).moveremote(direction, x, y);
+    }
+
+    @Override
+    public void movep2c(int direction, float x, float y) throws RemoteException {
+        direction = translate(direction);
+        ((Player) (Game.getInstance().getAllPlayers().get(1))).moveremote(direction, x, y);
+
+//        Game.getInstance().getPlayer1().get(0).moveremote(direction, x, y);
+//        Game.getInstance().getPlayer2().get(0).moveremote(direction, x, y);
     }
 
     public int translate(int direction) {
