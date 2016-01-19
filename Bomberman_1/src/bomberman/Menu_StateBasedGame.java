@@ -35,8 +35,9 @@ public class Menu_StateBasedGame extends BasicGameState {
     private String mode;
     private String ip;
     private String[] args;
-    private String[] args2;
+    public static String[] args2;
     int counter;
+    private String name;
 
     Menu_StateBasedGame(String[] arguments) {
         this.args2 = arguments;
@@ -64,7 +65,12 @@ public class Menu_StateBasedGame extends BasicGameState {
     @Override
     public void update(GameContainer gc, StateBasedGame sbg, int i) throws SlickException {
         mode = args[0];
-        ip = args[1];
+        if (args[1] != null) {
+            ip = args[1];
+        }
+        if (args[2] != null) {
+            name = args[2];
+        }
         if (mode != null) {
             if (mode.equals("localgame")) {
                 manager.setBoolClient(false);
@@ -78,7 +84,7 @@ public class Menu_StateBasedGame extends BasicGameState {
                 manager.setBoolLAN(true);
                 manager.setAmplayer(2);
                 manager.setPlayer1(1);
-
+                manager.setNamePlayer1(name);
                 try {
                     HostServer host = new HostServer(1100, "host");
                 } catch (RemoteException ex) {
@@ -92,6 +98,8 @@ public class Menu_StateBasedGame extends BasicGameState {
                 manager.setBoolLAN(true);
                 manager.setAmplayer(2);
                 manager.setPlayer2(2);
+                manager.setNamePlayer2(name);
+                
                 String hostIP = null;
                 //hostIP = "145.93.64.173"; //tim IP
                 hostIP = ip;

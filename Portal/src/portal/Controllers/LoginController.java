@@ -26,12 +26,19 @@ import java.util.concurrent.*;
  * Created by tverv on 08-Dec-15.ó
  */
 public class LoginController implements Initializable {
+
     //Controls
-    @FXML private Button btnLogin;
-    @FXML private Button btnRegister;
-    @FXML private TextField tfdUsername;
-    @FXML private TextField pfdPassword;
-    @FXML private Label lblError;
+
+    @FXML
+    private Button btnLogin;
+    @FXML
+    private Button btnRegister;
+    @FXML
+    private TextField tfdUsername;
+    @FXML
+    private TextField pfdPassword;
+    @FXML
+    private Label lblError;
 
     /**
      * Initializes the controller class.
@@ -59,7 +66,7 @@ public class LoginController implements Initializable {
             rmiClient = new RMIClient();
             login = rmiClient.setUp();
 
-            if(login == null) {
+            if (login == null) {
                 lblError.setText("No connection with the server, try again later.");
                 lblError.setVisible(true);
                 tfdUsername.setDisable(true);
@@ -80,11 +87,9 @@ public class LoginController implements Initializable {
     public void btnLogin(Event evt) {
         try {
 
-            if(tfdUsername.getText().equals("") || pfdPassword.getText().equals("")) {
+            if (tfdUsername.getText().equals("") || pfdPassword.getText().equals("")) {
                 lblError.setText("Please fill in both fields.");
-            }
-
-            else {
+            } else {
                 portal = login.login(tfdUsername.getText(), pfdPassword.getText());
 
                 if (portal != null) {
@@ -106,9 +111,9 @@ public class LoginController implements Initializable {
 
     public void onRegister(Event evt) {
         try {
-            portal = login.Register(tfdUsername.getText(),pfdPassword.getText());
+            portal = login.Register(tfdUsername.getText(), pfdPassword.getText());
 
-            if(portal != null) {
+            if (portal != null) {
                 admin.setPortal(portal);
                 admin.setUsername(tfdUsername.getText());
                 admin.setPassword(pfdPassword.getText());

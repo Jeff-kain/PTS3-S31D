@@ -212,8 +212,7 @@ public class MainWindowController implements Initializable {
 //        Thread startLocal = new Thread(new JavaApplication10());
 //        startLocal.start();
         //String argss[] = {"java", "-jar", "Bomberman_1.jar", "host", InetAddress.getLocalHost().getHostAddress()};
-        String argss[] = {"java", "-jar", "Bomberman_1.jar", "localgame", "145.93.113.247"};
-
+        String argss[] = {"java", "-jar", "Bomberman_1.jar", "localgame", InetAddress.getLocalHost().getHostAddress(), Administration.getInstance().getUsername()};
         ProcessBuilder builder = new ProcessBuilder(argss).inheritIO();
         try {
             final Process process = builder.start();
@@ -244,7 +243,7 @@ public class MainWindowController implements Initializable {
 
     public void onExit(Event evt) {
         userDisconnect();
-        admin.setUsername("Null");
+        admin.setUsername(null);
         Stage stage = LoginController.stage;
         stage.setOnCloseRequest(e -> Platform.exit());
         System.exit(0);

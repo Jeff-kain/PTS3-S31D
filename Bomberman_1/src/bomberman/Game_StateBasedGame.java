@@ -77,6 +77,8 @@ public class Game_StateBasedGame extends BasicGameState {
     private static String[] arguments;
     private static AppGameContainer appgc;
     private String WinningTeam;
+    private String player1Name;
+    private String player2Name;
 
     Manager manager = Manager.getManager();
 
@@ -127,12 +129,22 @@ public class Game_StateBasedGame extends BasicGameState {
             float healthScale2 = game.getTeam2().currentHealth() / game.getTeam2().maxHealth();
 
             g.setColor(Color.white);
-            g.drawString("Team 1 HP: ", 10.0f, 30.0f);
+            if (manager.getNamePlayer1() != null) {
+                g.drawString(manager.getNamePlayer1(), 10.0f, 30.0f);
+
+            } else {
+                g.drawString("Team 1 HP", 10.0f, 30.0f);
+            }
             g.setColor(Color.green);
             g.fillRect(100.0f, 25.0f, 250f * healthScale, 20.0f);
 
             g.setColor(Color.white);
-            g.drawString("Team 2 HP: ", 400.0f, 30.0f);
+            if (manager.getNamePlayer2() != null) {
+                g.drawString(manager.getNamePlayer2(), 400.0f, 30.0f);
+
+            } else {
+                g.drawString("Team 2 HP: ", 400.0f, 30.0f);
+            }
             g.setColor(Color.green);
             g.fillRect(490.0f, 25.0f, 250f * healthScale2, 20.0f);
 
@@ -331,7 +343,7 @@ public class Game_StateBasedGame extends BasicGameState {
             timeOutP1 = 0;
         }
 
-        if (player.intersectWithBox() || player.intersectWithWall()|| player.intersectWithPlayer()) {
+        if (player.intersectWithBox() || player.intersectWithWall() || player.intersectWithPlayer()) {
             player.setPosition(hposx, hposy);
         }
 

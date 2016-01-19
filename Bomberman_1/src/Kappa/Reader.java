@@ -17,9 +17,10 @@ public class Reader{
     static SocketChannel sChannel;
     public static void main(String[] args)
             throws IOException, ClassNotFoundException {
-        String[] arguments = new String[2];
-        arguments[0] = "localgame";
-        arguments[1] = "192.168.1.62";
+        String[] arguments = new String[3];
+        arguments[0] = "host";
+        arguments[1] = InetAddress.getLocalHost().getHostAddress();
+        arguments[2] = "Jeffrey";
         bomberman.Bomberman.main(arguments);
 //        System.out.println("Receiver Start");
 //
