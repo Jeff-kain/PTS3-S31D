@@ -6,7 +6,7 @@
 <?import java.lang.*?>
 <?import javafx.scene.layout.*?>
 
-<GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" fx:controller="portal.Controllers.LobbyController" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8">
+<GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="portal.Controllers.LobbyController">
   <columnConstraints>
     <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
   </columnConstraints>
@@ -17,7 +17,7 @@
       <RowConstraints maxHeight="-Infinity" minHeight="10.0" prefHeight="45.0" vgrow="SOMETIMES" />
   </rowConstraints>
    <children>
-      <Label text="LobbyName">
+      <Label fx:id="lblLobbyName" text="LobbyName">
          <GridPane.margin>
             <Insets left="10.0" />
          </GridPane.margin>
@@ -26,7 +26,7 @@
          </font>
       </Label>
       <ListView fx:id="lvwPlayers" prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="2" />
-      <Button fx:id="btnStartGame" disable="true" mnemonicParsing="false" text="Start Game" GridPane.rowIndex="3">
+      <Button fx:id="btnStartGame" disable="true" mnemonicParsing="false" onAction="#startGame" text="Start Game" GridPane.rowIndex="3">
          <GridPane.margin>
             <Insets left="10.0" />
          </GridPane.margin>
@@ -36,7 +36,7 @@
             <Insets left="96.0" />
          </GridPane.margin>
       </Button>
-      <Label fx:id="lblLobbyName" text="Players" GridPane.rowIndex="1">
+      <Label text="Players" GridPane.rowIndex="1">
          <padding>
             <Insets left="10.0" />
          </padding>

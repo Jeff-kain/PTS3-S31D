@@ -4,15 +4,16 @@ import com.sun.org.apache.xpath.internal.operations.Bool;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.ListCell;
-import javafx.scene.control.ListView;
+import javafx.scene.control.*;
 import portal.Administration;
 
+import java.io.IOException;
+import java.net.InetAddress;
 import java.net.URL;
+import java.net.UnknownHostException;
 import java.rmi.RemoteException;
 import java.util.ResourceBundle;
 import java.util.Timer;
@@ -37,8 +38,6 @@ public class LobbyController implements Initializable{
         admin = Administration.getInstance();
 
         try {
-            System.out.println("FooBar");
-
             if(admin.getHostedLobby() != null) {
                 lblLobbyName.setText("Lobby: " + admin.getHostedLobby().getName());
                 host = true;
@@ -70,23 +69,34 @@ public class LobbyController implements Initializable{
 
     private void updatePlayers() {
         Timer timer = new Timer();
+        Boolean started = false;
 
         timer.schedule(new TimerTask() {
             @Override
             public void run() {
                 Platform.runLater(() -> {
+
+
                     try {
-                        System.out.println("Timer");
                         observablePlayers.clear();
 
                         if(host) {
                             observablePlayers.addAll(admin.getHostedLobby().getPlayers());
+
+                            if(observablePlayers.size() == 2) {
+                                btnStartGame.setDisable(false);
+                            }
+
                         } else {
                             observablePlayers.addAll(admin.getSelectedLobby().getPlayers());
-                        }
 
-                        if(observablePlayers.size() == 2) {
-                            btnStartGame.setDisable(false);
+                            if(!started) {
+                                if (admin.getSelectedLobby().getGameStarted()) {
+                                    System.out.println("Started");
+                                    launchExecutable();
+                                    timer.cancel();
+                                }
+                            }
                         }
                     }
                     catch (RemoteException e) {
@@ -95,5 +105,54 @@ public class LobbyController implements Initializable{
                 });
             }
         }, 0, 1000);
+    }
+
+    public void startGame(Event evt) {
+        try {
+
+            if(admin.getHostedLobby().startGame()) {
+                System.out.println("Starting game...");
+                launchExecutable();
+
+            }
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void launchExecutable() {
+
+        String mode = "";
+        String hostIp = "";
+        String username = admin.getUsername();
+        if(host) {
+            try {
+                mode = "host";
+
+                hostIp = InetAddress.getLocalHost().getHostAddress();
+            } catch (UnknownHostException e) {
+                Alert alert = new Alert(Alert.AlertType.ERROR, "Host IP is unknown. \nTry again later.");
+                alert.showAndWait();
+            }
+        } else {
+            mode = "client";
+            try {
+                hostIp = admin.getSelectedLobby().getHostIp();
+            } catch (RemoteException e) {
+                Alert alert = new Alert(Alert.AlertType.ERROR, "Host IP is unknown. \nTry again later.");
+                alert.showAndWait();
+            }
+        }
+
+        String argss[] = {"java", "-jar", "Bomberman_1.jar", mode, hostIp, username};
+        ProcessBuilder builder = new ProcessBuilder(argss).inheritIO();
+        try {
+            final Process process = builder.start();
+
+            // qq.waitFor();
+        } catch (IOException ex) {
+            ex.printStackTrace();
+
+        }
     }
 }

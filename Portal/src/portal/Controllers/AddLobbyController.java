@@ -13,7 +13,9 @@ import portal.Administration;
 import portalserver.interfaces.IHost;
 import portalserver.interfaces.IPortal;
 
+import java.net.InetAddress;
 import java.net.URL;
+import java.net.UnknownHostException;
 import java.rmi.RemoteException;
 import java.util.ResourceBundle;
 
@@ -55,10 +57,12 @@ public class AddLobbyController implements Initializable{
     public void saveLobby(Event evt) {
         if(tfdName.getText() != "") {
             try {
-                IHost hostedLobby = portal.createLobby(admin.getUsername(),admin.getPassword(), admin.getSelectedGame(), tfdName.getText(), tfdPassword.getText());
+                IHost hostedLobby = portal.createLobby(admin.getUsername(),admin.getPassword(), admin.getSelectedGame(), tfdName.getText(), tfdPassword.getText(), InetAddress.getLocalHost().getHostAddress());
                 admin.setHostedLobby(hostedLobby);
                 ((Stage)lblGame.getScene().getWindow()).close();
             } catch (RemoteException e) {
+                e.printStackTrace();
+            } catch (UnknownHostException e) {
                 e.printStackTrace();
             }
         }

@@ -182,7 +182,6 @@ public class MainWindowController implements Initializable {
             List<ILobby> lobbies = admin.getPortal().getLobbies(admin.getUsername(), admin.getPassword(), newValue);
 
             for (ILobby lobby : lobbies) {
-                System.out.println(lobby.getName());
                 observableLobbies.add(lobby.getName());
                 lobbiesHashMap.put(lobby.getName(), lobby);
             }
@@ -230,10 +229,6 @@ public class MainWindowController implements Initializable {
             IPlayer player = lobby.joinGame(admin.getUsername(), admin.getPassword());
 
             List<String> bla = player.getPlayers();
-
-            for (String b : bla) {
-                System.out.println(b);
-            }
 
             showLobbiesWindow();
         } catch (RemoteException e) {
@@ -399,8 +394,6 @@ public class MainWindowController implements Initializable {
 
         Parent root = null;
         try {
-
-            System.out.println("Pad: " + getClass().getResource("AddLobby.fxml"));
             root = FXMLLoader.load(getClass().getResource("AddLobby.fxml"));
         } catch (IOException e) {
             e.printStackTrace();
@@ -428,8 +421,6 @@ public class MainWindowController implements Initializable {
         Stage stage = new Stage();
         Parent root = null;
         try {
-
-            System.out.println("Pad: " + getClass().getResource("Leaderboard.fxml"));
             root = FXMLLoader.load(getClass().getResource("Leaderboard.fxml"));
         } catch (IOException e) {
             e.printStackTrace();
@@ -476,8 +467,6 @@ public class MainWindowController implements Initializable {
         });
 
         try {
-
-            System.out.println("Pad: " + getClass().getResource("Lobby.fxml"));
             root = FXMLLoader.load(getClass().getResource("Lobby.fxml"));
         } catch (IOException e) {
             e.printStackTrace();

@@ -172,9 +172,6 @@ public class DatabaseConnection {
         try {
             boolean isOpen = open();
             if (isOpen) {
-                System.out.println(username);
-                System.out.println(password);
-
                 ResultSet rs;
                 Statement stat;
                 String query = "SELECT * FROM USERS WHERE NAME ='" + username + "' AND PASSWORD = '" + password + "';";
@@ -185,7 +182,6 @@ public class DatabaseConnection {
                 while (rs.next()) {
                     int id = rs.getInt("ID");
                     String name = rs.getString("NAME");
-                    System.out.println("User" + id + " - " + name);
 
                     return new User(id, name);
                 }

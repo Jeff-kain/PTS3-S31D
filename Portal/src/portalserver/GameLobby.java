@@ -1,5 +1,6 @@
 package portalserver;
 
+import com.sun.org.apache.xpath.internal.operations.Bool;
 import database.DatabaseConnection;
 import portal.Models.Game;
 import portalserver.interfaces.IHost;
@@ -8,6 +9,7 @@ import portalserver.interfaces.IPlayer;
 
 import java.io.IOException;
 import java.io.Serializable;
+import java.net.InetAddress;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
@@ -23,9 +25,12 @@ public class GameLobby extends UnicastRemoteObject implements IHost, IPlayer, IL
     private Game game;
     private String name;
     private String lobbypassword;
+    private Boolean gameStarted;
     private DatabaseConnection databaseConnection;
 
-    public GameLobby(String username, String password, Game game, String lobbyname, String lobbypassword) throws RemoteException {
+    private String hostIp;
+
+    public GameLobby(String username, String password, Game game, String lobbyname, String lobbypassword, String hostIp) throws RemoteException {
         try {
             databaseConnection = DatabaseConnection.getInstance();
         } catch (IOException e) {
@@ -35,10 +40,9 @@ public class GameLobby extends UnicastRemoteObject implements IHost, IPlayer, IL
         this.game = game;
         this.name = lobbyname;
         this.lobbypassword = lobbypassword;
-            System.out.println(username);
-            System.out.println(password);
-            host = databaseConnection.getUser(username, password);
-            System.out.println(host.getName());
+        this.hostIp = hostIp;
+        this.gameStarted = false;
+        host = databaseConnection.getUser(username, password);
 
         players = new ArrayList<>();
 
@@ -52,6 +56,14 @@ public class GameLobby extends UnicastRemoteObject implements IHost, IPlayer, IL
     @Override
     public String getName() throws RemoteException {
         return name;
+    }
+
+    public String getHostIp() {
+        return hostIp;
+    }
+
+    public Boolean getGameStarted() throws RemoteException {
+        return gameStarted;
     }
 
     public String getLobbypassword() {
@@ -69,7 +81,6 @@ public class GameLobby extends UnicastRemoteObject implements IHost, IPlayer, IL
             if(players.size() == 0) {
                 System.out.println("First player");
                 players.add(player);
-                System.out.println(players.size());
                 return this;
             } else {
                 for(User p: players) {
@@ -116,13 +127,21 @@ public class GameLobby extends UnicastRemoteObject implements IHost, IPlayer, IL
     }
 
     @Override
+    public Boolean startGame() throws RemoteException {
+        if(players.size() == 2) {
+            gameStarted = true;
+        }
+
+        System.out.println(host.getName() + " started the game in lobby " + name);
+
+        return gameStarted;
+    }
+
+    @Override
     public List<String> getPlayers() throws RemoteException {
-        System.out.println("Host: " + host.getName());
-        System.out.println("getPlayers() " + players.size());
         List<String> playerNames = new ArrayList<>();
 
         for (User player: players) {
-            System.out.println("Player " + player.getName());
             playerNames.add(player.getName());
         }
 
