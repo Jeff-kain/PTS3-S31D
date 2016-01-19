@@ -77,6 +77,7 @@ public class HostServer extends UnicastRemoteObject implements IRemoteHost {
             // service = (IRemoteClient) LocateRegistry
             // .getRegistry("hostip", 1099).lookup(strService);
             service = (IRemoteClient) Naming.lookup(strService);
+            manager.setNamePlayer2(service.getHostName());
         } catch (MalformedURLException e) {
             e.printStackTrace();
         } catch (NotBoundException e) {
@@ -127,5 +128,10 @@ public class HostServer extends UnicastRemoteObject implements IRemoteHost {
         }
         System.out.println("false translate");
         return 0;
+    }
+
+    @Override
+    public String getClientName() throws RemoteException {
+        return manager.getNamePlayer1();
     }
 }

@@ -62,10 +62,10 @@ public class Manager implements Serializable{
     String levelpath = "data/levels/level_1.bml";
     String levelname = "";
     String message2P;
-    String namePlayer1 = "Spieler 1";
-    String namePlayer2 = "Spieler 2";
-    String namePlayer3 = "Spieler 3";
-    String namePlayer4 = "Spieler 4";
+    String namePlayer1;
+    String namePlayer2;
+    String namePlayer3;
+    String namePlayer4;
 
     Registry registry = null;
 

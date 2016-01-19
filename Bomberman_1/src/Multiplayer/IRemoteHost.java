@@ -17,6 +17,8 @@ public interface IRemoteHost extends Remote {
 
     public static final int UP = 1, LEFT = 2, DOWN = 3, RIGHT = 4, BOMB = 5;
 
+    public String getClientName() throws RemoteException;
+
     public void joingame(String strService) throws RemoteException;
 
     public void movep2c(int direction, float x, float y) throws RemoteException;

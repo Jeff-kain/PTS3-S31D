@@ -32,7 +32,7 @@ public class Client extends UnicastRemoteObject implements IRemoteClient {
     public Client(int regport, String servicename, String hostservice) throws RemoteException {
         String strService = publishClient(regport, servicename);
         service = retrieveService(hostservice);
-       // service = retrieveService("rmi://" + "145.93.64.173" + ":" + 1090 + "/host");
+        // service = retrieveService("rmi://" + "145.93.64.173" + ":" + 1090 + "/host");
         System.out.println(hostservice);
         manager.setRemotehost(service);
         service.joingame(strService);
@@ -71,6 +71,8 @@ public class Client extends UnicastRemoteObject implements IRemoteClient {
         IRemoteHost service_ = null;
         try {
             service_ = (IRemoteHost) Naming.lookup(hostservice);
+            manager.setNamePlayer1(service_.getClientName());
+
         } catch (MalformedURLException e) {
             e.printStackTrace();
         } catch (RemoteException e) {
@@ -94,9 +96,9 @@ public class Client extends UnicastRemoteObject implements IRemoteClient {
     @Override
     public void movep2h(int direction, float x, float y) throws RemoteException {
         direction = translate(direction);
-        ((Player) (Game.getInstance().getAllPlayers().get(0))).moveremote(direction,x ,y);    }
-    
-    
+        ((Player) (Game.getInstance().getAllPlayers().get(0))).moveremote(direction, x, y);
+    }
+
     public int translate(int direction) {
         System.out.println("client: translate: " + direction);
 
@@ -113,6 +115,11 @@ public class Client extends UnicastRemoteObject implements IRemoteClient {
         }
         System.out.println("false translate");
         return 0;
+    }
+
+    @Override
+    public String getHostName() throws RemoteException {
+        return manager.getNamePlayer2();
     }
 
 }

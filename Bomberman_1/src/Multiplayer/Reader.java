@@ -13,23 +13,26 @@ import java.net.InetAddress;
  * @author jeffrey
  */
 public class Reader {
-        public static void main(String[] args) throws IOException {
-        System.out.println("Reader Start");
-        String hostIP = InetAddress.getLocalHost().getHostAddress();
-        String hostservice = ("rmi://" + hostIP+":"+1100+"/host");
-        Client client = new Client(1090, "client", hostservice);
-//        int port = 12345;
-//        ssChannel.socket().bind(new InetSocketAddress(port));
+
+   
+
+    public static void main(String[] args)
+            throws IOException, ClassNotFoundException {
+        String[] arguments = new String[3];
+        arguments[0] = "host";
+        arguments[1] = InetAddress.getLocalHost().getHostAddress();
+        arguments[2] = "Jeffrey";
+        bomberman.Bomberman.main(arguments);
+//        System.out.println("Receiver Start");
 //
-//        Positie obj2 = new Positie(4, 5, 6);
-//        while (true) {
-//            SocketChannel sChannel = ssChannel.accept();
-//
-//            ObjectOutputStream oos = new ObjectOutputStream(sChannel.socket().getOutputStream());
-//            oos.writeObject(obj2.objecten);
-//            oos.close();
-//
-//            System.out.println("Connection ended");
-//        }
+//        sChannel = SocketChannel.open();
+//        sChannel.configureBlocking(true);
+//            if (sChannel.connect(new InetSocketAddress(InetAddress.getLocalHost(), 12345))) {
+//                User user = new User();
+//            }
+//        System.out.println("End Receiver");
     }
+//        }
 }
+
+

@@ -25,6 +25,7 @@ import portalserver.interfaces.IPlayer;
 
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.InetAddress;
@@ -38,6 +39,7 @@ import java.util.List;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JFrame;
 
 import static portal.Portal.Stage;
 
@@ -194,22 +196,31 @@ public class MainWindowController implements Initializable {
         showLeaderboardWindow();
     }
 
-    public void playOffline(Event evt) {
+    public void playOffline() throws InterruptedException, UnknownHostException {
 
-        String ip = null;
-        
-        try {
-            ip = InetAddress.getLocalHost().getHostAddress();
-        } catch (UnknownHostException ex) {
-            Logger.getLogger(MainWindowController.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        
-        String argss[] = {"java", "-jar", "Bomberman_1.jar", "host", ip};
+//        Runtime.getRuntime().wait();
+//        Process p;
+//        try {
+//            p = Runtime.getRuntime().exec("java -jar Bomberman_1.jar localgame 192");
+//        } catch (Exception e) {
+//        }
+////            ProcessBuilder pb = new ProcessBuilder("java -jar Bomberman_1.jar");
+////            Process p1 = pb.start();
+////        } catch (IOException ex) {
+////            Logger.getLogger(JavaApplication10.class.getName()).log(Level.SEVERE, null, ex);
+////        }
+//        Thread startLocal = new Thread(new JavaApplication10());
+//        startLocal.start();
+        //String argss[] = {"java", "-jar", "Bomberman_1.jar", "host", InetAddress.getLocalHost().getHostAddress()};
+        String argss[] = {"java", "-jar", "Bomberman_1.jar", "localgame", InetAddress.getLocalHost().getHostAddress(), Administration.getInstance().getUsername()};
         ProcessBuilder builder = new ProcessBuilder(argss).inheritIO();
         try {
-            Process qq = builder.start();
+            final Process process = builder.start();
+
+            // qq.waitFor();
         } catch (IOException ex) {
             ex.printStackTrace();
+
         }
     }
 
