@@ -296,9 +296,16 @@ public class Player implements IGameObject, Serializable {
                 if (manager.isBoolClient()) {
 
                     manager.getRemotehost().movep2c(direction, this.x, this.y);
+                    if (manager.getRemoteSpectate() != null) {
+                        manager.getRemoteSpectate().movep2c(direction, this.x, this.y);
+                    }
                 } else {
 
                     manager.getRemoteclient().movep2h(direction, this.x, this.y);
+                    if (manager.getRemoteSpectate() != null) {
+                        manager.getRemoteSpectate().movep2h(direction, this.x, this.y);
+
+                    }
                 }
             }
 

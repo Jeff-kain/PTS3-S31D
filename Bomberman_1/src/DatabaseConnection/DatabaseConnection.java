@@ -20,11 +20,10 @@ public class DatabaseConnection {
 
     String url = "jdbc:mysql://localhost:3306/";
     String dbName = "bomberman";
-    
-     String driver = "com.mysql.jdbc.Driver";
-     String username = "root";
-     String password = "Retarded";
-    
+
+    String driver = "com.mysql.jdbc.Driver";
+    String username = "root";
+    String password = "Retarded";
 
     Connection conn;
 
@@ -60,10 +59,9 @@ public class DatabaseConnection {
 
         return null;
     }
-    
-    public void saveDatabaseProperties(String url, String user, String pass) throws IOException
-    {
-      
+
+    public void saveDatabaseProperties(String url, String user, String pass) throws IOException {
+
         Properties props = new Properties();
         props.setProperty("jdbc.url", url);
         props.setProperty("jdbc.user", user);

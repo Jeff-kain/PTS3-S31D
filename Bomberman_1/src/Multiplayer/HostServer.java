@@ -34,6 +34,7 @@ public class HostServer extends UnicastRemoteObject implements IRemoteHost {
     String hostservice;
     Registry registry;
     IRemoteClient service = null;
+    ISpectate spectator = null;
     private ArrayList<IGameObject> gameObjects = new ArrayList<>();
     Manager manager = Manager.getManager();
 
@@ -66,7 +67,6 @@ public class HostServer extends UnicastRemoteObject implements IRemoteHost {
         }
     }
 
-
     public void retrieveClientService(String strService) {
         // System.out.println("fetch:    rmi://" + IRemoteClient.clientname +
         // ":"
@@ -78,6 +78,27 @@ public class HostServer extends UnicastRemoteObject implements IRemoteHost {
             // .getRegistry("hostip", 1099).lookup(strService);
             service = (IRemoteClient) Naming.lookup(strService);
             manager.setNamePlayer2(service.getHostName());
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        } catch (NotBoundException e) {
+            System.out.println("Client did not yet publish.");
+            e.printStackTrace();
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void retrieveSpectateService(String strService) {
+        // System.out.println("fetch:    rmi://" + IRemoteClient.clientname +
+        // ":"
+        // + IRemoteClient.registryPort + "/" + IRemoteClient.servicename);
+        try {
+
+            // besser ist folgendes:
+            // service = (IRemoteClient) LocateRegistry
+            // .getRegistry("hostip", 1099).lookup(strService);
+            spectator = (ISpectate) Naming.lookup(strService);
+
         } catch (MalformedURLException e) {
             e.printStackTrace();
         } catch (NotBoundException e) {
@@ -106,7 +127,7 @@ public class HostServer extends UnicastRemoteObject implements IRemoteHost {
     @Override
     public void movep2c(int direction, float x, float y) throws RemoteException {
         direction = translate(direction);
-       ((Player) (Game.getInstance().getAllPlayers().get(1))).moveremote(direction,x ,y);    
+        ((Player) (Game.getInstance().getAllPlayers().get(1))).moveremote(direction, x, y);
 
 //        Game.getInstance().getPlayer1().get(0).moveremote(direction, x, y);
 //        Game.getInstance().getPlayer2().get(0).moveremote(direction, x, y);
@@ -133,5 +154,13 @@ public class HostServer extends UnicastRemoteObject implements IRemoteHost {
     @Override
     public String getClientName() throws RemoteException {
         return manager.getNamePlayer1();
+    }
+
+    @Override
+    public void spectategame(String strService) throws RemoteException {
+        retrieveSpectateService(strService);
+        manager.setRemoteSpectate(spectator);
+        System.out.println(service + " is spectating");
+
     }
 }

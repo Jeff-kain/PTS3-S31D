@@ -324,7 +324,7 @@ public class Game_StateBasedGame extends BasicGameState {
                 }
             }
 
-            if (gc.getInput().isKeyPressed(Input.KEY_ENTER)) {
+            if (gc.getInput().isKeyPressed(Input.KEY_ENTER) && player.getVisible()) {
                 Bomb b = new Bomb(sprites, player.getX(), player.getY(), player.getBombRange());
 
                 if (playground.getBombs().size() < player.getBombCount()) {
@@ -379,7 +379,7 @@ public class Game_StateBasedGame extends BasicGameState {
                     }
                 }
 
-                if (gc.getInput().isKeyPressed(Input.KEY_SPACE)) {
+                if (gc.getInput().isKeyPressed(Input.KEY_SPACE) && player2.getVisible()) {
                     Bomb b = new Bomb(sprites, player2.getX(), player2.getY(), player2.getBombRange());
 
                     if (playground.getBombs2().size() < player2.getBombCount()) {
