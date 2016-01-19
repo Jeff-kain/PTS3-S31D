@@ -51,13 +51,16 @@ public class Spectate extends UnicastRemoteObject implements ISpectate {
     IRemoteClient serviceClient;
     Manager manager = Manager.getManager();
 
-    public Spectate(int regport, String servicename, String hostservice) throws RemoteException {
+    public Spectate(int regport, String servicename, String hostservice, String clientservice) throws RemoteException {
         String strService = publishClient(regport, servicename);
         service = retrieveService(hostservice);
+        serviceClient = retrieveClientService(clientservice);
         // service = retrieveService("rmi://" + "145.93.64.173" + ":" + 1090 + "/host");
         System.out.println(hostservice);
         manager.setRemotehost(service);
+        manager.setRemoteclient(serviceClient);
         service.spectategame(strService);
+        serviceClient.spectategame(strService);
     }
 
     public String publishClient(int registryPort, String servicename)
@@ -104,7 +107,7 @@ public class Spectate extends UnicastRemoteObject implements ISpectate {
         return service_;
     }
 
-    public void retrieveClientService(String strService) {
+    public IRemoteClient retrieveClientService(String strService) {
         // System.out.println("fetch:    rmi://" + IRemoteClient.clientname +
         // ":"
         // + IRemoteClient.registryPort + "/" + IRemoteClient.servicename);
@@ -123,6 +126,7 @@ public class Spectate extends UnicastRemoteObject implements ISpectate {
         } catch (RemoteException e) {
             e.printStackTrace();
         }
+        return serviceClient;
     }
 
     @Override

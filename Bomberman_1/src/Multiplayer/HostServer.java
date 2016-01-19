@@ -88,27 +88,6 @@ public class HostServer extends UnicastRemoteObject implements IRemoteHost {
         }
     }
 
-    public void retrieveSpectateService(String strService) {
-        // System.out.println("fetch:    rmi://" + IRemoteClient.clientname +
-        // ":"
-        // + IRemoteClient.registryPort + "/" + IRemoteClient.servicename);
-        try {
-
-            // besser ist folgendes:
-            // service = (IRemoteClient) LocateRegistry
-            // .getRegistry("hostip", 1099).lookup(strService);
-            spectator = (ISpectate) Naming.lookup(strService);
-
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
-        } catch (NotBoundException e) {
-            System.out.println("Client did not yet publish.");
-            e.printStackTrace();
-        } catch (RemoteException e) {
-            e.printStackTrace();
-        }
-    }
-
     public Registry getRegistry() {
         return registry;
     }
@@ -154,6 +133,27 @@ public class HostServer extends UnicastRemoteObject implements IRemoteHost {
     @Override
     public String getClientName() throws RemoteException {
         return manager.getNamePlayer1();
+    }
+
+    public void retrieveSpectateService(String strService) {
+        // System.out.println("fetch:    rmi://" + IRemoteClient.clientname +
+        // ":"
+        // + IRemoteClient.registryPort + "/" + IRemoteClient.servicename);
+        try {
+
+            // besser ist folgendes:
+            // service = (IRemoteClient) LocateRegistry
+            // .getRegistry("hostip", 1099).lookup(strService);
+            spectator = (ISpectate) Naming.lookup(strService);
+
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        } catch (NotBoundException e) {
+            System.out.println("Client did not yet publish.");
+            e.printStackTrace();
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override

@@ -1,4 +1,6 @@
-package Kappa; /**
+package Kappa;
+
+/**
  * Created by Ferhat on 8-12-2015.
  */
 
@@ -13,14 +15,18 @@ import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class Reader{
+public class Reader {
+
     static SocketChannel sChannel;
+
     public static void main(String[] args)
             throws IOException, ClassNotFoundException {
-        String[] arguments = new String[3];
-        arguments[0] = "localgame";
+        String[] arguments = new String[5];
+        arguments[0] = "spectate";
         arguments[1] = InetAddress.getLocalHost().getHostAddress();
         arguments[2] = "Jeffrey";
+        arguments[3] = InetAddress.getLocalHost().getHostAddress();
+        arguments[4] = InetAddress.getLocalHost().getHostAddress();
         bomberman.Bomberman.main(arguments);
 //        System.out.println("Receiver Start");
 //
@@ -31,6 +37,5 @@ public class Reader{
 //            }
 //        System.out.println("End Receiver");
     }
-    
-}
 
+}
