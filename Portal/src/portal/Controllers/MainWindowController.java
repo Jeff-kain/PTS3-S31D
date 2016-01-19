@@ -285,9 +285,7 @@ public class MainWindowController implements Initializable {
                     writer = new PrintWriter(sock.getOutputStream());
                     writer.println(username + ":has connected.:Connect");
                     writer.flush();
-
                     isConnected = true;
-
                 } catch (IOException e) {
                     System.out.println(e.getMessage());
                     e.printStackTrace();

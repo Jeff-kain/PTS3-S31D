@@ -142,7 +142,7 @@ public class Bomb implements IGameObject, Serializable {
                 int tileid = 0;
                 while (travelled < range) {
 
-                    if (!intersectWithBox() && !intersectWithWall() && boxCollided == false) {
+                    if (!intersectWithBox() && !intersectWithWall() && !intersectWithCastle() && boxCollided == false) {
                         switch (direction) {
                             case 1:
                                 tileid = game.playground().getMap().getTileId(Math.round(oldposX / 48), Math.round(oldposY / 48) - 1, 1);
@@ -203,7 +203,6 @@ public class Bomb implements IGameObject, Serializable {
                         }
                         moving = false;
                         isKicked = true;
-
                         break;
 
                     }
@@ -400,6 +399,16 @@ public class Bomb implements IGameObject, Serializable {
             if (w.intersects(this)) {
                 return true;
             }
+        }
+        return false;
+    }
+
+    public boolean intersectWithCastle() {
+        if (game.getTeam1().intersects(this)) {
+            return true;
+        }
+        if (game.getTeam2().intersects(this)) {
+            return true;
         }
         return false;
     }
