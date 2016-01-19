@@ -1,5 +1,6 @@
 package portal.Controllers;
 
+import com.sun.org.apache.xpath.internal.operations.Bool;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -29,6 +30,7 @@ public class LobbyController implements Initializable{
 
     ObservableList<String> observablePlayers;
     Administration admin;
+    Boolean host = false;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -39,6 +41,7 @@ public class LobbyController implements Initializable{
 
             if(admin.getHostedLobby() != null) {
                 lblLobbyName.setText("Lobby: " + admin.getHostedLobby().getName());
+                host = true;
             }
 
             else {
@@ -76,7 +79,7 @@ public class LobbyController implements Initializable{
                         System.out.println("Timer");
                         observablePlayers.clear();
 
-                        if(admin.getSelectedLobby() == null) {
+                        if(host) {
                             observablePlayers.addAll(admin.getHostedLobby().getPlayers());
                         } else {
                             observablePlayers.addAll(admin.getSelectedLobby().getPlayers());

@@ -11,4 +11,6 @@ public interface IHost extends Remote {
     String getName() throws RemoteException;
 
     List<String> getPlayers() throws RemoteException;
+
+    void leaveGame(String username, String password) throws  RemoteException;
 }

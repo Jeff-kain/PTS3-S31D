@@ -196,18 +196,21 @@ public class MainWindowController implements Initializable {
 
     public void playOffline(Event evt) {
 
-//        Process p;
-//        try {
-//            p = Runtime.getRuntime().exec("java -jar Bomberman_1.jar localgame 192");
-//        } catch (Exception e) {
-//        }
-////            ProcessBuilder pb = new ProcessBuilder("java -jar Bomberman_1.jar");
-////            Process p1 = pb.start();
-////        } catch (IOException ex) {
-////            Logger.getLogger(JavaApplication10.class.getName()).log(Level.SEVERE, null, ex);
-////        }
-        Thread startLocal = new Thread(new JavaApplication10());
-        startLocal.start();
+        String ip = null;
+        
+        try {
+            ip = InetAddress.getLocalHost().getHostAddress();
+        } catch (UnknownHostException ex) {
+            Logger.getLogger(MainWindowController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        String argss[] = {"java", "-jar", "Bomberman_1.jar", "host", ip};
+        ProcessBuilder builder = new ProcessBuilder(argss).inheritIO();
+        try {
+            Process qq = builder.start();
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
     }
 
     public void joinLobby(Event evt) {
@@ -229,7 +232,7 @@ public class MainWindowController implements Initializable {
 
     public void onExit(Event evt) {
         userDisconnect();
-        admin.setUsername("Null");
+        admin.setUsername(null);
         Stage stage = LoginController.stage;
         stage.setOnCloseRequest(e -> Platform.exit());
         System.exit(0);
@@ -346,24 +349,6 @@ public class MainWindowController implements Initializable {
         isConnected = false;
     }
 
-    private static class localgame implements Runnable {
-
-        @Override
-        public void run() {
-            String argss[] = {"java", "-jar", "Bomberman_1.jar", "localgame", "192"};
-            ProcessBuilder builder = new ProcessBuilder(argss);
-            try {
-                builder.redirectErrorStream(true);
-                Process qq = builder.start();
-                qq.waitFor();
-            } catch (IOException ex) {
-                ex.printStackTrace();
-            } catch (InterruptedException ex) {
-                Logger.getLogger(MainWindowController.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        }
-    }
-
     public class IncomingReader implements Runnable {
 
         @Override
@@ -462,6 +447,15 @@ public class MainWindowController implements Initializable {
             @Override
             public void handle(WindowEvent event) {
                 System.out.println("Closed!");
+                if(admin.getHostedLobby() != null) {
+                    try {
+                        admin.getHostedLobby().leaveGame(admin.getUsername(), admin.getPassword());
+                        admin.setHostedLobby(null);
+                    } catch (RemoteException e) {
+                        e.printStackTrace();
+                    }
+                }
+
                 try {
                     admin.getSelectedLobby().leaveGame(admin.getUsername(), admin.getPassword());
                 } catch (RemoteException e) {
