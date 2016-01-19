@@ -311,4 +311,36 @@ public class DatabaseConnection {
         }
         return null;
     }
+        
+    public void updateLeaderboard(String userName, boolean wonGame) throws SQLException {
+
+        Score s = null;
+        ResultSet rs;
+        Statement stat;
+        String query;
+
+        try {
+            boolean isOpen = open();
+            if (isOpen) {
+            if(wonGame) {
+
+                query = "UPDATE Leaderboard lb, Users u, Games g " +
+                                "SET lb.Wins=value + 1, lb.Loses= value " +
+                "WHERE id_User = id AND g.id = lb.id_game AND u.Name = '" + userName + "'";
+            } else {
+                query = "UPDATE Leaderboard lb, Users u, Games g " +
+                                "SET lb.Wins=value, lb.Loses= value  + 1 " +
+                "WHERE id_User = id AND g.id = lb.id_game AND u.Name = '" + userName + "'";
+            }
+                stat = conn.prepareStatement(query);
+                rs = stat.executeQuery(query);
+            }
+        }
+        catch(SQLException e) {
+            e.printStackTrace();
+        }
+        finally{
+            close();
+        }
+    }
 }

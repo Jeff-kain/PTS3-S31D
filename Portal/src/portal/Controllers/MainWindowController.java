@@ -216,7 +216,6 @@ public class MainWindowController implements Initializable {
         ProcessBuilder builder = new ProcessBuilder(argss).inheritIO();
         try {
             final Process process = builder.start();
-
             // qq.waitFor();
         } catch (IOException ex) {
             ex.printStackTrace();
