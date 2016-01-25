@@ -35,11 +35,14 @@ public class LobbyController implements Initializable, ChangeListener{
     @FXML Button btnStartGame;
     @FXML Button btnCancel;
     @FXML ListView<String> lvwPlayers;
+    @FXML ListView<String> lvwSpectators;
     Timer timer;
 
     ObservableList<String> observablePlayers;
+    ObservableList<String> observableSpectators;
     Administration admin;
     Boolean host = false;
+    Boolean spectator = false;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -50,9 +53,10 @@ public class LobbyController implements Initializable, ChangeListener{
             if(admin.getHostedLobby() != null) {
                 lblLobbyName.setText("Lobby: " + admin.getHostedLobby().getName());
                 host = true;
-            }
-
-            else {
+            } else if (admin.getSpectatingLobby() != null) {
+                lblLobbyName.setText("Lobby: " + admin.getSpectatingLobby().getName());
+                spectator = true;
+            } else {
                 lblLobbyName.setText("Lobby: " + admin.getSelectedLobby().getName());
             }
 
@@ -61,13 +65,20 @@ public class LobbyController implements Initializable, ChangeListener{
         }
 
         observablePlayers = FXCollections.observableArrayList();
+        observableSpectators = FXCollections.observableArrayList();
         lvwPlayers.setItems(observablePlayers);
+        lvwSpectators.setItems(observableSpectators);
 
         try {
-            if(admin.getSelectedLobby() == null) {
+            if(host) {
                 observablePlayers.addAll(admin.getHostedLobby().getPlayers());
+                observableSpectators.addAll(admin.getHostedLobby().getSpectators());
+            } else if(spectator) {
+                observablePlayers.addAll(admin.getSpectatingLobby().getPlayers());
+                observableSpectators.addAll(admin.getSpectatingLobby().getSpectators());
             } else {
                 observablePlayers.addAll(admin.getSelectedLobby().getPlayers());
+                observableSpectators.addAll(admin.getSelectedLobby().getSpectators());
             }
         } catch (RemoteException e) {
             e.printStackTrace();
@@ -89,17 +100,38 @@ public class LobbyController implements Initializable, ChangeListener{
 
                     try {
                         observablePlayers.clear();
+                        observableSpectators.clear();
 
                         if(host) {
                             observablePlayers.addAll(admin.getHostedLobby().getPlayers());
+                            observableSpectators.addAll(admin.getHostedLobby().getSpectators());
 
                             if(observablePlayers.size() == 2) {
                                 btnStartGame.setDisable(false);
                             }
 
+                        } else if(spectator) {
+                            try {
+                                observablePlayers.addAll(admin.getSpectatingLobby().getPlayers());
+                                observableSpectators.addAll(admin.getSpectatingLobby().getSpectators());
+
+                                if(!started) {
+                                    if (admin.getSpectatingLobby().getGameStarted()) {
+                                        System.out.println("Started");
+                                        launchExecutable();
+                                        timer.cancel();
+                                    }
+                                }
+                            } catch (NoSuchObjectException ex) {
+                                Alert alert = new Alert(Alert.AlertType.ERROR, "The host left.", ButtonType.OK);
+                                alert.show();
+                                ((Stage)lblLobbyName.getScene().getWindow()).close();
+                                stop();
+                            }
                         } else {
                             try {
                                 observablePlayers.addAll(admin.getSelectedLobby().getPlayers());
+                                observableSpectators.addAll(admin.getSelectedLobby().getSpectators());
 
                                 if(!started) {
                                     if (admin.getSelectedLobby().getGameStarted()) {
@@ -149,6 +181,7 @@ public class LobbyController implements Initializable, ChangeListener{
 
         String mode = "";
         String hostIp = "";
+        String clientIp = "";
         String username = admin.getUsername();
         if(host) {
             try {
@@ -158,6 +191,15 @@ public class LobbyController implements Initializable, ChangeListener{
             } catch (UnknownHostException e) {
                 Alert alert = new Alert(Alert.AlertType.ERROR, "Host IP is unknown. \nTry again later.");
                 
+                alert.showAndWait();
+            }
+        } else if(spectator) {
+            mode = "spectate";
+            try {
+                hostIp = admin.getSpectatingLobby().getHostIp();
+                clientIp = admin.getSpectatingLobby().getClientIp();
+            } catch (RemoteException e) {
+                Alert alert = new Alert(Alert.AlertType.ERROR, "Host IP is unknown. \nTry again later.");
                 alert.showAndWait();
             }
         } else {
@@ -170,8 +212,15 @@ public class LobbyController implements Initializable, ChangeListener{
             }
         }
 
-        String argss[] = {"java", "-jar", "Bomberman_1.jar", mode, hostIp, username};
-        ProcessBuilder builder = new ProcessBuilder(argss).inheritIO();
+        ProcessBuilder builder;
+
+        if(spectator) {
+            String argss[] = {"java", "-jar", "Bomberman_1.jar", mode, hostIp, clientIp};
+            builder = new ProcessBuilder(argss).inheritIO();
+        } else {
+            String argss[] = {"java", "-jar", "Bomberman_1.jar", mode, hostIp, username};
+            builder = new ProcessBuilder(argss).inheritIO();
+        }
         try {
             final Process process = builder.start();
 
@@ -203,6 +252,12 @@ public class LobbyController implements Initializable, ChangeListener{
                                 admin.setHostedLobby(null);
 
                                 System.out.println("Closed as host.");
+                            } catch (RemoteException e) {
+                                e.printStackTrace();
+                            }
+                        } else if(spectator) {
+                            try {
+                                admin.getSpectatingLobby().leaveGame(admin.getUsername(), admin.getPassword());
                             } catch (RemoteException e) {
                                 e.printStackTrace();
                             }

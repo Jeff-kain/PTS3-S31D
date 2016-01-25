@@ -91,16 +91,6 @@
             <Insets left="10.0" right="5.0" top="5.0" />
          </GridPane.margin>
       </TextArea>
-      <Button fx:id="btnAddLobby" disable="true" mnemonicParsing="false" onAction="#addLobby" text="Create Lobby" GridPane.columnIndex="1" GridPane.rowIndex="5">
-         <GridPane.margin>
-            <Insets left="82.0" />
-         </GridPane.margin>
-      </Button>
-      <Button fx:id="btnJoinLobby" disable="true" mnemonicParsing="false" onAction="#joinLobby" text="Join Lobby" GridPane.columnIndex="1" GridPane.rowIndex="5">
-         <GridPane.margin>
-            <Insets left="5.0" />
-         </GridPane.margin>
-      </Button>
       <Button mnemonicParsing="false" onAction="#playOffline" prefHeight="25.0" prefWidth="200.0" text="Play Offline" GridPane.hgrow="ALWAYS" GridPane.rowIndex="5">
          <GridPane.margin>
             <Insets left="7.0" right="6.0" />
@@ -114,5 +104,15 @@
             <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
          </GridPane.margin>
       </ImageView>
+      <HBox prefHeight="100.0" prefWidth="200.0" spacing="5.0" GridPane.columnIndex="1" GridPane.rowIndex="5">
+         <children>
+            <Button fx:id="btnAddLobby" disable="true" mnemonicParsing="false" onAction="#addLobby" text="Create Lobby" />
+            <Button fx:id="btnJoinLobby" disable="true" mnemonicParsing="false" onAction="#joinLobby" text="Join Lobby" />
+            <Button fx:id="btnSpectate" disable="true" mnemonicParsing="false" onAction="#spectateLobby" text="Spectate" />
+         </children>
+         <GridPane.margin>
+            <Insets left="5.0" top="5.0" />
+         </GridPane.margin>
+      </HBox>
    </children>
 </GridPane>

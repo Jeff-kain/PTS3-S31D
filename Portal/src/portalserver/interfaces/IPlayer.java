@@ -9,4 +9,6 @@ import java.util.List;
  */
 public interface IPlayer extends Remote{
     List<String> getPlayers() throws RemoteException;
+
+    List<String> getSpectators() throws RemoteException;
 }

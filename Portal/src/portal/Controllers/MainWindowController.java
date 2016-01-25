@@ -10,10 +10,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.ListView;
-import javafx.scene.control.TextArea;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
@@ -22,6 +19,7 @@ import portal.Models.Game;
 import portal.Portal;
 import portalserver.interfaces.ILobby;
 import portalserver.interfaces.IPlayer;
+import portalserver.interfaces.ISpectator;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -66,6 +64,8 @@ public class MainWindowController implements Initializable {
     @FXML
     Button btnJoinLobby;
     @FXML
+    Button btnSpectate;
+    @FXML
     TextArea taChat;
 
     private String address, username;
@@ -109,10 +109,12 @@ public class MainWindowController implements Initializable {
         lvwLobbies.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue == null) {
                 btnJoinLobby.setDisable(true);
+                btnSpectate.setDisable(true);
             } else {
                 admin.setSelectedLobby(lobbiesHashMap.get(newValue));
                 selectedLobbyName = newValue;
                 btnJoinLobby.setDisable(false);
+                btnSpectate.setDisable(false);
             }
         });
 
@@ -225,11 +227,31 @@ public class MainWindowController implements Initializable {
     public void joinLobby(Event evt) {
         ILobby lobby = lobbiesHashMap.get(lvwLobbies.getSelectionModel().getSelectedItem());
         try {
-            IPlayer player = lobby.joinGame(admin.getUsername(), admin.getPassword());
-
-            List<String> bla = player.getPlayers();
+            lobby.joinGame(admin.getUsername(), admin.getPassword(), InetAddress.getLocalHost().getHostAddress());
 
             showLobbiesWindow();
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        } catch (UnknownHostException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void spectateLobby(Event evt) {
+        ILobby lobby = lobbiesHashMap.get(lvwLobbies.getSelectionModel().getSelectedItem());
+        try {
+            ISpectator spectator = lobby.spectateGame(admin.getUsername(), admin.getUsername());
+
+            if(spectator != null) {
+                admin.setSpectatingLobby(spectator);
+
+                showLobbiesWindow();
+            } else {
+                Alert alert = new Alert(Alert.AlertType.ERROR, "Spectating game failed. Maybe the game has already started.", ButtonType.OK);
+                alert.showAndWait();
+            }
+
+
         } catch (RemoteException e) {
             e.printStackTrace();
         }

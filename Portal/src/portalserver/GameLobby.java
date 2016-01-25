@@ -6,7 +6,9 @@ import portal.Models.Game;
 import portalserver.interfaces.IHost;
 import portalserver.interfaces.ILobby;
 import portalserver.interfaces.IPlayer;
+import portalserver.interfaces.ISpectator;
 
+import javax.jws.soap.SOAPBinding;
 import java.io.IOException;
 import java.io.Serializable;
 import java.net.InetAddress;
@@ -18,10 +20,11 @@ import java.util.List;
 /**
  * Created by tverv on 12-Dec-15.
  */
-public class GameLobby extends UnicastRemoteObject implements IHost, IPlayer, ILobby, Serializable {
+public class GameLobby extends UnicastRemoteObject implements IHost, IPlayer, ISpectator, ILobby, Serializable {
 
     private User host;
     private List<User> players;
+    private List<User> spectators;
     private Game game;
     private String name;
     private String lobbypassword;
@@ -29,6 +32,7 @@ public class GameLobby extends UnicastRemoteObject implements IHost, IPlayer, IL
     private DatabaseConnection databaseConnection;
 
     private String hostIp;
+    private String clientIp;
 
     public GameLobby(String username, String password, Game game, String lobbyname, String lobbypassword, String hostIp) throws RemoteException {
         try {
@@ -45,6 +49,7 @@ public class GameLobby extends UnicastRemoteObject implements IHost, IPlayer, IL
         host = databaseConnection.getUser(username, password);
 
         players = new ArrayList<>();
+        spectators = new ArrayList<>();
 
         joinGame(username, password);
     }
@@ -61,6 +66,9 @@ public class GameLobby extends UnicastRemoteObject implements IHost, IPlayer, IL
     public String getHostIp() {
         return hostIp;
     }
+
+    @Override
+    public String getClientIp() throws RemoteException { return clientIp; }
 
     public Boolean getGameStarted() throws RemoteException {
         return gameStarted;
@@ -108,15 +116,53 @@ public class GameLobby extends UnicastRemoteObject implements IHost, IPlayer, IL
     }
 
     @Override
+    public IPlayer joinGame(String username, String password, String clientIp) throws RemoteException {
+        this.clientIp = clientIp;
+
+        return joinGame(username, password);
+    }
+
+    @Override
+    public ISpectator spectateGame(String username, String password) throws RemoteException {
+        System.out.println("Player " + username + " spectates " + name);
+
+        try {
+            databaseConnection = DatabaseConnection.getInstance();
+            User player = databaseConnection.getUser(username, password);
+
+            if(spectators.size() == 0) {
+                System.out.println("First spectator");
+                spectators.add(player);
+                return this;
+            } else {
+                for(User p: spectators) {
+                    if(p.getName().equals(username)) {
+                        System.out.println("Spectator exists");
+                        return this;
+                    } else {
+                        spectators.add(player);
+                        return this;
+                    }
+                }
+
+                return null;
+            }
+
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    @Override
     public void leaveGame(String username, String password) throws RemoteException {
         try {
             databaseConnection = DatabaseConnection.getInstance();
             User player = databaseConnection.getUser(username, password);
             System.out.println("Player " + player.getName() + " left lobby: " + name + ".");
 
-            System.out.println(players.size());
             players.remove(player);
-            System.out.println(players.size());
+            spectators.remove(player);
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -140,6 +186,17 @@ public class GameLobby extends UnicastRemoteObject implements IHost, IPlayer, IL
         List<String> playerNames = new ArrayList<>();
 
         for (User player: players) {
+            playerNames.add(player.getName());
+        }
+
+        return playerNames;
+    }
+
+    @Override
+    public List<String> getSpectators() throws RemoteException {
+        List<String> playerNames = new ArrayList<>();
+
+        for (User player: spectators) {
             playerNames.add(player.getName());
         }
 

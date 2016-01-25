@@ -1,10 +1,7 @@
 package portal;
 
 import portal.Models.Game;
-import portalserver.interfaces.IHost;
-import portalserver.interfaces.ILobby;
-import portalserver.interfaces.ILogin;
-import portalserver.interfaces.IPortal;
+import portalserver.interfaces.*;
 
 /**
  * Created by tverv on 12-Dec-15.
@@ -20,6 +17,7 @@ public class Administration {
     private Game selectedGameLeaderboard;
     private ILobby selectedLobby;
     private IHost hostedLobby;
+    private ISpectator spectatingLobby;
 
     private Administration() {
 
@@ -88,4 +86,8 @@ public class Administration {
     public IHost getHostedLobby() { return hostedLobby;  }
 
     public void setHostedLobby(IHost hostedLobby) { this.hostedLobby = hostedLobby; }
+
+    public ISpectator getSpectatingLobby() { return spectatingLobby; }
+
+    public void setSpectatingLobby(ISpectator spectatingLobby) { this.spectatingLobby = spectatingLobby; }
 }

@@ -14,6 +14,8 @@
     <RowConstraints maxHeight="-Infinity" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
       <RowConstraints maxHeight="-Infinity" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
     <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+      <RowConstraints maxHeight="-Infinity" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
       <RowConstraints maxHeight="-Infinity" minHeight="10.0" prefHeight="45.0" vgrow="SOMETIMES" />
   </rowConstraints>
    <children>
@@ -26,12 +28,12 @@
          </font>
       </Label>
       <ListView fx:id="lvwPlayers" prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="2" />
-      <Button fx:id="btnStartGame" disable="true" mnemonicParsing="false" onAction="#startGame" text="Start Game" GridPane.rowIndex="3">
+      <Button fx:id="btnStartGame" disable="true" mnemonicParsing="false" onAction="#startGame" text="Start Game" GridPane.rowIndex="5">
          <GridPane.margin>
             <Insets left="10.0" />
          </GridPane.margin>
       </Button>
-      <Button fx:id="btnCancel" mnemonicParsing="false" text="Cancel" GridPane.rowIndex="3">
+      <Button fx:id="btnCancel" mnemonicParsing="false" text="Cancel" GridPane.rowIndex="5">
          <GridPane.margin>
             <Insets left="96.0" />
          </GridPane.margin>
@@ -41,5 +43,11 @@
             <Insets left="10.0" />
          </padding>
       </Label>
+      <Label text="Spectators" GridPane.rowIndex="3">
+         <padding>
+            <Insets left="10.0" />
+         </padding>
+      </Label>
+      <ListView fx:id="lvwSpectators" prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="4" />
    </children>
 </GridPane>
