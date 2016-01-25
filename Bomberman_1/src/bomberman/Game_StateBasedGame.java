@@ -70,7 +70,7 @@ public class Game_StateBasedGame extends BasicGameState {
     private Player player;
     private Player player2;
     private Game game;
-    private StateBasedGame game1;
+    public static StateBasedGame game1;
     private float timeOutP1;
     private float timeOutP2;
     private boolean isEnded;

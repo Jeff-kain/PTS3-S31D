@@ -7,6 +7,7 @@ package Game;
 
 import Multiplayer.IRemoteClient;
 import Multiplayer.Manager;
+import bomberman.Game_StateBasedGame;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.SpriteSheet;
@@ -17,7 +18,17 @@ import powerup.Speed_Up;
 
 import java.awt.geom.Rectangle2D;
 import java.io.Serializable;
+import java.net.ConnectException;
+import java.rmi.NoSuchObjectException;
 import java.rmi.RemoteException;
+import java.rmi.server.UnicastRemoteObject;
+import java.util.Timer;
+import java.util.TimerTask;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import org.newdawn.slick.Color;
+import org.newdawn.slick.state.transition.FadeInTransition;
+import org.newdawn.slick.state.transition.FadeOutTransition;
 
 /**
  * @author jeffrey
@@ -310,7 +321,27 @@ public class Player implements IGameObject, Serializable {
             }
 
         } catch (RemoteException e) {
+            try {
+                if (manager.isBoolClient()) {
+                    UnicastRemoteObject.unexportObject(manager.getRemotehost(), true);
+                } else {
+                    UnicastRemoteObject.unexportObject(manager.getRemoteclient(), true);
+                }
+            } catch (NoSuchObjectException ex) {
+                System.out.println("Connection lost");
+
+                Game_StateBasedGame.game1.enterState(4);
+                Timer timer = new Timer();
+                timer.schedule(new TimerTask() {
+                    @Override
+                    public void run() {
+                        // Your database code here
+                    }
+                }, 5000);
+            }
             e.printStackTrace();
+        } catch (Exception ex) {
+            System.out.println(ex.getClass());
         }
     }
 
