@@ -22,11 +22,12 @@ public class Reader {
     public static void main(String[] args)
             throws IOException, ClassNotFoundException {
         String[] arguments = new String[5];
+        String ip = InetAddress.getLocalHost().getHostAddress();
         arguments[0] = "spectate";
-        arguments[1] = InetAddress.getLocalHost().getHostAddress();
+        arguments[1] = ip;
         arguments[2] = "Jeffrey";
-        arguments[3] = InetAddress.getLocalHost().getHostAddress();
-        arguments[4] = InetAddress.getLocalHost().getHostAddress();
+        arguments[3] = ip;
+        arguments[4] = ip;
         bomberman.Bomberman.main(arguments);
 //        System.out.println("Receiver Start");
 //

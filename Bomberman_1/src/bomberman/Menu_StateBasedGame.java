@@ -121,8 +121,10 @@ public class Menu_StateBasedGame extends BasicGameState {
             if (mode.equals("spectate")) {
                 manager.setBoolLAN(true);
                 try {
-                    Spectate spectator = new Spectate(1091, "spectate", "rmi://145.93.180.165:1100/host", "rmi://145.93.180.165:1090/client");
+                    Spectate spectator = new Spectate(1091, "spectate", "rmi://" + InetAddress.getLocalHost().getHostAddress() + ":1100/host", "rmi://" + InetAddress.getLocalHost().getHostAddress() + ":1090/client");
                 } catch (RemoteException ex) {
+                    Logger.getLogger(Menu_StateBasedGame.class.getName()).log(Level.SEVERE, null, ex);
+                } catch (UnknownHostException ex) {
                     Logger.getLogger(Menu_StateBasedGame.class.getName()).log(Level.SEVERE, null, ex);
                 }
                 game.enterState(2, new FadeOutTransition(Color.black), new FadeInTransition(Color.black));

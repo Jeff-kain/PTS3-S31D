@@ -29,6 +29,7 @@ import java.rmi.server.UnicastRemoteObject;
  */
 import Game.Direction;
 import Game.Game;
+import Game.IGameObject;
 import Game.Keyset;
 import Game.Player;
 import java.net.InetAddress;
@@ -40,6 +41,8 @@ import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
+import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
  *
@@ -175,6 +178,11 @@ public class Spectate extends UnicastRemoteObject implements ISpectate {
     @Override
     public String getHostName() throws RemoteException {
         return manager.getNamePlayer2();
+    }
+
+    @Override
+    public void setCurrentObjectState(List<IGameObject> list) {
+        Game.getInstance().playground().setMapobjects(list);
     }
 
 }

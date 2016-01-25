@@ -5,8 +5,11 @@
  */
 package Multiplayer;
 
+import Game.IGameObject;
 import java.rmi.Remote;
 import java.rmi.RemoteException;
+import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
  *
@@ -26,5 +29,7 @@ public interface ISpectate extends Remote {
     public void movep2h(int direction, float x, float y) throws RemoteException;
 
     public void movep2c(int direction, float x, float y) throws RemoteException;
+    
+    public void setCurrentObjectState(List<IGameObject> list) throws RemoteException;
 
 }

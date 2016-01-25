@@ -160,6 +160,7 @@ public class HostServer extends UnicastRemoteObject implements IRemoteHost {
     public void spectategame(String strService) throws RemoteException {
         retrieveSpectateService(strService);
         manager.setRemoteSpectate(spectator);
+        manager.getRemoteSpectate().setCurrentObjectState(Game.getInstance().playground().getMapobjects());
         System.out.println(service + " is spectating");
 
     }
