@@ -17,6 +17,8 @@ public interface IPortal extends Remote {
 
     IHost createLobby(String username, String password, Game game, String lobbyName, String lobbyPassword, String hostIp) throws RemoteException;
 
+    void closeLobby(String username, String password, IHost lobby) throws RemoteException;
+
     List<ILobby> getLobbies(String username, String password, Game game) throws RemoteException;
     
     List<Score> getLeaderboard(String username, String password, String game) throws RemoteException;

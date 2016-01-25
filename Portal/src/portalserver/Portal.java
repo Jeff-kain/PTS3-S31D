@@ -69,6 +69,21 @@ public class Portal extends UnicastRemoteObject implements ILogin, IPortal {
     }
 
     @Override
+    public void closeLobby(String username, String password, IHost lobby) throws RemoteException {
+        if(correctLogin(username, password)) {
+            for(GameLobby gl: lobbies) {
+                System.out.println(lobby.getName());
+                if(gl.getName().equals(lobby.getName())) {
+                    lobbies.remove(gl);
+                    UnicastRemoteObject.unexportObject(gl, false);
+                    System.out.println(lobbies.size());
+                    break;
+                }
+            }
+        }
+    }
+
+    @Override
     public List<ILobby> getLobbies(String username, String password, Game game) throws RemoteException {
         if(correctLogin(username, password)) {
             List<ILobby> gameLobbies = new ArrayList<>();

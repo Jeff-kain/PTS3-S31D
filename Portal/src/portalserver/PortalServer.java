@@ -265,6 +265,6 @@ public class PortalServer {
                 Display("Lost a connection. \n");
                 clientOutputStreams.remove(client);
              } 
-	} 
+	    }
     }
 }

@@ -112,13 +112,11 @@ public class GameLobby extends UnicastRemoteObject implements IHost, IPlayer, IL
         try {
             databaseConnection = DatabaseConnection.getInstance();
             User player = databaseConnection.getUser(username, password);
-            System.out.println("Player " + username + "left lobby: " + name + ".");
+            System.out.println("Player " + player.getName() + " left lobby: " + name + ".");
 
-            for(User p: players) {
-                if(p.getName() == username) {
-                    players.remove(p);
-                }
-            }
+            System.out.println(players.size());
+            players.remove(player);
+            System.out.println(players.size());
 
         } catch (IOException e) {
             e.printStackTrace();

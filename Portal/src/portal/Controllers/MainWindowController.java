@@ -441,28 +441,6 @@ public class MainWindowController implements Initializable {
     private void showLobbiesWindow() {
         Stage stage = new Stage();
         Parent root = null;
-
-        stage.setOnHiding(new EventHandler<WindowEvent>() {
-            @Override
-            public void handle(WindowEvent event) {
-                System.out.println("Closed!");
-                if(admin.getHostedLobby() != null) {
-                    try {
-                        admin.getHostedLobby().leaveGame(admin.getUsername(), admin.getPassword());
-                        admin.setHostedLobby(null);
-                    } catch (RemoteException e) {
-                        e.printStackTrace();
-                    }
-                }
-
-                try {
-                    admin.getSelectedLobby().leaveGame(admin.getUsername(), admin.getPassword());
-                } catch (RemoteException e) {
-                    e.printStackTrace();
-                }
-            }
-        });
-
         try {
             root = FXMLLoader.load(getClass().getResource("Lobby.fxml"));
         } catch (IOException e) {
@@ -477,7 +455,8 @@ public class MainWindowController implements Initializable {
             stage.initOwner(Portal.Stage);
             stage.setTitle(selectedLobbyName);
             stage.setScene(scene);
-            stage.show();
+            stage.showAndWait();
+            loadLobbies(selectedGame);
 
         } else {
             System.out.println("Failed");
