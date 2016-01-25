@@ -61,6 +61,7 @@ public class Bomberman_StateBasedGame extends StateBasedGame {
         addState(new Lobby_StateBasedGame()); //ID = 1
         addState(new Game_StateBasedGame()); // ID = 2
         addState(new GameOver_StateBasedGame()); // ID = 3
+        addState(new Connection_Lost()); //ID = 4
     }
 
 }

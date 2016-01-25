@@ -29,6 +29,7 @@ import java.rmi.server.UnicastRemoteObject;
  */
 import Game.Direction;
 import Game.Game;
+import Game.IGameObject;
 import Game.Keyset;
 import Game.Player;
 import java.net.InetAddress;
@@ -40,6 +41,8 @@ import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
+import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
  *
@@ -51,13 +54,16 @@ public class Spectate extends UnicastRemoteObject implements ISpectate {
     IRemoteClient serviceClient;
     Manager manager = Manager.getManager();
 
-    public Spectate(int regport, String servicename, String hostservice) throws RemoteException {
+    public Spectate(int regport, String servicename, String hostservice, String clientservice) throws RemoteException {
         String strService = publishClient(regport, servicename);
         service = retrieveService(hostservice);
+        serviceClient = retrieveClientService(clientservice);
         // service = retrieveService("rmi://" + "145.93.64.173" + ":" + 1090 + "/host");
         System.out.println(hostservice);
         manager.setRemotehost(service);
+        manager.setRemoteclient(serviceClient);
         service.spectategame(strService);
+        serviceClient.spectategame(strService);
     }
 
     public String publishClient(int registryPort, String servicename)
@@ -104,7 +110,7 @@ public class Spectate extends UnicastRemoteObject implements ISpectate {
         return service_;
     }
 
-    public void retrieveClientService(String strService) {
+    public IRemoteClient retrieveClientService(String strService) {
         // System.out.println("fetch:    rmi://" + IRemoteClient.clientname +
         // ":"
         // + IRemoteClient.registryPort + "/" + IRemoteClient.servicename);
@@ -123,6 +129,7 @@ public class Spectate extends UnicastRemoteObject implements ISpectate {
         } catch (RemoteException e) {
             e.printStackTrace();
         }
+        return serviceClient;
     }
 
     @Override
@@ -171,6 +178,11 @@ public class Spectate extends UnicastRemoteObject implements ISpectate {
     @Override
     public String getHostName() throws RemoteException {
         return manager.getNamePlayer2();
+    }
+
+    @Override
+    public void setCurrentObjectState(List<IGameObject> list) {
+        Game.getInstance().playground().setMapobjects(list);
     }
 
 }

@@ -8,6 +8,7 @@ package bomberman;
 import Multiplayer.Client;
 import Multiplayer.HostServer;
 import Multiplayer.Manager;
+import Multiplayer.Spectate;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.rmi.RemoteException;
@@ -64,8 +65,9 @@ public class Menu_StateBasedGame extends BasicGameState {
 
     @Override
     public void update(GameContainer gc, StateBasedGame sbg, int i) throws SlickException {
-        
-        mode = args[0];
+        if (args[0] != null) {
+            mode = args[0];
+        }
         if (args[1] != null) {
             ip = args[1];
         }
@@ -95,13 +97,14 @@ public class Menu_StateBasedGame extends BasicGameState {
                     Logger.getLogger(Menu_StateBasedGame.class.getName()).log(Level.SEVERE, null, ex);
                 }
                 game.enterState(2, new FadeOutTransition(Color.black), new FadeInTransition(Color.black));
-            } else if (mode.equals("client")) {
+            }
+            if (mode.equals("client")) {
                 manager.setBoolClient(true);
                 manager.setBoolLAN(true);
                 manager.setAmplayer(2);
                 manager.setPlayer2(2);
                 manager.setNamePlayer2(name);
-                
+
                 String hostIP = null;
                 //hostIP = "145.93.64.173"; //tim IP
                 hostIP = ip;
@@ -113,6 +116,17 @@ public class Menu_StateBasedGame extends BasicGameState {
                     Logger.getLogger(Menu_StateBasedGame.class.getName()).log(Level.SEVERE, null, ex);
                 }
 
+                game.enterState(2, new FadeOutTransition(Color.black), new FadeInTransition(Color.black));
+            }
+            if (mode.equals("spectate")) {
+                manager.setBoolLAN(true);
+                try {
+                    Spectate spectator = new Spectate(1091, "spectate", "rmi://" + InetAddress.getLocalHost().getHostAddress() + ":1100/host", "rmi://" + InetAddress.getLocalHost().getHostAddress() + ":1090/client");
+                } catch (RemoteException ex) {
+                    Logger.getLogger(Menu_StateBasedGame.class.getName()).log(Level.SEVERE, null, ex);
+                } catch (UnknownHostException ex) {
+                    Logger.getLogger(Menu_StateBasedGame.class.getName()).log(Level.SEVERE, null, ex);
+                }
                 game.enterState(2, new FadeOutTransition(Color.black), new FadeInTransition(Color.black));
 
             }

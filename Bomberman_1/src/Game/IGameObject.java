@@ -5,13 +5,14 @@
  */
 package Game;
 
+import java.io.Serializable;
 import org.newdawn.slick.Image;
 
 /**
  *
  * @author jeffrey
  */
-public interface IGameObject {
+public interface IGameObject extends Serializable {
 
     public Game game = Game.getInstance();
 

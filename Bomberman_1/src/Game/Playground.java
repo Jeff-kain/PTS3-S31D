@@ -19,7 +19,7 @@ import powerup.PowerUp;
  *
  * @author jeffrey
  */
-public class Playground {
+public class Playground{
 
     private TiledMap map;
     private final String path = "res" + File.separator + "map.tmx";
@@ -46,6 +46,10 @@ public class Playground {
 
     public List<IGameObject> getMapobjects() {
         return mapobjects;
+    }
+
+    public void setMapobjects(List<IGameObject> mapobjects) {
+        this.mapobjects = mapobjects;
     }
 
     public void addToLevel(IGameObject o) {

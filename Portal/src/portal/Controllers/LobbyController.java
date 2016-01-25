@@ -157,6 +157,7 @@ public class LobbyController implements Initializable, ChangeListener{
                 hostIp = InetAddress.getLocalHost().getHostAddress();
             } catch (UnknownHostException e) {
                 Alert alert = new Alert(Alert.AlertType.ERROR, "Host IP is unknown. \nTry again later.");
+                
                 alert.showAndWait();
             }
         } else {

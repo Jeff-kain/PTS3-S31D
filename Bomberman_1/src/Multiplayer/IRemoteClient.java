@@ -24,4 +24,7 @@ public interface IRemoteClient extends Remote {
     public void tick() throws RemoteException;
 
     public void movep2h(int direction, float x, float y) throws RemoteException;
+
+    public void spectategame(String strService) throws RemoteException;
+
 }

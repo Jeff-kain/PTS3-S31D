@@ -88,27 +88,6 @@ public class HostServer extends UnicastRemoteObject implements IRemoteHost {
         }
     }
 
-    public void retrieveSpectateService(String strService) {
-        // System.out.println("fetch:    rmi://" + IRemoteClient.clientname +
-        // ":"
-        // + IRemoteClient.registryPort + "/" + IRemoteClient.servicename);
-        try {
-
-            // besser ist folgendes:
-            // service = (IRemoteClient) LocateRegistry
-            // .getRegistry("hostip", 1099).lookup(strService);
-            spectator = (ISpectate) Naming.lookup(strService);
-
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
-        } catch (NotBoundException e) {
-            System.out.println("Client did not yet publish.");
-            e.printStackTrace();
-        } catch (RemoteException e) {
-            e.printStackTrace();
-        }
-    }
-
     public Registry getRegistry() {
         return registry;
     }
@@ -125,10 +104,10 @@ public class HostServer extends UnicastRemoteObject implements IRemoteHost {
     }
 
     @Override
-    public void movep2c(int direction, float x, float y) throws RemoteException {
+    public void movep2c(int direction, float x, float y) throws RemoteException{
+            
         direction = translate(direction);
         ((Player) (Game.getInstance().getAllPlayers().get(1))).moveremote(direction, x, y);
-
 //        Game.getInstance().getPlayer1().get(0).moveremote(direction, x, y);
 //        Game.getInstance().getPlayer2().get(0).moveremote(direction, x, y);
     }
@@ -156,10 +135,32 @@ public class HostServer extends UnicastRemoteObject implements IRemoteHost {
         return manager.getNamePlayer1();
     }
 
+    public void retrieveSpectateService(String strService) {
+        // System.out.println("fetch:    rmi://" + IRemoteClient.clientname +
+        // ":"
+        // + IRemoteClient.registryPort + "/" + IRemoteClient.servicename);
+        try {
+
+            // besser ist folgendes:
+            // service = (IRemoteClient) LocateRegistry
+            // .getRegistry("hostip", 1099).lookup(strService);
+            spectator = (ISpectate) Naming.lookup(strService);
+
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        } catch (NotBoundException e) {
+            System.out.println("Client did not yet publish.");
+            e.printStackTrace();
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        }
+    }
+
     @Override
     public void spectategame(String strService) throws RemoteException {
         retrieveSpectateService(strService);
         manager.setRemoteSpectate(spectator);
+        manager.getRemoteSpectate().setCurrentObjectState(Game.getInstance().playground().getMapobjects());
         System.out.println(service + " is spectating");
 
     }

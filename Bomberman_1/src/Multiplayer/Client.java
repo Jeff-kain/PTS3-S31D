@@ -26,6 +26,7 @@ import java.rmi.server.UnicastRemoteObject;
 public class Client extends UnicastRemoteObject implements IRemoteClient {
 
     IRemoteHost service;
+    ISpectate spectator = null;
 
     Manager manager = Manager.getManager();
 
@@ -119,6 +120,35 @@ public class Client extends UnicastRemoteObject implements IRemoteClient {
     @Override
     public String getHostName() throws RemoteException {
         return manager.getNamePlayer2();
+    }
+
+    public void retrieveSpectateService(String strService) {
+        // System.out.println("fetch:    rmi://" + IRemoteClient.clientname +
+        // ":"
+        // + IRemoteClient.registryPort + "/" + IRemoteClient.servicename);
+        try {
+
+            // besser ist folgendes:
+            // service = (IRemoteClient) LocateRegistry
+            // .getRegistry("hostip", 1099).lookup(strService);
+            spectator = (ISpectate) Naming.lookup(strService);
+
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        } catch (NotBoundException e) {
+            System.out.println("Client did not yet publish.");
+            e.printStackTrace();
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void spectategame(String strService) throws RemoteException {
+        retrieveSpectateService(strService);
+        manager.setRemoteSpectate(spectator);
+        System.out.println(service + " is spectating");
+
     }
 
 }
