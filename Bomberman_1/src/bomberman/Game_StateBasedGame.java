@@ -5,6 +5,7 @@
  */
 package bomberman;
 
+import DatabaseConnection.DatabaseConnection;
 import Game.Game;
 import Game.Bomb;
 import Game.Box;
@@ -18,6 +19,8 @@ import Game.Wall;
 import Multiplayer.Manager;
 
 import java.io.File;
+import java.io.IOException;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -74,12 +77,15 @@ public class Game_StateBasedGame extends BasicGameState {
     private float timeOutP1;
     private float timeOutP2;
     private boolean isEnded;
+    private boolean dbUpdatedRed;
+    private boolean dbUpdatedBlue;
+
     private static String[] arguments;
     private static AppGameContainer appgc;
     private String WinningTeam;
     private String player1Name;
     private String player2Name;
-
+    private DatabaseConnection databaseConnection;
     Manager manager = Manager.getManager();
 
     @Override
@@ -91,6 +97,11 @@ public class Game_StateBasedGame extends BasicGameState {
     public void init(GameContainer gc, StateBasedGame sbg) throws SlickException {
         game = Game.getInstance();
         this.game1 = sbg;
+        try {
+            databaseConnection = DatabaseConnection.getInstance();
+        } catch (IOException ex) {
+            Logger.getLogger(Game_StateBasedGame.class.getName()).log(Level.SEVERE, null, ex);
+        }
         playground = game.playground();
         map = playground.getMap();
         bombAnimations = new HashMap<>();
@@ -224,16 +235,31 @@ public class Game_StateBasedGame extends BasicGameState {
         if (game.getTeam1().currentHealth() <= 0) {
 
             isEnded = true;
-//                g.setColor(Color.blue);
-//                g.fillRect(220.0f, 220.0f, 270.0f, 230.0f);
-//                g.setColor(Color.white);
-//                g.drawString("Team2 has won the game!", 250, 250);
-//
-//                Image play = new Image("res/play.png");
-//                Image replay = new Image("res/replay.png");
-//                g.drawImage(play, 250, 300);
-//                g.drawImage(replay, 380, 300);
+            g.setColor(Color.blue);
+            g.fillRect(220.0f, 220.0f, 270.0f, 230.0f);
+            g.setColor(Color.white);
+            g.drawString("Team2 has won the game!", 250, 250);
+
+//          Image play = new Image("res/play.png");
+//          Image replay = new Image("res/replay.png");
+//          g.drawImage(play, 250, 300);
+//          g.drawImage(replay, 380, 300);
             WinningTeam = "Team Blue Wins";
+
+            try {
+                if (!dbUpdatedBlue) {
+                    if (manager.getRemotehost() != null) {
+                        System.out.println(manager.getNamePlayer1());
+                        System.out.println(manager.getNamePlayer2());
+                        databaseConnection = DatabaseConnection.getInstance();
+                        databaseConnection.updateLeaderboard(manager.getNamePlayer1(), false);
+                        databaseConnection.updateLeaderboard(manager.getNamePlayer2(), true);
+                        dbUpdatedBlue = true;
+                    }
+                }
+            } catch (SQLException | IOException ex) {
+                ex.printStackTrace();
+            }
             game1.enterState(3, new FadeOutTransition(Color.black), new FadeInTransition(Color.black));
 
         } else if (game.getTeam2().currentHealth() <= 0) {
@@ -243,12 +269,28 @@ public class Game_StateBasedGame extends BasicGameState {
             g.fillRect(220.0f, 220.0f, 270.0f, 230.0f);
             g.setColor(Color.white);
             g.drawString("Team2 has won the game!", 250, 250);
-//
-//                Image play = new Image("res/play.png");
-//                Image replay = new Image("res/replay.png");
-//                g.drawImage(play, 250, 300);
-//                g.drawImage(replay, 380, 300);
+
+//            Image play = new Image("res/play.png");
+//            Image replay = new Image("res/replay.png");
+//            g.drawImage(play, 250, 300);
+//            g.drawImage(replay, 380, 300);
             WinningTeam = "Team Green Wins";
+
+            try {
+                if (!dbUpdatedRed) {
+                    if (manager.getRemotehost() != null) {
+                        System.out.println(manager.getNamePlayer1());
+                        System.out.println(manager.getNamePlayer2());
+                        databaseConnection = DatabaseConnection.getInstance();
+                        databaseConnection.updateLeaderboard(manager.getNamePlayer2(), false);
+                        databaseConnection.updateLeaderboard(manager.getNamePlayer1(), true);
+                        dbUpdatedRed = true;
+                    }
+                }
+            } catch (SQLException | IOException ex) {
+                ex.printStackTrace();
+            }
+
             game1.enterState(3, new FadeOutTransition(Color.black), new FadeInTransition(Color.black));
 
         }

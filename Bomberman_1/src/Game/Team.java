@@ -21,7 +21,7 @@ public class Team implements IGameObject {
 
     private TeamColor color;
     private float maxHealth = 100f;
-    private float currentHealth = 80f;
+    private float currentHealth = 50f;
     private final ArrayList<Player> players;
     private float x;
     private float y;

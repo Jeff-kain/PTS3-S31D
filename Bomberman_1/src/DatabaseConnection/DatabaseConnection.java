@@ -5,11 +5,17 @@
  */
 package DatabaseConnection;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.Properties;
 
 /**
@@ -18,58 +24,106 @@ import java.util.Properties;
  */
 public class DatabaseConnection {
 
-    String url = "jdbc:mysql://localhost:3306/";
-    String dbName = "bomberman";
+    private static DatabaseConnection instance = null;
+    private Properties props;
+    private Connection conn;
 
-    String driver = "com.mysql.jdbc.Driver";
-    String username = "root";
-    String password = "Retarded";
+    private String url;
+    private String username;
+    private String password;
 
-    Connection conn;
-
-    public void connect() {
+    private DatabaseConnection() throws IOException {
+        props = new Properties();
+        InputStream input = null;
+        File file = new File("config.properties");
 
         try {
-            conn = null;
-            Properties props = loadDatabaseProperties();
-            Class.forName(props.getProperty("jdbc.driver")).newInstance();
+            input = new FileInputStream(file);
 
-            conn = DriverManager.getConnection(props.getProperty("jdbc.url"), props.getProperty("jdbc.user"), props.getProperty("jdbc.pass"));
+            // load a properties file
+            props.load(input);
 
-            if (conn != null) {
-                System.out.println("Connected to database!");
-            } else {
-                System.out.println("Failed to connect to database");
+            url = props.getProperty("url");
+            username = props.getProperty("username");
+            password = props.getProperty("password");
+
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        } finally {
+            if (input != null) {
+                try {
+                    input.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
-
-        } catch (Exception e) {
-            e.printStackTrace();
         }
-
     }
 
-    public Properties loadDatabaseProperties() throws IOException {
+    public static DatabaseConnection getInstance() throws IOException {
+        if (instance != null) {
+            return instance;
+        } else {
+            instance = new DatabaseConnection();
+            return instance;
+        }
+    }
+
+    public boolean open() {
         try {
-            Properties props = new Properties();
-            props.load(new FileInputStream("data.properties"));
-            return props;
-        } catch (IOException ioe) {
-            System.out.println("error while loading props: " + ioe.getMessage());
+            Class.forName("com.mysql.jdbc.Driver").newInstance();
+            conn = DriverManager.getConnection(url, username, password);
+            return true;
+        } catch (Exception ex) {
+            System.err.println(ex.getMessage());
+            return false;
         }
-
-        return null;
     }
 
-    public void saveDatabaseProperties(String url, String user, String pass) throws IOException {
+    public boolean close() {
+        try {
+            conn.close();
+            conn = null;
+            return true;
+        } catch (Exception ex) {
+            System.err.println(ex.getMessage());
+            return false;
+        }
+    }
 
-        Properties props = new Properties();
-        props.setProperty("jdbc.url", url);
-        props.setProperty("jdbc.user", user);
-        props.setProperty("jdbc.pass", driver);
+    public void updateLeaderboard(String userName, boolean wonGame) throws SQLException {
 
-        FileOutputStream fos = new FileOutputStream("data.properties");
-        props.store(fos, "saved?");
-        System.out.println("Saved props");
-        fos.close();
+        ResultSet rs;
+        PreparedStatement stat;
+        String query;
+
+        try {
+            boolean isOpen = open();
+            if (isOpen) {
+                if (wonGame) {
+
+//                query = "UPDATE Leaderboard lb, Users u, Games g " +
+//                                "SET lb.Wins = lb.Wins + 1" +
+//                "WHERE lb.id_User = u.id AND g.id = lb.id_game AND u.Name = ? ";
+                    query = "UPDATE leaderboard lb, users u, games g SET lb.Wins = lb.Wins + 1 WHERE lb.Id_User = u.Id AND g.Id = lb.Id_Game AND u.Name ='" + userName + "';";
+//                    query = "UPDATE Leaderboard lb, Users u, Games g "+ 
+//                            "SET lb.Wins = lb.Wins + 1 " + 
+//                            "WHERE lb.id_User = u.id AND g.id = lb.id_game AND u.Name = 'Jeffrey'";
+                } else {
+                    query = "UPDATE leaderboard lb, users u, games g SET lb.Losses = lb.Losses + 1 WHERE lb.Id_User = u.Id AND g.Id = lb.Id_Game AND u.Name ='" + userName + "';";
+//
+//                    query = "UPDATE Leaderboard lb, Users u, Games g "
+//                            + "SET lb.Losses = lb.losses + 1 "
+//                            + "WHERE lb.id_User = u.id AND g.id = lb.id_game AND u.Name = ? ";
+                }
+                stat = conn.prepareStatement(query);
+                System.out.println("Update:"+userName);
+                stat.executeUpdate(query);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            close();
+        }
     }
 }

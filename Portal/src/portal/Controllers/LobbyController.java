@@ -125,25 +125,25 @@ public class LobbyController implements Initializable{
         String mode = "";
         String hostIp = "";
         String username = admin.getUsername();
-        if(host) {
-            try {
-                mode = "host";
-
-                hostIp = InetAddress.getLocalHost().getHostAddress();
-            } catch (UnknownHostException e) {
-                Alert alert = new Alert(Alert.AlertType.ERROR, "Host IP is unknown. \nTry again later.");
-                
-                alert.showAndWait();
-            }
-        } else {
-            mode = "client";
-            try {
-                hostIp = admin.getSelectedLobby().getHostIp();
-            } catch (RemoteException e) {
-                Alert alert = new Alert(Alert.AlertType.ERROR, "Host IP is unknown. \nTry again later.");
-                alert.showAndWait();
-            }
-        }
+//        if(host) {
+//            try {
+//                mode = "host";
+//
+//                hostIp = InetAddress.getLocalHost().getHostAddress();
+//            } catch (UnknownHostException e) {
+//                Alert alert = new Alert(Alert.AlertType.ERROR, "Host IP is unknown. \nTry again later.");
+//                
+//                alert.showAndWait();
+//            }
+//        } else {
+//            mode = "client";
+//            try {
+//                hostIp = admin.getSelectedLobby().getHostIp();
+//            } catch (RemoteException e) {
+//                Alert alert = new Alert(Alert.AlertType.ERROR, "Host IP is unknown. \nTry again later.");
+//                alert.showAndWait();
+//            }
+//        }
 
         String argss[] = {"java", "-jar", "Bomberman_1.jar", mode, hostIp, username};
         ProcessBuilder builder = new ProcessBuilder(argss).inheritIO();
