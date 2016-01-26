@@ -41,6 +41,7 @@ public class Portal extends Application {
         loadServerProps();
        //saveServerProps();
         System.out.println("props loaded");
+        portalserver = "127.0.0.1";
         //Loading the .fxml file.
         Parent root = null;
         try {

@@ -41,14 +41,17 @@ public class IHostTest {
     public void tearDown() {
     }
 
+    @Test
     public void getNameTest() throws RemoteException {
         
     }
 
+    @Test
     public void getPlayersTest() throws RemoteException {
         
     }
 
+    @Test
     public void leaveGame() throws  RemoteException {
         
     }

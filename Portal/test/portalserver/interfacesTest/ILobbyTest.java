@@ -40,18 +40,22 @@ public class ILobbyTest {
     public void tearDown() {
     }
 
+    @Test
     public void joinGameTest() throws RemoteException {
         
     }
 
+    @Test
     public void leaveGameTest() throws  RemoteException {
         
     }
 
+    @Test
     public void getNameTest() throws RemoteException {
         
     }
 
+    @Test
     public void getPlayersTest() throws RemoteException {
         
     }

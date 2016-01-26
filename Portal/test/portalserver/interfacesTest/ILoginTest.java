@@ -54,6 +54,7 @@ public class ILoginTest {
     public void tearDown() {
     }
 
+    @Test
     public void loginTest() throws RemoteException, IOException {
 
         //Testen van een bestaand inlog naam in de database
@@ -68,6 +69,7 @@ public class ILoginTest {
         assertNull(portal);
     }
 
+    @Test
     public void RegisterTest() throws RemoteException {
 
         

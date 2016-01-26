@@ -7,6 +7,8 @@ package portalserver.interfacesTest;
 
 import database.DatabaseConnection;
 import java.io.IOException;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.rmi.RemoteException;
 import java.util.List;
 import org.junit.After;
@@ -33,8 +35,8 @@ public class IPortalTest {
     RMIClient client;
     ILogin inlog;
     IPortal portal;
-    DatabaseConnection dc;
-    Administration admin;
+    //DatabaseConnection dc;
+    //Administration admin;
     String login = "Rob";
 
     public IPortalTest() {
@@ -50,8 +52,8 @@ public class IPortalTest {
 
     @Before
     public void setUp() throws IOException {
-        admin = Administration.getInstance();
-        dc = DatabaseConnection.getInstance();
+        //admin = Administration.getInstance();
+        //dc = DatabaseConnection.getInstance();
         client = new RMIClient();
         inlog = client.setUp();
         
@@ -62,6 +64,7 @@ public class IPortalTest {
     public void tearDown() {
     }
 
+    @Test
     public void getGames() throws RemoteException {
         List<Game> games = portal.getGames(login, login);
         assertNotNull(games);
@@ -76,14 +79,20 @@ public class IPortalTest {
         assertNotNull(games);
     }
 
-    public void createLobby() throws RemoteException {
-
+    @Test
+    public void createLobby() throws RemoteException, UnknownHostException {
+        IHost hostedLobby = portal.createLobby("rob", "rob", new Game(1, "Bomberman","Bomberman"), "testLobby", "", InetAddress.getLocalHost().getHostAddress());
+        assertNotNull(hostedLobby);
     }
 
-    public void getLobbies() throws RemoteException {
-
+    @Test
+    public void getLobbies() throws RemoteException, UnknownHostException {
+        IHost hostedLobby = portal.createLobby("rob", "rob", new Game(1, "Bomberman","Bomberman"), "testLobby", "", InetAddress.getLocalHost().getHostAddress());
+        List<ILobby> lobbies = portal.getLobbies("rob", "rob", new Game(1, "Bomberman","Bomberman"));
+        assertNotNull(lobbies);
     }
 
+    @Test
     public void getLeaderboard() throws RemoteException {
         List<Score> scores = portal.getLeaderboard(login, login, "Bomberman");
         assertNotNull(scores);
@@ -92,6 +101,7 @@ public class IPortalTest {
         assertNull(scores);
     }
 
+    @Test
     public void getScoresPlayer() throws RemoteException {
         
         //Score getScoresPlayer(String username, String password, String enteredName, String game)
