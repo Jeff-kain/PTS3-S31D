@@ -205,10 +205,13 @@ public class LobbyController implements Initializable, ChangeListener{
         } else {
             mode = "client";
             try {
+                Thread.sleep(400);
                 hostIp = admin.getSelectedLobby().getHostIp();
             } catch (RemoteException e) {
                 Alert alert = new Alert(Alert.AlertType.ERROR, "Host IP is unknown. \nTry again later.");
                 alert.showAndWait();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
             }
         }
 

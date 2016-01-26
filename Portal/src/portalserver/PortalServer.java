@@ -7,6 +7,7 @@ import java.io.PrintWriter;
 import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.net.UnknownHostException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
@@ -29,7 +30,7 @@ public class PortalServer {
     private Socket sock;
     private PrintWriter client;
 
-    public PortalServer() {
+    public PortalServer() throws UnknownHostException {
         try {
             // Creating a new instance of the Portal.
             portal = new Portal();
@@ -43,6 +44,7 @@ public class PortalServer {
             // Creating registry
             System.out.println("Creating the registry...");
             registry = LocateRegistry.createRegistry(portNumber);
+            System.out.println("IP Address: " + InetAddress.getLocalHost().getHostAddress());
             System.out.println("Registry created on port number " + portNumber);
         } catch (RemoteException ex) {
             System.out.println("Cannot create registry");
@@ -65,7 +67,12 @@ public class PortalServer {
 
         System.out.println("Server started.\n");
 
-        PortalServer server = new PortalServer();
+        PortalServer server = null;
+        try {
+            server = new PortalServer();
+        } catch (UnknownHostException e) {
+            e.printStackTrace();
+        }
         server.Start();
     }
 

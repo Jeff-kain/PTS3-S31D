@@ -25,14 +25,16 @@ import java.rmi.server.UnicastRemoteObject;
  */
 public class Client extends UnicastRemoteObject implements IRemoteClient {
 
-    IRemoteHost service;
+    IRemoteHost service = null;
     ISpectate spectator = null;
 
     Manager manager = Manager.getManager();
 
     public Client(int regport, String servicename, String hostservice) throws RemoteException {
         String strService = publishClient(regport, servicename);
-        service = retrieveService(hostservice);
+        while(service == null) {
+            service = retrieveService(hostservice);
+        }
         // service = retrieveService("rmi://" + "145.93.64.173" + ":" + 1090 + "/host");
         System.out.println(hostservice);
         manager.setRemotehost(service);
