@@ -21,7 +21,7 @@ public class Team implements IGameObject {
 
     private TeamColor color;
     private float maxHealth = 100f;
-    private float currentHealth = 50f;
+    private float currentHealth = 100f;
     private final ArrayList<Player> players;
     private float x;
     private float y;
@@ -67,6 +67,9 @@ public class Team implements IGameObject {
     public void damage(float damage) {
         if (currentHealth() > 0) {
             currentHealth = currentHealth - damage;
+            if (currentHealth < 0) {
+                currentHealth = 0;
+            }
         }
     }
 

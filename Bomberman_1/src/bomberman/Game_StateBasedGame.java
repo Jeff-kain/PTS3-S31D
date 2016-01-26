@@ -111,7 +111,6 @@ public class Game_StateBasedGame extends BasicGameState {
         y = 1;
         tile = 48f;
         isEnded = false;
-        //mouseBall = new Circle(72,72,20);
         bombs = new CopyOnWriteArrayList<>();
         bombs2 = new CopyOnWriteArrayList<>();
         sprites = new SpriteSheet("res" + File.separator + "sprites3x.png", 48, 48, Color.decode("#FF00FF"));
@@ -149,60 +148,21 @@ public class Game_StateBasedGame extends BasicGameState {
                 g.drawString("Team 1 HP", 10.0f, 30.0f);
             }
             g.setColor(Color.green);
-            g.fillRect(100.0f, 25.0f, 250f * healthScale, 20.0f);
+            g.fillRect(120.0f, 25.0f, 220f * healthScale, 20.0f);
 
             g.setColor(Color.white);
             if (manager.getNamePlayer2() != null) {
                 g.drawString(manager.getNamePlayer2(), 400.0f, 30.0f);
 
             } else {
-                g.drawString("Team 2 HP: ", 400.0f, 30.0f);
+                g.drawString("Player 2 ", 360.0f, 30.0f);
             }
             g.setColor(Color.green);
-            g.fillRect(490.0f, 25.0f, 250f * healthScale2, 20.0f);
+            g.fillRect(490.0f, 25.0f, 220f * healthScale2, 20.0f);
 
             g.drawImage(game.getTeam1().getSprite(), game.getTeam1().getX(), game.getTeam1().getY());
             g.drawImage(game.getTeam2().getSprite(), game.getTeam2().getX(), game.getTeam2().getY());
         }
-//            g.setColor(Color.blue);
-//            g.fill(mouseBall);    
-
-//        for (Bomb bomb : bombs) {
-//            //g.drawImage(bomb.getSprite(), bomb.getX(), bomb.getY());
-//            Animation animation;
-//            if (bombAnimations.get(bomb) == null) {
-//                animation = bomb.getAnimation();
-//                animation.setLooping(false);
-//                animation.setAutoUpdate(true);
-//                bombAnimations.put(bomb, animation);
-//            } else {
-//                animation = bombAnimations.get(bomb);
-//            }
-//
-//            animation.draw(bomb.getX(), bomb.getY());
-//        }
-//
-//        for (Bomb bomb : bombs2) {
-//            //g.drawImage(bomb.getSprite(), bomb.getX(), bomb.getY());
-//            Animation animation;
-//            if (bombAnimations.get(bomb) == null) {
-//                animation = bomb.getAnimation();
-//                animation.setLooping(false);
-//                animation.setAutoUpdate(true);
-//                bombAnimations.put(bomb, animation);
-//            } else {
-//                animation = bombAnimations.get(bomb);
-//            }
-//
-//            animation.draw(bomb.getX(), bomb.getY());
-//        }
-//        for (Player p : game.getTeam1().getPlayers()) {
-//            g.drawImage(p.getSprite(), p.getX(), p.getY());
-//        }
-//
-//        for (Player p : game.getTeam2().getPlayers()) {
-//            g.drawImage(p.getSprite(), p.getX(), p.getY());
-//        }
         if (player.getVisible() == true) {
             g.drawImage(player.getSprite(), player.getX(), player.getY());
         }
@@ -210,12 +170,6 @@ public class Game_StateBasedGame extends BasicGameState {
             g.drawImage(player2.getSprite(), player2.getX(), player2.getY());
         }
 
-//        for (PowerUp powerUp : playground.getPowerups()) {
-//            g.drawImage(powerUp.getSprite(), powerUp.getX(), powerUp.getY());
-//        }
-//        for (Box box : playground.getBoxes()) {
-//            g.drawImage(box.getSprite(), box.getX(), box.getY());
-//        }
         for (IGameObject o : game.playground().getMapobjects()) {
             if (o instanceof Bomb) {
                 Bomb bomb = (Bomb) o;
@@ -234,7 +188,7 @@ public class Game_StateBasedGame extends BasicGameState {
             }
         }
 
-               if (game.getTeam1().currentHealth() <= 0) {
+        if (game.getTeam1().currentHealth() <= 0) {
 
             isEnded = true;
             String lastMessage = "has won the game!";
@@ -243,7 +197,7 @@ public class Game_StateBasedGame extends BasicGameState {
             g.fillOval(220.0f, 210.0f, 250.0f, 210.0f);
             g.setColor(Color.white);
             g.drawString(lastMessage, 270, 320);
-            g.drawString(manager.getNamePlayer2(), 330, 280);
+            g.drawString(manager.getNamePlayer2(), 300, 280);
             WinningTeam = "Team Blue Wins";
 
             try {
@@ -272,11 +226,11 @@ public class Game_StateBasedGame extends BasicGameState {
 
             isEnded = true;
             String lastMessage = "has won the game!";
-             g.setColor(Color.blue);
+            g.setColor(Color.blue);
             g.fillOval(220.0f, 210.0f, 250.0f, 210.0f);
             g.setColor(Color.white);
             g.drawString(lastMessage, 270, 320);
-            g.drawString(manager.getNamePlayer1(), 330, 280);
+            g.drawString(manager.getNamePlayer1(), 300, 280);
             WinningTeam = "Team Green Wins";
 
             try {
@@ -406,56 +360,91 @@ public class Game_StateBasedGame extends BasicGameState {
                 pos2Y = Math.round(player2.getY()) / 48;
 
                 if (timeOutP2 <= 0) {
-                    if (gc.getInput().isKeyDown(Input.KEY_A)) {
-                        player2.move(2);
+                    if (manager.isBoolLAN()) {
+                        if (gc.getInput().isKeyDown(Input.KEY_LEFT)) {
+                            player2.move(2);
 
-                        timeOutP2 = player2.getSpeed();
+                            timeOutP2 = player2.getSpeed();
 
-                    } else if (gc.getInput().isKeyDown(Input.KEY_D)) {
-                        player2.move(4);
+                        } else if (gc.getInput().isKeyDown(Input.KEY_RIGHT)) {
+                            player2.move(4);
 
-                        timeOutP2 = player2.getSpeed();
+                            timeOutP2 = player2.getSpeed();
 
-                    } else if (gc.getInput().isKeyDown(Input.KEY_W)) {
-                        player2.move(1);
+                        } else if (gc.getInput().isKeyDown(Input.KEY_UP)) {
+                            player2.move(1);
 
-                        timeOutP2 = player2.getSpeed();
+                            timeOutP2 = player2.getSpeed();
 
-                    } else if (gc.getInput().isKeyDown(Input.KEY_S)) {
-                        player2.move(3);
+                        } else if (gc.getInput().isKeyDown(Input.KEY_DOWN)) {
+                            player2.move(3);
 
-                        timeOutP2 = player2.getSpeed();
+                            timeOutP2 = player2.getSpeed();
+                        }
+
+                        if (gc.getInput().isKeyPressed(Input.KEY_ENTER) && player2.getVisible()) {
+                            Bomb b = new Bomb(sprites, player2.getX(), player2.getY(), player2.getBombRange());
+
+                            if (playground.getBombs2().size() < player2.getBombCount()) {
+                                player2.setKickDirection(0);
+                                playground.addToLevel(b);
+                                playground.addBombs2(b);
+                                player2.move(5); // place remote bomb
+                            }
+                        }
+                    } else {
+                        if (gc.getInput().isKeyDown(Input.KEY_A)) {
+                            player2.move(2);
+
+                            timeOutP2 = player2.getSpeed();
+
+                        } else if (gc.getInput().isKeyDown(Input.KEY_D)) {
+                            player2.move(4);
+
+                            timeOutP2 = player2.getSpeed();
+
+                        } else if (gc.getInput().isKeyDown(Input.KEY_W)) {
+                            player2.move(1);
+
+                            timeOutP2 = player2.getSpeed();
+
+                        } else if (gc.getInput().isKeyDown(Input.KEY_S)) {
+                            player2.move(3);
+
+                            timeOutP2 = player2.getSpeed();
+                        }
+
+                        if (gc.getInput().isKeyPressed(Input.KEY_SPACE) && player2.getVisible()) {
+                            Bomb b = new Bomb(sprites, player2.getX(), player2.getY(), player2.getBombRange());
+
+                            if (playground.getBombs2().size() < player2.getBombCount()) {
+                                player2.setKickDirection(0);
+                                playground.addToLevel(b);
+                                playground.addBombs2(b);
+                                player2.move(5); // place remote bomb
+                            }
+                        }
                     }
                 }
-
-                if (gc.getInput().isKeyPressed(Input.KEY_SPACE) && player2.getVisible()) {
-                    Bomb b = new Bomb(sprites, player2.getX(), player2.getY(), player2.getBombRange());
-
-                    if (playground.getBombs2().size() < player2.getBombCount()) {
-                        player2.setKickDirection(0);
-                        playground.addToLevel(b);
-                        playground.addBombs2(b);
-                        player2.move(5); // place remote bomb
-                    }
-                }
             }
-            //end player controls
-            if (timeOutP2 > 0) {
-                timeOutP2 -= delta;
-            } else {
-                timeOutP2 = 0;
-            }
+        }
+        //end player controls
+        if (timeOutP2 > 0) {
+            timeOutP2 -= delta;
+        } else {
+            timeOutP2 = 0;
+        }
 
-            if (player2.intersectWithBox() || player2.intersectWithWall() || player2.intersectWithPlayer() || player2.intersectWithCastle()) {
-                player2.setPosition(hpos2x, hpos2y);
-            }
+        if (player2.intersectWithBox() || player2.intersectWithWall() || player2.intersectWithPlayer() || player2.intersectWithCastle()) {
+            player2.setPosition(hpos2x, hpos2y);
+        }
 
-            if (player2.upBomb()) {
-                player2.setBombCount(player2.getBombCount() + 1);
-            }
+        if (player2.upBomb()) {
+            player2.setBombCount(player2.getBombCount() + 1);
         }
 
         player.Update();
+
         player2.Update();
 //
 //        for (Bomb b : bombs2) {
@@ -515,7 +504,9 @@ public class Game_StateBasedGame extends BasicGameState {
 //                }
 //            }
 //        }
-        for (IGameObject o : game.playground().getMapobjects()) {
+        for (IGameObject o
+                : game.playground()
+                .getMapobjects()) {
             if (o instanceof Bomb) {
                 Bomb b = (Bomb) o;
                 if (b.intersects(player2) && player2.getKick() == false) {
