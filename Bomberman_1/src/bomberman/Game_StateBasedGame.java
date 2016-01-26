@@ -163,12 +163,6 @@ public class Game_StateBasedGame extends BasicGameState {
             g.drawImage(game.getTeam1().getSprite(), game.getTeam1().getX(), game.getTeam1().getY());
             g.drawImage(game.getTeam2().getSprite(), game.getTeam2().getX(), game.getTeam2().getY());
         }
-        if (player.getVisible() == true) {
-            g.drawImage(player.getSprite(), player.getX(), player.getY());
-        }
-        if (player2.getVisible() == true) {
-            g.drawImage(player2.getSprite(), player2.getX(), player2.getY());
-        }
 
         for (IGameObject o : game.playground().getMapobjects()) {
             if (o instanceof Bomb) {
@@ -254,6 +248,18 @@ public class Game_StateBasedGame extends BasicGameState {
                     System.exit(1);
                 }
             }, 5000);
+        }
+        if (player.getVisible() == true) {
+            g.drawImage(player.getSprite(), player.getX(), player.getY());
+        } else {
+            g.setColor(Color.white);
+            g.drawString(" Respawns in: " + player.getRespawn()/60, 0, 50);
+        }
+        if (player2.getVisible() == true) {
+            g.drawImage(player2.getSprite(), player2.getX(), player2.getY());
+        } else {
+            g.setColor(Color.white);
+            g.drawString(" Respawns in: " + player2.getRespawn()/60, 360, 50);
         }
     }
 

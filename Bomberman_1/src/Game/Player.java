@@ -56,6 +56,7 @@ public class Player implements IGameObject, Serializable {
     private int respawn;
     private Manager manager = Manager.getManager();
     private Keyset Keys;
+    Timer timer = new Timer();
 
     public Player(SpriteSheet sprites, Float x, Float y, int bombCount, float speed, Boolean kick) throws SlickException {
         this.sprites = sprites;
@@ -72,6 +73,7 @@ public class Player implements IGameObject, Serializable {
         this.kickDirection = 0;
         visible = true;
         respawn = 0;
+
     }
 
     public Float getBombRange() {
@@ -139,7 +141,7 @@ public class Player implements IGameObject, Serializable {
 
                     }
                     this.visible = false;
-                    respawn = 500;
+                    respawn = 400;
                 }
             }
         }
@@ -148,10 +150,10 @@ public class Player implements IGameObject, Serializable {
         }
         if (respawn == 0 && visible == false) {
             if (teamColor == TeamColor.BLUE) {
-                setPosition(96, 48);
+                setPosition(48, 575);
 
             } else {
-                setPosition(624, 576);
+                setPosition(624, 96);
 
             }
             this.visible = true;
@@ -224,6 +226,10 @@ public class Player implements IGameObject, Serializable {
                 this.sprite = this.sprite.getFlippedCopy(true, false);
                 break;
         }
+    }
+
+    public int getRespawn() {
+        return respawn;
     }
 
     public Image getSprite() {
