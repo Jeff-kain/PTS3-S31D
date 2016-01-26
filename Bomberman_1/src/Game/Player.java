@@ -171,8 +171,8 @@ public class Player implements IGameObject, Serializable {
                 Explosion_Up eu = (Explosion_Up) o;
 
                 if (eu.intersects(this)) {
-                    if (getBombRange() < 2.5f) {
-                        setBombRange(getBombRange() + 0.5f);
+                    if (getBombRange() < 3.5f) {
+                        setBombRange(getBombRange() + 1f);
                     }
                     game.playground().removeFromLevel(eu);
                 }

@@ -120,7 +120,7 @@ public class Bomb implements IGameObject, Serializable {
         for (Player p : players) {
             if (intersects(p)) {
                 if (!moving) {
-                    p.setKick(true);
+                    //p.setKick(true);
                     if (p.getKick() && isKicked == false) {
                         kickBomb(p.getKickDirection());
                     }
