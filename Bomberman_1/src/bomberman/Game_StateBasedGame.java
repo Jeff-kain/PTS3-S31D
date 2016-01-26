@@ -118,9 +118,9 @@ public class Game_StateBasedGame extends BasicGameState {
         //character = sprites.getSprite(2, 16);
         game.setTeam1(sprites, TeamColor.BLUE, 48, 624);
         game.setTeam2(sprites, TeamColor.GREEN, 624, 48);
-        player = new Player(sprites, 48f, 48f, 1, 48f, false);
+        player = new Player(sprites, 48f, 576f, 1, 48f, false);
         player.setTeamColor(TeamColor.BLUE);
-        player2 = new Player(sprites, 624f, 624f, 1, 48f, false);
+        player2 = new Player(sprites, 624f, 96f, 1, 48f, false);
         player2.setTeamColor(TeamColor.GREEN);
         timeOutP1 = player.getSpeed();
         timeOutP2 = player2.getSpeed();

@@ -75,6 +75,7 @@ public class Menu_StateBasedGame extends BasicGameState {
                 manager.setPlayer2(2);
                 manager.setPlayer1(1);
                 manager.setNamePlayer1(name);
+                manager.setNamePlayer2("Player 2");
                 game.enterState(2, new FadeOutTransition(Color.black), new FadeInTransition(Color.black));
             }
             if (mode.equals("host")) {
