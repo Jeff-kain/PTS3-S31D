@@ -20,24 +20,25 @@ import portal.Models.RMI.RMIClient;
 import portalserver.interfaces.IHost;
 import portalserver.interfaces.ILobby;
 import portalserver.interfaces.ILogin;
-import portalserver.interfaces.IPlayer;
 import portalserver.interfaces.IPortal;
+import portalserver.interfaces.ISpectator;
 
 /**
  *
  * @author Rob
  */
-public class ILobbyTest {
+public class ISpectatorTest {
 
     RMIClient client;
     ILogin inlog;
     IPortal portal;
     IHost host;
     ILobby lobby;
+    ISpectator spectator;
     String login = "Rob";
     String hostName = "testLobby";
 
-    public ILobbyTest() {
+    public ISpectatorTest() {
     }
 
     @BeforeClass
@@ -56,6 +57,7 @@ public class ILobbyTest {
         host = portal.createLobby("rob", "rob", new Game(1, "Bomberman", "Bomberman"), "testLobby", "", InetAddress.getLocalHost().getHostAddress());
         List<ILobby> lobbies = portal.getLobbies("rob", "rob", new Game(1, "Bomberman", "Bomberman"));
         lobby = lobbies.get(0);
+        spectator = lobby.spectateGame("rob", "rob");
     }
 
     @After
@@ -63,34 +65,14 @@ public class ILobbyTest {
     }
 
     @Test
-    public void joinGameTest() throws RemoteException {
-        IPlayer player = lobby.joinGame("tim", "tim");
-        List<String> list = player.getPlayers();
-        assertTrue(list.contains("Tim"));
-    }
-
-    @Test
-    public void leaveGameTest() throws RemoteException {
-        lobby.leaveGame("tim", "tim");
-        List<String> list = host.getPlayers();
-        assertFalse(list.contains("Tim"));
-    }
-
-    @Test
-    public void getNameTest() throws RemoteException {
-        String name = lobby.getName();
-        assertEquals(name, hostName);
-    }
-
-    @Test
     public void getPlayersTest() throws RemoteException {
-        List<String> list = lobby.getPlayers();
-        assertTrue(list.contains("Rob"));   
+        List<String> list = spectator.getPlayers();
+        assertTrue(list.contains("Rob"));
     }
-    
+
     @Test
     public void getSpectatorsTest() throws RemoteException {
-        List<String> list = lobby.getSpectators();
-        assertFalse(list.contains("Rob"));  
+        List<String> list = spectator.getSpectators();
+        assertTrue(list.contains("Rob"));
     }
 }

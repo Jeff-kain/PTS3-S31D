@@ -48,7 +48,6 @@ public class Portal extends UnicastRemoteObject implements ILogin, IPortal {
         if (correctLogin(username, password)) {
             return databaseConnection.getGames();
         }
-
         return null;
     }
 
@@ -112,7 +111,7 @@ public class Portal extends UnicastRemoteObject implements ILogin, IPortal {
 
     @Override
     public List<Score> getLeaderboard(String username, String password, String game) throws RemoteException {
-        if (databaseConnection.CheckLogin(username, password)) {
+        if (correctLogin(username, password)) {
             List<Score> leaderboard = databaseConnection.getLeaderboard(game);
             Collections.sort(leaderboard, Score.ScoreComparator.reversed());
             return leaderboard;
@@ -124,7 +123,7 @@ public class Portal extends UnicastRemoteObject implements ILogin, IPortal {
 
     @Override
     public Score getScoresPlayer(String username, String password, String enteredName, String game) throws RemoteException {
-        if (databaseConnection.CheckLogin(username, password)) {
+        if (correctLogin(username, password)) {
             return databaseConnection.getScoresPlayer(enteredName, game);
         }
 

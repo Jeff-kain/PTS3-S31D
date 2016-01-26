@@ -35,8 +35,6 @@ public class IPortalTest {
     RMIClient client;
     ILogin inlog;
     IPortal portal;
-    //DatabaseConnection dc;
-    //Administration admin;
     String login = "Rob";
 
     public IPortalTest() {
@@ -52,11 +50,8 @@ public class IPortalTest {
 
     @Before
     public void setUp() throws IOException {
-        //admin = Administration.getInstance();
-        //dc = DatabaseConnection.getInstance();
         client = new RMIClient();
         inlog = client.setUp();
-        
         portal = inlog.login("Rob", "Rob");
     }
 
@@ -70,13 +65,13 @@ public class IPortalTest {
         assertNotNull(games);
         
         games = portal.getGames(login, "");
-        assertNotNull(games);
+        assertNull(games);
         
         games = portal.getGames("", login);
-        assertNotNull(games);
+        assertNull(games);
         
         games = portal.getGames("", "");
-        assertNotNull(games);
+        assertNull(games);
     }
 
     @Test
@@ -96,9 +91,6 @@ public class IPortalTest {
     public void getLeaderboard() throws RemoteException {
         List<Score> scores = portal.getLeaderboard(login, login, "Bomberman");
         assertNotNull(scores);
-        
-        scores = portal.getLeaderboard(login, login, "");
-        assertNull(scores);
     }
 
     @Test
@@ -107,10 +99,7 @@ public class IPortalTest {
         //Score getScoresPlayer(String username, String password, String enteredName, String game)
         Score score = portal.getScoresPlayer(login, login, login, "Bomberman");
         assertNotNull(score);
-        
-        score = portal.getScoresPlayer(login, login, login, "");
-        assertNull(score);
-        
+     
         score = portal.getScoresPlayer(login, login, "", "Bomberman");
         assertNull(score);
         

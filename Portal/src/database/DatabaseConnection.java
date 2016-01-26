@@ -20,20 +20,20 @@ import java.util.Properties;
  * @author Rob
  */
 public class DatabaseConnection {
-    
+
     private static DatabaseConnection instance = null;
     private Properties props;
     private Connection conn;
-    
+
     private String url;
     private String username;
     private String password;
-    
+
     private DatabaseConnection() throws IOException {
         props = new Properties();
-	    InputStream input = null;
+        InputStream input = null;
         File file = new File("config.properties");
-        
+
         try {
             input = new FileInputStream(file);
 
@@ -58,7 +58,7 @@ public class DatabaseConnection {
     }
 
     public static DatabaseConnection getInstance() throws IOException {
-        if(instance != null) {
+        if (instance != null) {
             return instance;
         } else {
             instance = new DatabaseConnection();
@@ -68,15 +68,15 @@ public class DatabaseConnection {
 
     public boolean open() {
         try {
-        Class.forName("com.mysql.jdbc.Driver").newInstance();
-        conn = DriverManager.getConnection(url, username, password);
-        return true;
+            Class.forName("com.mysql.jdbc.Driver").newInstance();
+            conn = DriverManager.getConnection(url, username, password);
+            return true;
         } catch (Exception ex) {
             System.err.println(ex.getMessage());
             return false;
         }
     }
-    
+
     public boolean close() {
         try {
             conn.close();
@@ -87,13 +87,13 @@ public class DatabaseConnection {
             return false;
         }
     }
-    
-    public boolean TestConnection(){
+
+    public boolean TestConnection() {
         boolean isOpen = open();
         close();
         return isOpen;
     }
-    
+
     public boolean CheckLogin(String username, String password) {
 
         try {
@@ -110,11 +110,9 @@ public class DatabaseConnection {
 
                 return rs.first();
             }
-        }
-        catch(SQLException e) {
+        } catch (SQLException e) {
             e.printStackTrace();
-        }
-        finally{            
+        } finally {
             close();
         }
         return false;
@@ -125,48 +123,47 @@ public class DatabaseConnection {
         try {
             boolean isOpen = open();
 
-            if(isOpen) {
-            ResultSet rs;
-            Statement stat = conn.createStatement();
-
-            String query = "SELECT * FROM USERS WHERE NAME ='" + username + "';";
-
-            stat = conn.prepareStatement(query);
-            rs = stat.executeQuery(query);
-            
-            return rs.first();
-            }
-        }
-        catch(SQLException e) {
-            e.printStackTrace();
-        }
-        finally{
-            close();
-        }
-        return false;
-    }
-    
-    public boolean CreateUser(String username, String password) {
-        try {
-            boolean isOpen = open();
             if (isOpen) {
+                ResultSet rs;
                 Statement stat = conn.createStatement();
-                String query = "INSERT INTO users (Name, Password) VALUES ('" + username + "', '" + password + "');";
+
+                String query = "SELECT * FROM USERS WHERE NAME ='" + username + "';";
+
                 stat = conn.prepareStatement(query);
-                stat.execute(query);
-                return true;
+                rs = stat.executeQuery(query);
+
+                return rs.first();
             }
-        }
-        catch(SQLException e) {
+        } catch (SQLException e) {
             e.printStackTrace();
-        }
-        finally{            
+        } finally {
             close();
         }
         return false;
     }
-    
-        public boolean CreateLeaderboard(int Id) {
+
+    public boolean CreateUser(String username, String password) {
+        if (!"".equals(username) && !"".equals(password)) {
+            System.out.println(username + "  " + password);
+            try {
+                boolean isOpen = open();
+                if (isOpen) {
+                    Statement stat = conn.createStatement();
+                    String query = "INSERT INTO users (Name, Password) VALUES ('" + username + "', '" + password + "');";
+                    stat = conn.prepareStatement(query);
+                    stat.execute(query);
+                    return true;
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            } finally {
+                close();
+            }
+        }
+        return false;
+    }
+
+    public boolean CreateLeaderboard(int Id) {
 
         try {
             boolean isOpen = open();
@@ -177,16 +174,13 @@ public class DatabaseConnection {
                 stat.execute(query);
                 return true;
             }
-        }
-        catch(SQLException e) {
+        } catch (SQLException e) {
             e.printStackTrace();
-        }
-        finally{            
+        } finally {
             close();
         }
         return false;
     }
-
 
     public User getUser(String username, String password) {
 
@@ -207,16 +201,14 @@ public class DatabaseConnection {
                     return new User(id, name);
                 }
             }
-        }
-        catch(SQLException e) {
+        } catch (SQLException e) {
             e.printStackTrace();
-        }
-        finally{
+        } finally {
             close();
         }
         return null;
     }
-    
+
     public List<Game> getGames() {
         List<Game> games = new ArrayList<>();
 
@@ -241,17 +233,15 @@ public class DatabaseConnection {
                     games.add(game);
                 }
             }
-        }
-        catch(SQLException e) {
+        } catch (SQLException e) {
             e.printStackTrace();
-        }
-        finally{
+        } finally {
             close();
         }
 
         return games;
     }
-    
+
     public List<Score> getLeaderboard(String game) {
 
         List<Score> leaderboard = new ArrayList<>();
@@ -280,16 +270,14 @@ public class DatabaseConnection {
                 }
                 return leaderboard;
             }
-        }
-        catch(SQLException e) {
+        } catch (SQLException e) {
             e.printStackTrace();
-        }
-        finally{
+        } finally {
             close();
         }
         return null;
     }
-    
+
     public Score getScoresPlayer(String enteredName, String game) {
 
         Score s = null;
@@ -319,14 +307,12 @@ public class DatabaseConnection {
                 }
                 return s;
             }
-        }
-        catch(SQLException e) {
+        } catch (SQLException e) {
             e.printStackTrace();
-        }
-        finally{
+        } finally {
             close();
         }
         return null;
     }
-        
+
 }
