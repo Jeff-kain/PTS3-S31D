@@ -7,7 +7,7 @@ package database;
 
 import portal.Models.Game;
 import portal.Models.Score;
-import portalserver.User;
+import portal.Models.User;
 
 import java.io.*;
 import java.sql.*;
@@ -133,7 +133,7 @@ public class DatabaseConnection {
 
             stat = conn.prepareStatement(query);
             rs = stat.executeQuery(query);
-
+            
             return rs.first();
             }
         }
@@ -147,14 +147,13 @@ public class DatabaseConnection {
     }
     
     public boolean CreateUser(String username, String password) {
-
         try {
             boolean isOpen = open();
             if (isOpen) {
                 Statement stat = conn.createStatement();
-                String query = "INSERT users (Id, Name, Password) VALUES (NULL, '" + username + "', '" + password + "');";
+                String query = "INSERT INTO users (Name, Password) VALUES ('" + username + "', '" + password + "');";
                 stat = conn.prepareStatement(query);
-
+                stat.execute(query);
                 return true;
             }
         }
@@ -166,6 +165,28 @@ public class DatabaseConnection {
         }
         return false;
     }
+    
+        public boolean CreateLeaderboard(int Id) {
+
+        try {
+            boolean isOpen = open();
+            if (isOpen) {
+                Statement stat = conn.createStatement();
+                String query = "INSERT Leaderboard (Id_User, Id_Game, Wins, Losses) VALUES (" + Id + ", 1, 0, 0);";
+                stat = conn.prepareStatement(query);
+                stat.execute(query);
+                return true;
+            }
+        }
+        catch(SQLException e) {
+            e.printStackTrace();
+        }
+        finally{            
+            close();
+        }
+        return false;
+    }
+
 
     public User getUser(String username, String password) {
 
@@ -308,35 +329,4 @@ public class DatabaseConnection {
         return null;
     }
         
-    public void updateLeaderboard(String userName, boolean wonGame) throws SQLException {
-
-        Score s = null;
-        ResultSet rs;
-        Statement stat;
-        String query;
-
-        try {
-            boolean isOpen = open();
-            if (isOpen) {
-            if(wonGame) {
-
-                query = "UPDATE Leaderboard lb, Users u, Games g " +
-                                "SET lb.Wins=value + 1, lb.Loses= value " +
-                "WHERE id_User = id AND g.id = lb.id_game AND u.Name = '" + userName + "'";
-            } else {
-                query = "UPDATE Leaderboard lb, Users u, Games g " +
-                                "SET lb.Wins=value, lb.Loses= value  + 1 " +
-                "WHERE id_User = id AND g.id = lb.id_game AND u.Name = '" + userName + "'";
-            }
-                stat = conn.prepareStatement(query);
-                rs = stat.executeQuery(query);
-            }
-        }
-        catch(SQLException e) {
-            e.printStackTrace();
-        }
-        finally{
-            close();
-        }
-    }
 }

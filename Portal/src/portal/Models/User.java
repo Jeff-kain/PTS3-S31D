@@ -3,13 +3,13 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package portalserver;
+package portal.Models;
 
 /**
  *
  * @author Rob
  */
-public final class User {
+public class User {
     
     private int id;
     private String name;

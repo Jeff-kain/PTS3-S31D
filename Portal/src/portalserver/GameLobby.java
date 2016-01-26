@@ -1,6 +1,6 @@
 package portalserver;
 
-import com.sun.org.apache.xpath.internal.operations.Bool;
+import portal.Models.User;
 import database.DatabaseConnection;
 import portal.Models.Game;
 import portalserver.interfaces.IHost;

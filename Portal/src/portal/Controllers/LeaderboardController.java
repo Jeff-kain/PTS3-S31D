@@ -22,16 +22,23 @@ import java.net.URL;
 import java.rmi.RemoteException;
 import java.util.List;
 import java.util.ResourceBundle;
+import javafx.event.EventHandler;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
+
 /**
  *
  * @author Rob
  */
 public class LeaderboardController implements Initializable {
 
-    @FXML private ListView<Game> lvwGames;
-    @FXML private ListView<Score> lvwScores;
-    @FXML private TextField tfPlayer;
-    
+    @FXML
+    private ListView<Game> lvwGames;
+    @FXML
+    private ListView<Score> lvwScores;
+    @FXML
+    private TextField tfPlayer;
+
     private Administration admin;
     private ObservableList<Score> observableScores;
     private ObservableList<Game> observableGames;
@@ -39,52 +46,57 @@ public class LeaderboardController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         admin = Administration.getInstance();
-        
+
         observableScores = FXCollections.observableArrayList();
         lvwScores.setItems(observableScores);
         observableGames = FXCollections.observableArrayList();
         lvwGames.setItems(observableGames);
-        
+
         try {
             observableGames.addAll(admin.getPortal().getGames(admin.getUsername(), admin.getPassword()));
         } catch (IOException e) {
             e.printStackTrace();
         }
-        
+
         lvwGames.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
-        admin.setSelectedGameLeaderboardID(newValue);
-        UpdateScores();
+            admin.setSelectedGameLeaderboardID(newValue);
+            UpdateScores();
         });
-        
-//        new java.util.Timer().schedule( 
-//        new java.util.TimerTask() {
-//            @Override
-//            public void run() {
-//                UpdateScores();
-//            }}, 30000);
+
+        tfPlayer.setOnKeyPressed(new EventHandler<KeyEvent>() {
+            @Override
+            public void handle(KeyEvent ke) {
+                if (ke.getCode().equals(KeyCode.ENTER)) {
+                    search();
+                }
+            }
+        });
     }
-    
+
     public void onSearch(Event evt) {
+        search();
+    }
+
+    private void search() {
         try {
             observableScores.clear();
             Score PlayerScore = admin.getPortal().getScoresPlayer(admin.getUsername(), admin.getPassword(), tfPlayer.getText(), admin.getSelectedGameLeaderboard().getName());
-            if(PlayerScore != null) {
+            if (PlayerScore != null) {
                 observableScores.add(PlayerScore);
-            } 
-            else {
-                System.out.println("No player or record found"); 
+            } else {
+                System.out.println("No player or record found");
             }
         } catch (RemoteException e) {
             e.printStackTrace();
         }
     }
-    
+
     public void UpdateScores() {
         try {
             observableScores.clear();
             List<Score> leaderboard = admin.getPortal().getLeaderboard(admin.getUsername(), admin.getPassword(), admin.getSelectedGameLeaderboard().getName());
 
-            for(Score s: leaderboard) {
+            for (Score s : leaderboard) {
                 observableScores.add(s);
             }
 
@@ -92,5 +104,5 @@ public class LeaderboardController implements Initializable {
             e.printStackTrace();
         }
     }
-    
+
 }

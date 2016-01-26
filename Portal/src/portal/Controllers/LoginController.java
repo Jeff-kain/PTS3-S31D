@@ -21,6 +21,9 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 import java.util.concurrent.*;
+import javafx.event.EventHandler;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 
 /**
  * Created by tverv on 08-Dec-15.ó
@@ -28,7 +31,6 @@ import java.util.concurrent.*;
 public class LoginController implements Initializable {
 
     //Controls
-
     @FXML
     private Button btnLogin;
     @FXML
@@ -45,7 +47,6 @@ public class LoginController implements Initializable {
      */
     public static Stage stage;
     DatabaseConnection dc;
-    ExecutorService executor;
     boolean isOk;
     private Administration admin;
 
@@ -81,12 +82,24 @@ public class LoginController implements Initializable {
             ex.printStackTrace();
         }
 
-        executor = Executors.newFixedThreadPool(3);
+        pfdPassword.setOnKeyPressed(new EventHandler<KeyEvent>() {
+            @Override
+            public void handle(KeyEvent ke) {
+                if (ke.getCode().equals(KeyCode.ENTER)) {
+                    loginCheck();
+                }
+            }
+        });
+
     }
 
     public void btnLogin(Event evt) {
-        try {
+        loginCheck();
+    }
 
+    private void loginCheck() {
+        System.out.println("LoginCheck");
+        try {
             if (tfdUsername.getText().equals("") || pfdPassword.getText().equals("")) {
                 lblError.setText("Please fill in both fields.");
             } else {

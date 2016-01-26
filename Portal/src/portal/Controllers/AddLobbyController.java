@@ -18,17 +18,22 @@ import java.net.URL;
 import java.net.UnknownHostException;
 import java.rmi.RemoteException;
 import java.util.ResourceBundle;
+import javafx.event.EventHandler;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 
 /**
  * Created by tverv on 13-Dec-15.
  */
-public class AddLobbyController implements Initializable{
+public class AddLobbyController implements Initializable {
 
-    @FXML private Label lblGame;
-    @FXML private TextField tfdName;
-    @FXML private TextField tfdPassword;
+    @FXML
+    private Label lblGame;
+    @FXML
+    private TextField tfdName;
 
-    @FXML private Button btnSave;
+    @FXML
+    private Button btnSave;
 
     private Administration admin;
     private IPortal portal;
@@ -44,7 +49,7 @@ public class AddLobbyController implements Initializable{
             @Override
             public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
 
-                if(newValue.equals("")) {
+                if (newValue.equals("")) {
                     btnSave.setDisable(true);
                 } else {
                     btnSave.setDisable(false);
@@ -52,14 +57,26 @@ public class AddLobbyController implements Initializable{
             }
         });
 
+        tfdName.setOnKeyPressed(new EventHandler<KeyEvent>() {
+            @Override
+            public void handle(KeyEvent ke) {
+                if (ke.getCode().equals(KeyCode.ENTER)) {
+                    createLobby();
+                }
+            }
+        });
     }
 
     public void saveLobby(Event evt) {
-        if(tfdName.getText() != "") {
+        createLobby();
+    }
+
+    private void createLobby() {
+        if (tfdName.getText() != "") {
             try {
-                IHost hostedLobby = portal.createLobby(admin.getUsername(),admin.getPassword(), admin.getSelectedGame(), tfdName.getText(), tfdPassword.getText(), InetAddress.getLocalHost().getHostAddress());
+                IHost hostedLobby = portal.createLobby(admin.getUsername(), admin.getPassword(), admin.getSelectedGame(), tfdName.getText(), "", InetAddress.getLocalHost().getHostAddress());
                 admin.setHostedLobby(hostedLobby);
-                ((Stage)lblGame.getScene().getWindow()).close();
+                ((Stage) lblGame.getScene().getWindow()).close();
             } catch (RemoteException e) {
                 e.printStackTrace();
             } catch (UnknownHostException e) {

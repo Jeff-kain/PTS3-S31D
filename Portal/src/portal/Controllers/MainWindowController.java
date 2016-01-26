@@ -38,6 +38,8 @@ import java.util.List;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javax.swing.JFrame;
 
 import static portal.Portal.Stage;
@@ -122,6 +124,15 @@ public class MainWindowController implements Initializable {
         lvwGames.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
             selectedGame = newValue;
             loadLobbies(newValue);
+        });
+
+        tfSend.setOnKeyPressed(new EventHandler<KeyEvent>() {
+            @Override
+            public void handle(KeyEvent ke) {
+                if (ke.getCode().equals(KeyCode.ENTER)) {
+                    send();
+                }
+            }
         });
     }
 
@@ -273,6 +284,10 @@ public class MainWindowController implements Initializable {
     }
 
     public void btSend(Event evt) {
+        send();
+    }
+
+    private void send() {
         try {
             if ((tfSend.getText()).equals("")) {
                 tfSend.setText("");
