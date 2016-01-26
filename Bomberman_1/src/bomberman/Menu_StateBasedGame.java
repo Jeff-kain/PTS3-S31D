@@ -53,13 +53,6 @@ public class Menu_StateBasedGame extends BasicGameState {
     @Override
     public void render(GameContainer gc, StateBasedGame sbg, Graphics g) throws SlickException {
         g.setColor(Color.white);
-        g.drawString("Bomberman", 50, 10);
-
-        g.drawString("1. Host game", 50, 100);
-        g.drawString("2. Join game", 50, 120);
-        g.drawString("3. Local game", 50, 140);
-        g.drawString("4. Show Lobbies", 50, 160);
-        g.drawString("5. Back to portal", 50, 180);
 
     }
 

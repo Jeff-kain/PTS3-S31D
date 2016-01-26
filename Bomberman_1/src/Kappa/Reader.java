@@ -23,7 +23,7 @@ public class Reader {
             throws IOException, ClassNotFoundException {
         String[] arguments = new String[5];
         String ip = InetAddress.getLocalHost().getHostAddress();
-        arguments[0] = "spectate";
+        arguments[0] = "localgame";
         arguments[1] = ip;
         arguments[2] = "Jeffrey";
         arguments[3] = ip;

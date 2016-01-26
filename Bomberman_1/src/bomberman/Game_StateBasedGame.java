@@ -24,6 +24,8 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -232,18 +234,16 @@ public class Game_StateBasedGame extends BasicGameState {
             }
         }
 
-        if (game.getTeam1().currentHealth() <= 0) {
+               if (game.getTeam1().currentHealth() <= 0) {
 
             isEnded = true;
-            g.setColor(Color.blue);
-            g.fillRect(220.0f, 220.0f, 270.0f, 230.0f);
-            g.setColor(Color.white);
-            g.drawString("Team2 has won the game!", 250, 250);
+            String lastMessage = "has won the game!";
 
-//          Image play = new Image("res/play.png");
-//          Image replay = new Image("res/replay.png");
-//          g.drawImage(play, 250, 300);
-//          g.drawImage(replay, 380, 300);
+            g.setColor(Color.blue);
+            g.fillOval(220.0f, 210.0f, 250.0f, 210.0f);
+            g.setColor(Color.white);
+            g.drawString(lastMessage, 270, 320);
+            g.drawString(manager.getNamePlayer2(), 330, 280);
             WinningTeam = "Team Blue Wins";
 
             try {
@@ -260,20 +260,23 @@ public class Game_StateBasedGame extends BasicGameState {
             } catch (SQLException | IOException ex) {
                 ex.printStackTrace();
             }
-            game1.enterState(3, new FadeOutTransition(Color.black), new FadeInTransition(Color.black));
+            Timer timer = new Timer();
+            timer.schedule(new TimerTask() {
+                @Override
+                public void run() {
+                    System.exit(1);
+                }
+            }, 5000);
 
         } else if (game.getTeam2().currentHealth() <= 0) {
 
             isEnded = true;
-            g.setColor(Color.blue);
-            g.fillRect(220.0f, 220.0f, 270.0f, 230.0f);
+            String lastMessage = "has won the game!";
+             g.setColor(Color.blue);
+            g.fillOval(220.0f, 210.0f, 250.0f, 210.0f);
             g.setColor(Color.white);
-            g.drawString("Team2 has won the game!", 250, 250);
-
-//            Image play = new Image("res/play.png");
-//            Image replay = new Image("res/replay.png");
-//            g.drawImage(play, 250, 300);
-//            g.drawImage(replay, 380, 300);
+            g.drawString(lastMessage, 270, 320);
+            g.drawString(manager.getNamePlayer1(), 330, 280);
             WinningTeam = "Team Green Wins";
 
             try {
@@ -290,9 +293,13 @@ public class Game_StateBasedGame extends BasicGameState {
             } catch (SQLException | IOException ex) {
                 ex.printStackTrace();
             }
-
-            game1.enterState(3, new FadeOutTransition(Color.black), new FadeInTransition(Color.black));
-
+            Timer timer = new Timer();
+            timer.schedule(new TimerTask() {
+                @Override
+                public void run() {
+                    System.exit(1);
+                }
+            }, 5000);
         }
     }
 
