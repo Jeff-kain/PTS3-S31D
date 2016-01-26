@@ -98,7 +98,6 @@ public class LoginController implements Initializable {
     }
 
     private void loginCheck() {
-        System.out.println("LoginCheck");
         try {
             if (tfdUsername.getText().equals("") || pfdPassword.getText().equals("")) {
                 lblError.setText("Please fill in both fields.");

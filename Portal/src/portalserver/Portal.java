@@ -135,17 +135,11 @@ public class Portal extends UnicastRemoteObject implements ILogin, IPortal {
     @Override
     public IPortal Register(String username, String password) throws RemoteException {
         if (!databaseConnection.CheckUsername(username)) {
-            System.out.println(username);
-            System.out.println(databaseConnection.CheckUsername(username) + "checkusername");
-            if(databaseConnection.CreateUser(username, password)) {
-                
-                System.out.println(databaseConnection.CreateUser(username, password));
-                
+            if (databaseConnection.CreateUser(username, password)) {
                 User u = databaseConnection.getUser(username, password);
-                System.out.println(u.getId());
                 databaseConnection.CreateLeaderboard(u.getId());
                 return this;
-            } 
+            }
         }
         System.out.println("Username or password incorrect");
         return null;
