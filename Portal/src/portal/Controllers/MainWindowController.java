@@ -11,6 +11,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
@@ -136,7 +137,13 @@ public class MainWindowController implements Initializable {
 
     public void Display(String Input) {
         try {
-            taChat.appendText(Input);
+            Platform.runLater(new Runnable() {
+
+                @Override
+                public void run() {
+                    taChat.appendText(Input);
+                }
+            });
         } catch (Exception e) {
         }
     }
@@ -242,15 +249,14 @@ public class MainWindowController implements Initializable {
         try {
             ISpectator spectator = lobby.spectateGame(admin.getUsername(), admin.getUsername());
 
-            if(spectator != null) {
+            if (spectator != null) {
                 admin.setSpectatingLobby(spectator);
 
                 showLobbiesWindow();
             } else {
-                Alert alert = new Alert(Alert.AlertType.ERROR, "Spectating game failed. Maybe the game has already started.", ButtonType.OK);
-                alert.showAndWait();
+//                Alert alert = new Alert(Alert.AlertType.ERROR, "Spectating game failed. Maybe the game has already started.", ButtonType.OK);
+//                alert.showAndWait();
             }
-
 
         } catch (RemoteException e) {
             e.printStackTrace();
@@ -294,7 +300,7 @@ public class MainWindowController implements Initializable {
                 username = admin.getUsername();
 
                 try {
-                    address = "127.0.0.1";
+                    address = Portal.portalserver;
                     sock = new Socket(address, port);
                     InputStreamReader streamreader = new InputStreamReader(sock.getInputStream());
                     reader = new BufferedReader(streamreader);

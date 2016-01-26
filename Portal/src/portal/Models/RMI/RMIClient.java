@@ -16,7 +16,7 @@ public class RMIClient {
     private ILogin login;
 
     private static String bindingName = "portal";
-    private final String ipAddress = "127.0.0.1";
+    private final String ipAddress = portal.Portal.portalserver;
     private int portNumber = 1099;
 
     public ILogin setUp() {
