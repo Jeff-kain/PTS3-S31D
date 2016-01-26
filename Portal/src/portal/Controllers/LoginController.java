@@ -125,20 +125,19 @@ public class LoginController implements Initializable {
         try {
             if (tfdUsername.getText().equals("") || pfdPassword.getText().equals("")) {
                 lblError.setText("Please fill in both fields.");
-                if(tfdUsername.getText().length() > 2 && tfdUsername.getText().length() < 13 && pfdPassword.getText().length() > 2 && pfdPassword.getText().length() > 13) {
-                    portal = login.Register(tfdUsername.getText(), pfdPassword.getText());
-                } else {
-                    lblError.setText("please enter a name and password between 2 and 12 characters.");
-                }
+                lblError.setVisible(true);
+            }
+            System.out.println(tfdUsername.getText().length());
+            if (tfdUsername.getText().length() < 2 || tfdUsername.getText().length() > 13 && pfdPassword.getText().length() < 2 || pfdPassword.getText().length() > 13) {
+                lblError.setText("Your username is already in use!");
+                lblError.setVisible(true);
             } else {
+                portal = login.Register(tfdUsername.getText(), pfdPassword.getText());
                 if (portal != null) {
                     admin.setPortal(portal);
                     admin.setUsername(tfdUsername.getText());
                     admin.setPassword(pfdPassword.getText());
                     loadMainWindow();
-                    
-                } else {
-                    System.out.println("Your username is already in use!");
                 }
             }
         } catch (Exception ex) {
