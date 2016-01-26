@@ -19,17 +19,31 @@ public interface ISpectate extends Remote {
 
     public static final int UP = 1, LEFT = 2, DOWN = 3, RIGHT = 4, BOMB = 5;
 
+    /**
+     *
+     * @return the name of the hostplayer
+     * @throws RemoteException
+     */
     public String getHostName() throws RemoteException;
 
-    public void hostKeyUpdate(int playerindex, int keycode, boolean pressed)
-            throws RemoteException;
-
-    public void tick() throws RemoteException;
-
+    /**
+     * Move the hostplayer in a direction by (x,y) float
+     *
+     * @param direction
+     * @param x
+     * @param y
+     * @throws RemoteException
+     */
     public void movep2h(int direction, float x, float y) throws RemoteException;
 
+    /**
+     * Move the clientplayer in a direction by (x,y) float
+     *
+     * @param direction
+     * @param x
+     * @param y
+     * @throws RemoteException
+     */
     public void movep2c(int direction, float x, float y) throws RemoteException;
-    
-    public void setCurrentObjectState(List<IGameObject> list) throws RemoteException;
 
 }

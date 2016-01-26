@@ -133,16 +133,6 @@ public class Spectate extends UnicastRemoteObject implements ISpectate {
     }
 
     @Override
-    public void hostKeyUpdate(int playerindex, int keycode, boolean pressed) throws RemoteException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public void tick() throws RemoteException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
     public void movep2h(int direction, float x, float y) throws RemoteException {
         direction = translate(direction);
         ((Player) (Game.getInstance().getAllPlayers().get(0))).moveremote(direction, x, y);
@@ -178,11 +168,6 @@ public class Spectate extends UnicastRemoteObject implements ISpectate {
     @Override
     public String getHostName() throws RemoteException {
         return manager.getNamePlayer2();
-    }
-
-    @Override
-    public void setCurrentObjectState(List<IGameObject> list) {
-        Game.getInstance().playground().setMapobjects(list);
     }
 
 }

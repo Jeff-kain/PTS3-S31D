@@ -16,15 +16,28 @@ public interface IRemoteClient extends Remote {
 
     public static final int UP = 1, LEFT = 2, DOWN = 3, RIGHT = 4, BOMB = 5;
 
+    /**
+     *
+     * @return the name of the hostplayer
+     * @throws RemoteException
+     */
     public String getHostName() throws RemoteException;
 
-    public void hostKeyUpdate(int playerindex, int keycode, boolean pressed)
-            throws RemoteException;
-
-    public void tick() throws RemoteException;
-
+    /**
+     * Move the clientplayer in a direction by (x,y) float
+     *
+     * @param direction
+     * @param x
+     * @param y
+     * @throws RemoteException
+     */
     public void movep2h(int direction, float x, float y) throws RemoteException;
 
+    /**
+     * Connect a spectator to a clientplayer
+     * @param strService
+     * @throws RemoteException
+     */
     public void spectategame(String strService) throws RemoteException;
 
 }

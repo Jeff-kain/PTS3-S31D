@@ -352,7 +352,7 @@ public class Game_StateBasedGame extends BasicGameState {
             timeOutP1 = 0;
         }
 
-        if (player.intersectWithBox() || player.intersectWithWall() || player.intersectWithPlayer() || player.intersectWithCastle()) {
+        if (player.intersectWithBox() || player.intersectWithWall() || player.intersectWithPlayer() /*|| player.intersectWithCastle()*/) {
             player.setPosition(hposx, hposy);
         }
 
@@ -441,7 +441,7 @@ public class Game_StateBasedGame extends BasicGameState {
             timeOutP2 = 0;
         }
 
-        if (player2.intersectWithBox() || player2.intersectWithWall() || player2.intersectWithPlayer() || player2.intersectWithCastle()) {
+        if (player2.intersectWithBox() || player2.intersectWithWall() || player2.intersectWithPlayer() /*|| player2.intersectWithCastle()*/) {
             player2.setPosition(hpos2x, hpos2y);
         }
 

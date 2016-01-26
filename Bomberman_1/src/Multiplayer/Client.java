@@ -85,15 +85,6 @@ public class Client extends UnicastRemoteObject implements IRemoteClient {
         return service_;
     }
 
-    @Override
-    public void hostKeyUpdate(int playerindex, int keycode, boolean pressed) throws RemoteException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public void tick() throws RemoteException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
 
     @Override
     public void movep2h(int direction, float x, float y) throws RemoteException {

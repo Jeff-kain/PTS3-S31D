@@ -150,7 +150,7 @@ public class Player implements IGameObject, Serializable {
         }
         if (respawn == 0 && visible == false) {
             if (teamColor == TeamColor.BLUE) {
-                setPosition(48, 575);
+                setPosition(48, 576);
 
             } else {
                 setPosition(624, 96);
@@ -388,7 +388,7 @@ public class Player implements IGameObject, Serializable {
             System.out.println("bombermanClient added to level");
 
         }
-        if (this.intersectWithBox() || this.intersectWithWall() || this.intersectWithPlayer() || this.intersectWithCastle()) {
+        if (this.intersectWithBox() || this.intersectWithWall() || this.intersectWithPlayer()) {
             setPosition(oldx, oldy);
         }
     }
@@ -509,7 +509,7 @@ public class Player implements IGameObject, Serializable {
     public boolean intersectWithPlayer() {
         for (Player p : Game.getInstance().getAllPlayers()) {
             if (this != p) {
-                if (this.intersects(p)) {
+                if (this.intersects(p) && p.getVisible()) {
                     System.out.println("Player collision detected");
                     return true;
                 }
